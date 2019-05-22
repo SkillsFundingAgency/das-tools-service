@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -8,9 +8,22 @@ using SFA.DAS.ToolService.Web.Models;
 
 namespace SFA.DAS.ToolService.Web.Controllers
 {
-    public class HomeController : Controller
+    public class AccountController : Controller
     {
-        public IActionResult Index()
+        [Route("SignIn")]
+        public IActionResult SignIn()
+        {
+            return RedirectToAction("Account");
+        }
+
+        [Route("SignOut")]
+        public IActionResult SignOut()
+        {
+            return RedirectToAction("Index");
+        }
+
+        [Route("Home")]
+        public IActionResult Account()
         {
             return View();
         }
