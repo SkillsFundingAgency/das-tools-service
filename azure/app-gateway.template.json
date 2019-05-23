@@ -1,0 +1,258 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourceEnvironmentName": {
+            "type": "string",
+            "metadata": {
+                "description": "Application environment."
+            }
+        },
+        "serviceName": {
+            "type": "string",
+            "metadata": {
+                "description": "Service abbreviation."
+            }
+        },
+        "virtualNetworkResourceGroupName": {
+            "type": "string",
+            "metadata": {
+                "description": "Virtual Network Resource Group name."
+            }
+        },
+        "virtualNetworkName": {
+            "type": "string",
+            "defaultValue": "Application-Vnet",
+            "metadata": {
+                "description": "Virtual Network name."
+            }
+        },
+        "subnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Subnet name."
+            }
+        },
+        "capacity": {
+            "type": "int",
+            "defaultValue": 2,
+            "metadata": {
+                "description": "Minimum instance count."
+            }
+        },
+        "httpFrontendPort": {
+            "type": "int",
+            "defaultValue": 80,
+            "metadata": {
+                "description": "Http frontend port."
+            }
+        },
+        "toolServicefqdn": {
+            "type": "string",
+            "metadata": {
+                "description": "Fqdn of the tool service application."
+            }
+        },
+        "whitelistServicefqdn": {
+            "type": "string",
+            "metadata": {
+                "description": "Fqdn of the whitelist service application."
+            }
+        },
+        "messageServicefqdn": {
+            "type": "string",
+            "metadata": {
+                "description": "Fqdn of the message service application."
+            }
+        }
+    },
+    "variables": {
+        "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
+        "applicationGatewayName": "[concat(variables('resourceNamePrefix'), '-ag')]",
+        "publicIpAddressName": "[concat(variables('resourceNamePrefix'), '-ag-pip')]",
+        "applicationGatewaySize": "Standard_v2",
+        "subnetResourceId": "[resourceId(parameters('virtualNetworkResourceGroupName'), 'Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]"
+    },
+    "resources": [
+        {
+            "apiVersion": "2018-08-01",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[variables('publicIpAddressName')]",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "Standard"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "Static"
+            }
+        },
+        {
+            "apiVersion": "2018-08-01",
+            "name": "[variables('applicationGatewayName')]",
+            "type": "Microsoft.Network/applicationGateways",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[variables('publicIpAddressName')]"
+            ],
+            "properties": {
+                "sku": {
+                    "name": "[variables('applicationGatewaySize')]",
+                    "tier": "Standard_v2",
+                    "capacity": "[parameters('capacity')]"
+                },
+                "sslPolicy": {
+                    "policyType": "Predefined",
+                    "policyName": "AppGwSslPolicy20170401S"
+                },
+                "gatewayIPConfigurations": [
+                    {
+                        "name": "app-gateway-ip-config",
+                        "properties": {
+                            "subnet": {
+                                "id": "[variables('subnetResourceId')]"
+                            }
+                        }
+                    }
+                ],
+                "frontendIPConfigurations": [
+                    {
+                        "name": "default-frontend-ip",
+                        "properties": {
+                            "PublicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIpAddressName'))]"
+                            }
+                        }
+                    }
+                ],
+                "frontendPorts": [
+                    {
+                        "name": "default-frontend-port",
+                        "properties": {
+                            "Port": "[parameters('httpFrontendPort')]"
+                        }
+                    }
+                ],
+                "backendAddressPools": [
+                    {
+                        "name": "tool",
+                        "properties": {
+                            "BackendAddresses": [
+                                {
+                                    "fqdn": "[parameters('toolServiceFqdn')]"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "whitelist",
+                        "properties": {
+                            "BackendAddresses": [
+                                {
+                                    "fqdn": "[parameters('whitelistServiceFqdn')]"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "messages",
+                        "properties": {
+                            "BackendAddresses": [
+                                {
+                                    "fqdn": "[parameters('messageServiceFqdn')]"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "backendHttpSettingsCollection": [
+                    {
+                        "name": "default-backend-http-settings",
+                        "properties": {
+                            "Port": 443,
+                            "Protocol": "Https",
+                            "CookieBasedAffinity": "Disabled",
+                            "pickHostNameFromBackendAddress": true
+                        }
+                    }
+                ],
+                "httpListeners": [
+                    {
+                        "name": "default-http-listener",
+                        "properties": {
+                            "FrontendIpConfiguration": {
+                                "Id": "[resourceId('Microsoft.Network/applicationGateways/frontendIPConfigurations', variables('applicationGatewayName'), 'default-frontend-ip')]"
+                            },
+                            "FrontendPort": {
+                                "Id": "[resourceId('Microsoft.Network/applicationGateways/frontendPorts', variables('applicationGatewayName'), 'default-frontend-port')]"
+                            },
+                            "Protocol": "Http"
+                        }
+                    }
+                ],
+                "urlPathMaps": [
+                    {
+                        "name": "default-path-map",
+                        "properties": {
+                            "defaultBackendAddressPool": {
+                                "id": "[resourceId('Microsoft.Network/applicationGateways/backendAddressPools', variables('applicationGatewayName'), 'tool')]"
+                            },
+                            "defaultBackendHttpSettings": {
+                                "id": "[resourceId('Microsoft.Network/applicationGateways/backendHttpSettingsCollection', variables('applicationGatewayName'), 'default-backend-http-settings')]"
+                            },
+                            "pathRules": [
+                                {
+                                    "name": "whitelist-path-rule",
+                                    "properties": {
+                                        "paths": [
+                                            "/Whitelist/*"
+                                        ],
+                                        "backendAddressPool": {
+                                            "id": "[resourceId('Microsoft.Network/applicationGateways/backendAddressPools', variables('applicationGatewayName'), 'whitelist')]"
+                                        },
+                                        "backendHttpSettings": {
+                                            "id": "[resourceId('Microsoft.Network/applicationGateways/backendHttpSettingsCollection', variables('applicationGatewayName'), 'default-backend-http-settings')]"
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "messages-path-rule",
+                                    "properties": {
+                                        "paths": [
+                                            "/Messages/*"
+                                        ],
+                                        "backendAddressPool": {
+                                            "id": "[resourceId('Microsoft.Network/applicationGateways/backendAddressPools', variables('applicationGatewayName'), 'messages')]"
+                                        },
+                                        "backendHttpSettings": {
+                                            "id": "[resourceId('Microsoft.Network/applicationGateways/backendHttpSettingsCollection', variables('applicationGatewayName'), 'default-backend-http-settings')]"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "requestRoutingRules": [
+                    {
+                        "Name": "default-path-based-rule",
+                        "properties": {
+                            "RuleType": "PathBasedRouting",
+                            "httpListener": {
+                                "id": "[resourceId('Microsoft.Network/applicationGateways/httpListeners', variables('applicationGatewayName'), 'default-http-listener')]"
+                            },
+                            "urlPathMap": {
+                                "id": "[resourceId('Microsoft.Network/applicationGateways/urlPathMaps', variables('applicationGatewayName'), 'default-path-map')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "outputs": {
+        "AppGatewayOutboundIpAddress": {
+            "type": "string",
+            "value": "[reference(variables('publicIpAddressName')).IpAddress]"
+        }
+    }
+}
