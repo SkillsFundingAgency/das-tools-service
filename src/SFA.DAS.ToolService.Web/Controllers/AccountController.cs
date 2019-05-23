@@ -4,12 +4,20 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SFA.DAS.ToolService.Web.Models;
 
 namespace SFA.DAS.ToolService.Web.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly ILogger logger;
+        
+        public AccountController(ILogger<AccountController> _logger)
+        {
+            logger = _logger;
+        }
+
         [Route("SignIn")]
         public IActionResult SignIn()
         {
