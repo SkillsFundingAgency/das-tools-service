@@ -41,15 +41,6 @@
         "keyVaultResourceGroup": {
             "type": "string"
         },
-        "logLevelDefault": {
-            "type": "string"
-        },
-        "logLevelSystem": {
-            "type": "string"
-        },
-        "logLevelMicrosoft": {
-            "type": "string"
-        },
         "cdnUrl": {
             "type": "string"
         }
@@ -196,18 +187,6 @@
                             {
                                 "name": "StorageConnectionString",
                                 "value": "[reference('storage-account').outputs.storageConnectionString.value]"
-                            },
-                            {
-                                "name": "Logging:LogLevel:Default",
-                                "value": "[parameters('logLevelDefault')]"
-                            },
-                            {
-                                "name": "Logging:LogLevel:System",
-                                "value": "[parameters('logLevelSystem')]"
-                            },
-                            {
-                                "name": "Logging:LogLevel:Microsoft",
-                                "value": "[parameters('logLevelMicrosoft')]"
                             },
                             {
                                 "name": "cdn:url",
