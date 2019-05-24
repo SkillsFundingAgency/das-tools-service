@@ -45,7 +45,7 @@ steps:
   inputs:
     command: publish
     publishWebProjects: false
-    projects: 'src/SFA.DAS.ToolService.Web/SFA.DAS.Reservations.Web.csproj'
+    projects: 'src/SFA.DAS.ToolService.Web/SFA.DAS.ToolService.Web.csproj'
     arguments: '--configuration $(buildConfiguration) --output $(build.artifactstagingdirectory)/publish --no-restore --no-build'
     
 - task: CopyFiles@2
