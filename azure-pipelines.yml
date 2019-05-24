@@ -33,7 +33,7 @@ steps:
   displayName: Build
   inputs:
     projects: 'src/**/*.csproj'
-    arguments: '--configuration $(buildConfiguration) --no-restore'
+    arguments: '--configuration $(buildConfiguration) -/p:Version=$(Build.BuildNumber)"'
     
 - task: DotNetCoreCLI@2
   displayName: Test
