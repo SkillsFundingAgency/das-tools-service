@@ -202,11 +202,11 @@
                                 "value": "[parameters('logLevelDefault')]"
                             },
                             {
-                                "name": "Logging:LogLevel:Default",
+                                "name": "Logging:LogLevel:System",
                                 "value": "[parameters('logLevelSystem')]"
                             },
                             {
-                                "name": "Logging:LogLevel:Default",
+                                "name": "Logging:LogLevel:Microsoft",
                                 "value": "[parameters('logLevelMicrosoft')]"
                             },
                             {
