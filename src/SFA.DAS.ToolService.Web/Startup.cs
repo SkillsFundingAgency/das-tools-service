@@ -15,9 +15,11 @@ namespace SFA.DAS.ToolService.Web
 {
     public class Startup
     {
+        private readonly ILogger logger;
         private readonly IHostingEnvironment _env;
-        public Startup(IConfiguration configuration, IHostingEnvironment env)
+        public Startup(IConfiguration configuration, IHostingEnvironment env, ILogger<HomeController> _logger)
         {
+            logger = _logger;
             Configuration = configuration;
             _env = env;
         }
@@ -43,14 +45,17 @@ namespace SFA.DAS.ToolService.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILogger<Startup> logger)
         {
+
             if (env.IsDevelopment())
             {
+                logger.LogInformation($"App is running in development mode: {env.EnvironmentName}");
                 app.UseDeveloperExceptionPage();
             }
             else
             {
+                logger.LogInformation($"App is running in production mode: {env.EnvironmentName}");
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
@@ -62,9 +67,6 @@ namespace SFA.DAS.ToolService.Web
                 context.Response.Headers.Add("X-Xss-Protection", "1");
                 await next();
             });
-
-            // Enable app insights logging
-            loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Warning);
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
