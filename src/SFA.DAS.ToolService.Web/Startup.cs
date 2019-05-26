@@ -15,11 +15,9 @@ namespace SFA.DAS.ToolService.Web
 {
     public class Startup
     {
-        private readonly ILogger logger;
         private readonly IHostingEnvironment _env;
-        public Startup(IConfiguration configuration, IHostingEnvironment env, ILogger<HomeController> _logger)
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
-            logger = _logger;
             Configuration = configuration;
             _env = env;
         }
