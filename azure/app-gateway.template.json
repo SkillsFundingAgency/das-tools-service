@@ -67,7 +67,7 @@
         }
     },
     "variables": {
-        "resourceNamePrefix": "[toLower(concat('cg-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
+        "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
         "applicationGatewayName": "[concat(variables('resourceNamePrefix'), '-ag')]",
         "publicIpAddressName": "[concat(variables('resourceNamePrefix'), '-ag-pip')]",
         "applicationGatewaySize": "Standard_v2",
