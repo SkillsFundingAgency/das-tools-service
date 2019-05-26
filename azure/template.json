@@ -30,16 +30,20 @@
             "type": "string"
         },
         "customHostname": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": ""
         },
         "certificateName": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": ""
         },
         "keyVaultName": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": ""
         },
         "keyVaultResourceGroup": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": ""
         },
         "cdnUrl": {
             "type": "string"
