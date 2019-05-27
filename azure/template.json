@@ -26,9 +26,6 @@
         "appServicePlanInstances": {
             "type": "int"
         },
-        "appGatewayIpAddressName": {
-            "type": "string"
-        },
         "customHostname": {
             "type": "string",
             "defaultValue": ""
@@ -47,6 +44,18 @@
         },
         "cdnUrl": {
             "type": "string"
+        },
+        "appGatewayIpAddressResourceGroup": {
+            "type": "string",
+            "metadata": {
+                "description": "The resource group of the public ip address attached to the app gateway"
+            }
+        },
+        "appGatewayIpAddressName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the public ip address attached to the app gateway"
+            }
         }
     },
     "variables": {
@@ -165,7 +174,14 @@
                         "value": "[resourceGroup().name]"
                     },
                     "ipSecurityRestrictions": {
-                        "value": "[array(reference(concat('Microsoft.Network/publicIPAddresses/', parameters('appGatewayIpAddressName')), '2018-11-01').ipAddress)]"
+                        "value": [
+                            {
+                                "ipAddress": "[reference(resourceId(parameters('appGatewayIpAddressResourceGroup'),'Microsoft.Network/publicIPAddresses/', parameters('appGatewayIpAddressName')), '2018-08-01').IpAddress]",
+                                "action": "Allow",
+                                "priority": 100,
+                                "name": "Gateway"
+                            }
+                        ]
                     },
                     "appServiceAppSettings": {
                         "value": [
