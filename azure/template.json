@@ -21,10 +21,12 @@
             "type": "string"
         },
         "appServicePlanSize": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "1"
         },
         "appServicePlanInstances": {
-            "type": "int"
+            "type": "int",
+            "defaultValue": 1
         },
         "customHostname": {
             "type": "string",
