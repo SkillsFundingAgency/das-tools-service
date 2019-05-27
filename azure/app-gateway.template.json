@@ -22,7 +22,6 @@
         },
         "virtualNetworkName": {
             "type": "string",
-            "defaultValue": "Application-Vnet",
             "metadata": {
                 "description": "Virtual Network name."
             }
