@@ -16,7 +16,7 @@ namespace SFA.DAS.ToolService.Core.Entities
         public GitHub GitHub { get; set; }
     }
 
-    public class AuthenticationConfiguration
+    public class AuthenticationConfigurationEntity
     {
         public Authentication Authentication { get; set; }
     }

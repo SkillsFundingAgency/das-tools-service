@@ -12,6 +12,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
+using SFA.DAS.ToolService.Authentication.ServiceCollectionExtensions;
+using SFA.DAS.ToolService.Core.Entities;
 
 namespace SFA.DAS.ToolService.Web
 {
@@ -29,7 +31,12 @@ namespace SFA.DAS.ToolService.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.Configure<AuthenticationConfigurationEntity>(Configuration);
+            
             services.AddHealthChecks();
+
+            services.AddAuthenticationProviders(Configuration);
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -49,6 +56,11 @@ namespace SFA.DAS.ToolService.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILogger<Startup> logger)
         {
+
+            app.UseAuthentication();
+
+            app.UseHealthChecks("/health");
+
             if (env.IsDevelopment())
             {
                 logger.LogInformation($"App is running in development mode: {env.EnvironmentName}");
@@ -73,9 +85,6 @@ namespace SFA.DAS.ToolService.Web
                 await next.Invoke();
             });
 
-            // Configure custom health check endpoint
-            app.UseHealthChecks("/health");
-            
             app.Use(async (context, next) =>
             {
                 context.Response.Headers.Add("X-Content-Type-Options", "nosniff");

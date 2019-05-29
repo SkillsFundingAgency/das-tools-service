@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.ToolService.Web.Models;
@@ -18,22 +21,14 @@ namespace SFA.DAS.ToolService.Web.Controllers
             logger = _logger;
         }
 
-        [Route("SignIn")]
-        public IActionResult SignIn()
-        {
-            return RedirectToAction("Account");
+        public IActionResult Signin(string returnUrl = "/Home") {
+            return Challenge(new AuthenticationProperties() { RedirectUri = returnUrl });
         }
 
-        [Route("SignOut")]
-        public IActionResult SignOut()
+        public async Task<IActionResult> SignOut()
         {
-            return RedirectToAction("Index");
-        }
-
-        [Route("Home")]
-        public IActionResult Account()
-        {
-            return View();
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Home");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

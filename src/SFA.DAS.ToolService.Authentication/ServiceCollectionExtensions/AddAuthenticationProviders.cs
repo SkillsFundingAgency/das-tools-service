@@ -20,7 +20,7 @@ namespace SFA.DAS.ToolService.Authentication.ServiceCollectionExtensions
         {
 
             var authenticationConfiguration = configuration.GetSection("Authentication:GitHub");
-            
+
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("ValidOrgsOnly", policy => policy.Requirements.Add(
@@ -43,8 +43,8 @@ namespace SFA.DAS.ToolService.Authentication.ServiceCollectionExtensions
                             options.AccessDeniedPath = "/AccessDenied/";
                             options.ReturnUrlParameter = "/";
                             options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                        // options.Cookie.SameSite = SameSiteMode.Strict;
-                        options.SlidingExpiration = true;
+                            // options.Cookie.SameSite = SameSiteMode.Strict;
+                            options.SlidingExpiration = true;
                             options.Events.OnSigningIn = (context) =>
                             {
                                 context.CookieOptions.Expires = DateTimeOffset.UtcNow.AddMinutes(30);
@@ -83,8 +83,8 @@ namespace SFA.DAS.ToolService.Authentication.ServiceCollectionExtensions
 
                                 var user = JObject.Parse(await response.Content.ReadAsStringAsync());
 
-                            // Get organisation membership
-                            request = new HttpRequestMessage(HttpMethod.Get, $"{options.UserInformationEndpoint}/orgs");
+                                // Get organisation membership
+                                request = new HttpRequestMessage(HttpMethod.Get, $"{options.UserInformationEndpoint}/orgs");
                                 request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", context.AccessToken);
 
