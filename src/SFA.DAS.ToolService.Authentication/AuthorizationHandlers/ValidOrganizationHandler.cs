@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using System.Linq;
 using System.Threading.Tasks;
-
-public class ValidOrganizationHandler : AuthorizationHandler<ValidOrganizationRequirement>
+namespace SFA.DAS.ToolService.Authentication.AuthorizationHandlers
+{
+    public class ValidOrganizationHandler : AuthorizationHandler<ValidOrganizationRequirement>
 {
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
                                                    ValidOrganizationRequirement requirement)
@@ -24,4 +25,5 @@ public class ValidOrganizationHandler : AuthorizationHandler<ValidOrganizationRe
 
         return Task.CompletedTask;
     }
+}
 }

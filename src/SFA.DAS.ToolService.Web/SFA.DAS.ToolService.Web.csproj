@@ -15,12 +15,13 @@
     <PackageReference Include="NLog" Version="4.5.11" />
     <PackageReference Include="NLog.Schema" Version="4.5.11" />
     <PackageReference Include="SFA.DAS.NLog.Targets.Redis" Version="1.2.1" />
-    <PackageReference Include="SFA.DAS.ToolService.Authentication" />
+    <!-- <PackageReference Include="SFA.DAS.ToolService.Authentication" /> -->
   </ItemGroup>
 
    <ItemGroup>
     <ProjectReference Include="..\SFA.DAS.ToolService.Core\SFA.DAS.ToolService.Core.csproj" />
     <ProjectReference Include="..\SFA.DAS.ToolService.Infrastructure\SFA.DAS.ToolService.Infrastructure.csproj" />
+    <ProjectReference Include="..\SFA.DAS.ToolService.Authentication\SFA.DAS.ToolService.Authentication.csproj" />
   </ItemGroup>
 
 </Project>

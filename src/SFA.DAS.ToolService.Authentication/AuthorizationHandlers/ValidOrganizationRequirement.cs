@@ -1,11 +1,14 @@
 using Microsoft.AspNetCore.Authorization;
 
-public class ValidOrganizationRequirement : IAuthorizationRequirement
+namespace SFA.DAS.ToolService.Authentication.AuthorizationHandlers
 {
-    public string[] Organizations { get; private set; }
-
-    public ValidOrganizationRequirement(string organizations)
+    public class ValidOrganizationRequirement : IAuthorizationRequirement
     {
-        Organizations = organizations.Split(",");
+        public string[] Organizations { get; private set; }
+
+        public ValidOrganizationRequirement(string organizations)
+        {
+            Organizations = organizations.Split(",");
+        }
     }
 }

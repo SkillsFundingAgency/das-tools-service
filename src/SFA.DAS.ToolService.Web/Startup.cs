@@ -14,7 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.ToolService.Authentication.ServiceCollectionExtensions;
-using SFA.DAS.ToolService.Core.Entities;
+using SFA.DAS.ToolService.Authentication.Entities;
 
 namespace SFA.DAS.ToolService.Web
 {
@@ -32,8 +32,9 @@ namespace SFA.DAS.ToolService.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.Configure<AuthenticationConfigurationEntity>(Configuration);
+            var authenticationOptions = Configuration.GetSection("Authentication");
+            
+            services.Configure<AuthenticationConfigurationEntity>(authenticationOptions);
             
             services.Configure<ForwardedHeadersOptions>(options =>
             {
@@ -48,7 +49,6 @@ namespace SFA.DAS.ToolService.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            
             services.AddAntiforgery(options =>
             {
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
@@ -56,10 +56,9 @@ namespace SFA.DAS.ToolService.Web
 
             services.AddHealthChecks();
 
-            services.AddAuthenticationProviders(Configuration);
+            services.AddAuthenticationProviders(authenticationOptions.Get<AuthenticationConfigurationEntity>());
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

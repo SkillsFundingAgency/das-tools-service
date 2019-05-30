@@ -1,8 +1,8 @@
 using System;
 
-namespace SFA.DAS.ToolService.Core.Entities
+namespace SFA.DAS.ToolService.Authentication.Entities
 {
-    public class GitHub
+    public partial class GitHub
     {
         public string ClientId { get; set; }
         public string ClientSecret { get; set; }
@@ -11,13 +11,8 @@ namespace SFA.DAS.ToolService.Core.Entities
         public string Scope { get; set; }
     }
 
-    public class Authentication
-    {
-        public GitHub GitHub { get; set; }
-    }
-
     public class AuthenticationConfigurationEntity
     {
-        public Authentication Authentication { get; set; }
+        public GitHub GitHub { get; set; }
     }
 }

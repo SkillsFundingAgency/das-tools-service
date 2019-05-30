@@ -10,23 +10,25 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Authorization;
+using SFA.DAS.ToolService.Authentication.AuthorizationHandlers;
+using SFA.DAS.ToolService.Authentication.Entities;
 
 namespace SFA.DAS.ToolService.Authentication.ServiceCollectionExtensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddAuthenticationProviders(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddAuthenticationProviders(this IServiceCollection services, AuthenticationConfigurationEntity authenticationConfiguration)
         {
 
-            var authenticationConfiguration = configuration.GetSection("Authentication:GitHub");
+            services.AddSingleton<IAuthorizationHandler, ValidOrganizationHandler>();
 
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("ValidOrgsOnly", policy => policy.Requirements.Add(
-                    new ValidOrganizationRequirement(
-                        authenticationConfiguration.GetValue<string>("ValidOrganizations")
-                        )
+                    new ValidOrganizationRequirement(authenticationConfiguration.GitHub.ValidOrganizations)
                     )
                 );
             });
@@ -54,10 +56,10 @@ namespace SFA.DAS.ToolService.Authentication.ServiceCollectionExtensions
                     )
                     .AddOAuth("GitHub", options =>
                     {
-                        options.ClientId = authenticationConfiguration.GetValue<string>("ClientId");
-                        options.ClientSecret = authenticationConfiguration.GetValue<string>("ClientSecret");
-                        options.CallbackPath = new PathString(authenticationConfiguration.GetValue<string>("CallbackPath"));
-                        options.Scope.Add(authenticationConfiguration.GetValue<string>("Scope"));
+                        options.ClientId = authenticationConfiguration.GitHub.ClientId;
+                        options.ClientSecret = authenticationConfiguration.GitHub.ClientSecret;
+                        options.CallbackPath = new PathString(authenticationConfiguration.GitHub.CallbackPath);
+                        options.Scope.Add(authenticationConfiguration.GitHub.Scope);
 
                         options.AuthorizationEndpoint = "https://github.com/login/oauth/authorize";
                         options.TokenEndpoint = "https://github.com/login/oauth/access_token";
