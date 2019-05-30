@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -47,6 +48,12 @@ namespace SFA.DAS.ToolService.Web
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders = 
+                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            });
+
             services.AddAntiforgery(options =>
             {
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
@@ -56,6 +63,8 @@ namespace SFA.DAS.ToolService.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILogger<Startup> logger)
         {
+
+            app.UseForwardedHeaders();
 
             app.Use(async (context, next) =>
             {
@@ -68,9 +77,6 @@ namespace SFA.DAS.ToolService.Web
                 await next.Invoke();
             });
 
-            app.UseAuthentication();
-
-            app.UseHealthChecks("/health");
 
             if (env.IsDevelopment())
             {
@@ -95,6 +101,8 @@ namespace SFA.DAS.ToolService.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseAuthentication();
+            app.UseHealthChecks("/health");
 
             app.UseMvc(routes =>
             {
