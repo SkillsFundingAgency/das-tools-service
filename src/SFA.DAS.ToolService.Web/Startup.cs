@@ -35,9 +35,11 @@ namespace SFA.DAS.ToolService.Web
 
             services.Configure<AuthenticationConfigurationEntity>(Configuration);
             
-            services.AddHealthChecks();
-
-            services.AddAuthenticationProviders(Configuration);
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders = 
+                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            });
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -46,18 +48,18 @@ namespace SFA.DAS.ToolService.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
-            services.Configure<ForwardedHeadersOptions>(options =>
-            {
-                options.ForwardedHeaders = 
-                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-            });
-
+            
             services.AddAntiforgery(options =>
             {
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             });
+
+            services.AddHealthChecks();
+
+            services.AddAuthenticationProviders(Configuration);
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
