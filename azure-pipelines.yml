@@ -47,12 +47,21 @@ steps:
     publishWebProjects: false
     projects: 'src/SFA.DAS.ToolService.Web/SFA.DAS.ToolService.Web.csproj'
     arguments: '--configuration $(buildConfiguration) --output $(build.artifactstagingdirectory)/publish --no-restore --no-build'
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet pack'
+  inputs:
+    command: pack
+    packagesToPack: src/SFA.DAS.ToolService.Authentication/SFA.DAS.ToolService.Authentication.csproj
+    packDirectory: '$(build.artifactstagingdirectory)/publish'
+    versioningScheme: byBuildNumber
+    buildProperties: 'Version="$(Build.BuildNumber)"'
     
 - task: CopyFiles@2
   displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
   inputs:
     Contents: |
-     azure/**
+     azure\**
     TargetFolder: '$(build.artifactstagingdirectory)/publish'
     OverWrite: true
 
