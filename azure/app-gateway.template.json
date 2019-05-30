@@ -82,6 +82,12 @@
             "metadata": {
                 "description": "The name of the certificate/secret stored in key vault."
             }
+        },
+        "userAssignedIdentityName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the user assigned identity."
+            }
         }
     },
     "variables": {
@@ -105,7 +111,7 @@
             }
         },
         {
-            "apiVersion": "2018-08-01",
+            "apiVersion": "2018-11-01",
             "name": "[variables('applicationGatewayName')]",
             "type": "Microsoft.Network/applicationGateways",
             "location": "[resourceGroup().location]",
@@ -122,7 +128,7 @@
                     "policyType": "Predefined",
                     "policyName": "AppGwSslPolicy20170401S"
                 },
-                "sslCertificates":[
+                "sslCertificates": [
                     {
                         "name": "default-ssl-certificate",
                         "properties": {
@@ -302,6 +308,12 @@
                         }
                     }
                 ]
+            },
+            "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities/', parameters('userAssignedIdentityName'))]" : {}
+                }
             }
         }
     ],
