@@ -235,6 +235,9 @@
                             "FrontendPort": {
                                 "Id": "[resourceId('Microsoft.Network/applicationGateways/frontendPorts', variables('applicationGatewayName'), 'default-frontend-port-https')]"
                             },
+                            "sslCertificate":{
+                                "id": "[resourceId('Microsoft.Network/applicationGateways/sslCertificates', variables('applicationGatewayName'), 'default-ssl-certificate')]"
+                            },
                             "Protocol": "Https"
                         }
                     }
