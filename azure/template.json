@@ -47,6 +47,38 @@
         "cdnUrl": {
             "type": "string"
         },
+        "gitHubClientId":{
+            "type": "string",
+            "metadata": {
+                "description": "The client id for github oauth."
+            }
+        },
+        "gitHubClientSecret":{
+            "type": "securestring",
+            "metadata": {
+                "description": "The client secret for github oauth."
+            }
+        },
+        "gitHubValidOrganizations":{
+            "type": "string",
+            "metadata": {
+                "description": "A csv of valid organizations."
+            }
+        },
+        "gitHubCallbackPath":{
+            "type": "string",
+            "defaultValue": "/signin-github",
+            "metadata": {
+                "description": "The call back path used by authentication middleware."
+            }
+        },
+        "gitHubScope":{
+            "type": "string",
+            "defaultValue": "read:org",
+            "metadata": {
+                "description": "Scope for token access."
+            }
+        },
         "appGatewayIpAddressResourceGroup": {
             "type": "string",
             "metadata": {
@@ -212,8 +244,28 @@
                                 "value": "[reference('storage-account').outputs.storageConnectionString.value]"
                             },
                             {
-                                "name": "cdn:url",
+                                "name": "Cdn:Url",
                                 "value": "[parameters('cdnUrl')]"
+                            },
+                            {
+                                "name": "Authentication:GitHub:ClientId",
+                                "value": "[parameters('gitHubClientId')]"
+                            },
+                            {
+                                "name": "Authentication:GitHub:ClientSecret",
+                                "value": "[parameters('gitHubClientSecret')]"
+                            },
+                            {
+                                "name": "Authentication:GitHub:ValidOrganizations",
+                                "value": "[parameters('gitHubValidOrganizations')]"
+                            },
+                            {
+                                "name": "Authentication:GitHub:CallbackPath",
+                                "value": "[parameters('gitHubCallbackPath')]"
+                            },
+                            {
+                                "name": "Authentication:GitHub:Scope",
+                                "value": "[parameters('gitHubScope')]"
                             }
                         ]
                     },
