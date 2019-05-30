@@ -57,6 +57,17 @@ namespace SFA.DAS.ToolService.Web
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILogger<Startup> logger)
         {
 
+            app.Use(async (context, next) =>
+            {
+                if (context.Request.Headers.ContainsKey("X-Original-Host"))
+                {
+                    var originalHost = context.Request.Headers["X-Original-Host"];
+                    logger.LogInformation($"Retrieving X-Original-Host value {originalHost}");
+                    context.Request.Headers.Add("Host", originalHost);
+                }
+                await next.Invoke();
+            });
+
             app.UseAuthentication();
 
             app.UseHealthChecks("/health");
@@ -73,17 +84,6 @@ namespace SFA.DAS.ToolService.Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
-            app.Use(async (context, next) =>
-            {
-                if (context.Request.Headers.ContainsKey("X-Original-Host"))
-                {
-                    var originalHost = context.Request.Headers["X-Original-Host"];
-                    logger.LogInformation($"Retrieving X-Original-Host value {originalHost}");
-                    context.Request.Headers.Add("Host", originalHost);
-                }
-                await next.Invoke();
-            });
 
             app.Use(async (context, next) =>
             {
