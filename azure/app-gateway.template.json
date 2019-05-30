@@ -46,6 +46,13 @@
                 "description": "Http frontend port."
             }
         },
+        "httpFrontendPortHttps": {
+            "type": "int",
+            "defaultValue": 443,
+            "metadata": {
+                "description": "Https frontend port."
+            }
+        },
         "toolServicefqdn": {
             "type": "string",
             "metadata": {
@@ -62,6 +69,18 @@
             "type": "string",
             "metadata": {
                 "description": "Fqdn of the message service application."
+            }
+        },
+        "keyVaultName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the key vault."
+            }
+        },
+        "keyVaultSecretName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the certificate/secret stored in key vault."
             }
         }
     },
@@ -103,6 +122,14 @@
                     "policyType": "Predefined",
                     "policyName": "AppGwSslPolicy20170401S"
                 },
+                "sslCertificates":[
+                    {
+                        "name": "default-ssl-certificate",
+                        "properties": {
+                            "keyVaultSecretId": "[concat('https://', parameters('keyVaultName'), '.vault.azure.net/secrets/', parameters('KeyVaultSecretName'))]"
+                        }
+                    }
+                ],
                 "gatewayIPConfigurations": [
                     {
                         "name": "app-gateway-ip-config",
@@ -128,6 +155,12 @@
                         "name": "default-frontend-port",
                         "properties": {
                             "Port": "[parameters('httpFrontendPort')]"
+                        }
+                    },
+                    {
+                        "name": "default-frontend-port-https",
+                        "properties": {
+                            "Port": "[parameters('httpFrontendPortHttps')]"
                         }
                     }
                 ],
@@ -186,6 +219,18 @@
                             },
                             "Protocol": "Http"
                         }
+                    },
+                    {
+                        "name": "default-https-listener",
+                        "properties": {
+                            "FrontendIpConfiguration": {
+                                "Id": "[resourceId('Microsoft.Network/applicationGateways/frontendIPConfigurations', variables('applicationGatewayName'), 'default-frontend-ip')]"
+                            },
+                            "FrontendPort": {
+                                "Id": "[resourceId('Microsoft.Network/applicationGateways/frontendPorts', variables('applicationGatewayName'), 'default-frontend-port-https')]"
+                            },
+                            "Protocol": "Https"
+                        }
                     }
                 ],
                 "urlPathMaps": [
@@ -238,6 +283,18 @@
                             "RuleType": "PathBasedRouting",
                             "httpListener": {
                                 "id": "[resourceId('Microsoft.Network/applicationGateways/httpListeners', variables('applicationGatewayName'), 'default-http-listener')]"
+                            },
+                            "urlPathMap": {
+                                "id": "[resourceId('Microsoft.Network/applicationGateways/urlPathMaps', variables('applicationGatewayName'), 'default-path-map')]"
+                            }
+                        }
+                    },
+                    {
+                        "Name": "default-https-path-based-rule",
+                        "properties": {
+                            "RuleType": "PathBasedRouting",
+                            "httpListener": {
+                                "id": "[resourceId('Microsoft.Network/applicationGateways/httpListeners', variables('applicationGatewayName'), 'default-https-listener')]"
                             },
                             "urlPathMap": {
                                 "id": "[resourceId('Microsoft.Network/applicationGateways/urlPathMaps', variables('applicationGatewayName'), 'default-path-map')]"
