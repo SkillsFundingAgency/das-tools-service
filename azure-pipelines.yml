@@ -41,7 +41,7 @@ steps:
   enabled: false
 
 - task: DotNetCoreCLI@2
-  displayName: 'Publish Website'
+  displayName: 'Publish'
   inputs:
     command: publish
     publishWebProjects: false
@@ -49,7 +49,7 @@ steps:
     arguments: '--configuration $(buildConfiguration) --output $(build.artifactstagingdirectory)/publish --no-restore --no-build'
 
 - task: DotNetCoreCLI@2
-  displayName: 'dotnet pack'
+  displayName: 'Pack'
   inputs:
     command: pack
     packagesToPack: src/SFA.DAS.ToolService.Authentication/SFA.DAS.ToolService.Authentication.csproj
@@ -61,7 +61,7 @@ steps:
   displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
   inputs:
     Contents: |
-     azure\**
+     azure/**
     TargetFolder: '$(build.artifactstagingdirectory)/publish'
     OverWrite: true
 
