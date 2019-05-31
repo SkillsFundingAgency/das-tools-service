@@ -78,7 +78,6 @@ namespace SFA.DAS.ToolService.Web
                 await next.Invoke();
             });
 
-
             if (env.IsDevelopment())
             {
                 logger.LogInformation($"App is running in development mode: {env.EnvironmentName}");

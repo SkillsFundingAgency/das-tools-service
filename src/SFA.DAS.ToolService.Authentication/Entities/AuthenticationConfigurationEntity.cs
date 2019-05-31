@@ -9,6 +9,8 @@ namespace SFA.DAS.ToolService.Authentication.Entities
         public string ValidOrganizations { get; set; }
         public string CallbackPath { get; set; }
         public string Scope { get; set; }
+        public string RedirectUrl { get; set; }
+
     }
 
     public class AuthenticationConfigurationEntity

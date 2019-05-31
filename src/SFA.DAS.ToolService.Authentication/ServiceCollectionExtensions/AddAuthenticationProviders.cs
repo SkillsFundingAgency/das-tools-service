@@ -43,7 +43,7 @@ namespace SFA.DAS.ToolService.Authentication.ServiceCollectionExtensions
                         {
                             options.Cookie.Name = "tools-auth";
                             options.AccessDeniedPath = "/AccessDenied/";
-                            options.ReturnUrlParameter = "/";
+                            options.ReturnUrlParameter = authenticationConfiguration.GitHub.RedirectUrl;
                             options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                             // options.Cookie.SameSite = SameSiteMode.Strict;
                             options.SlidingExpiration = true;

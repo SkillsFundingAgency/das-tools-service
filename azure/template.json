@@ -79,6 +79,13 @@
                 "description": "Scope for token access."
             }
         },
+        "gitHubRedirectUrl":{
+            "type": "string",
+            "defaultValue": "/",
+            "metadata": {
+                "description": "The redirect url used in oauth requests."
+            }
+        },
         "appGatewayIpAddressResourceGroup": {
             "type": "string",
             "metadata": {
@@ -266,6 +273,10 @@
                             {
                                 "name": "Authentication:GitHub:Scope",
                                 "value": "[parameters('gitHubScope')]"
+                            },
+                            {
+                                "name": "Authentication:GitHub:RedirectUrl",
+                                "value": "[parameters('gitHubRedirectUrl')]"
                             }
                         ]
                     },
