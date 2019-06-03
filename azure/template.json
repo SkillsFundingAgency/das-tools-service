@@ -47,52 +47,58 @@
         "cdnUrl": {
             "type": "string"
         },
-        "gitHubClientId":{
+        "gitHubClientId": {
             "type": "string",
             "metadata": {
                 "description": "The client id for github oauth."
             }
         },
-        "gitHubClientSecret":{
+        "gitHubClientSecret": {
             "type": "securestring",
             "metadata": {
                 "description": "The client secret for github oauth."
             }
         },
-        "gitHubValidOrganizations":{
+        "gitHubValidOrganizations": {
             "type": "string",
             "metadata": {
                 "description": "A csv of valid organizations."
             }
         },
-        "gitHubCallbackPath":{
+        "gitHubCallbackPath": {
             "type": "string",
             "defaultValue": "/signin-github",
             "metadata": {
                 "description": "The call back path used by authentication middleware."
             }
         },
-        "gitHubScope":{
+        "gitHubScope": {
             "type": "string",
             "defaultValue": "read:org",
             "metadata": {
                 "description": "Scope for token access."
             }
         },
-        "gitHubRedirectUrl":{
+        "gitHubRedirectUrl": {
             "type": "string",
             "defaultValue": "/",
             "metadata": {
                 "description": "The redirect url used in oauth requests."
             }
         },
-        "appGatewayIpAddressResourceGroup": {
+        "gatewayVirtualNetworkResourceGroup": {
             "type": "string",
             "metadata": {
                 "description": "The resource group of the public ip address attached to the app gateway"
             }
         },
-        "appGatewayIpAddressName": {
+        "gatewayVirtualNetworkName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the public ip address attached to the app gateway"
+            }
+        },
+        "gatewaySubnetName": {
             "type": "string",
             "metadata": {
                 "description": "The name of the public ip address attached to the app gateway"
@@ -201,7 +207,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(variables('deploymentUrlBase'),'app-service.json')]",
+                    "uri": "https://github.com/SkillsFundingAgency/das-platform-building-blocks/blob/510234bed746a9f1420219a91b812646c5f75399/templates/app-service.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -217,10 +223,10 @@
                     "ipSecurityRestrictions": {
                         "value": [
                             {
-                                "ipAddress": "[reference(resourceId(parameters('appGatewayIpAddressResourceGroup'),'Microsoft.Network/publicIPAddresses/', parameters('appGatewayIpAddressName')), '2018-08-01').IpAddress]",
+                                "name": "Gateway",
                                 "action": "Allow",
                                 "priority": 100,
-                                "name": "Gateway"
+                                "vnetSubnetResourceId": "[resourceId(parameters('gatewayVirtualNetworkResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('gatewayVirtualNetworkName'), parameters('gatewaySubnetName'))]"
                             }
                         ]
                     },
