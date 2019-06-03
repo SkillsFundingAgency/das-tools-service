@@ -89,19 +89,19 @@
         "gatewayVirtualNetworkResourceGroup": {
             "type": "string",
             "metadata": {
-                "description": "The resource group of the public ip address attached to the app gateway"
+                "description": "The resource group of the virtual network consumed by the app gateway."
             }
         },
         "gatewayVirtualNetworkName": {
             "type": "string",
             "metadata": {
-                "description": "The name of the public ip address attached to the app gateway"
+                "description": "The name of the virtual network consumed the app gateway."
             }
         },
         "gatewaySubnetName": {
             "type": "string",
             "metadata": {
-                "description": "The name of the public ip address attached to the app gateway"
+                "description": "The name of the subnet consumed by the app gateway."
             }
         }
     },
