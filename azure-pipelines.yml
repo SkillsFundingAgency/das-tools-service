@@ -16,7 +16,7 @@ variables:
   buildPlatform: 'anycpu'
 
 pool:
-  name: 'Hosted Ubuntu 1604'
+  name: 'DAS - Continuous Integration'
 
 steps:
 - task: DotNetCoreCLI@2
