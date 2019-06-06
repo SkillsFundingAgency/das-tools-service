@@ -87,6 +87,18 @@
             "metadata": {
                 "description": "The name of the subnet consumed by the app gateway."
             }
+        },
+        "redisCacheSKU": {
+            "type": "string",
+            "defaultValue": "Basic"
+        },
+        "redisCacheFamily": {
+            "type": "string",
+            "defaultValue": "C"
+        },
+        "redisCacheCapacity": {
+            "type": "int",
+            "defaultValue": 0
         }
     },
     "variables": {
@@ -94,7 +106,8 @@
         "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
         "storageAccountName": "[toLower(concat('das', parameters('resourceEnvironmentName'), parameters('serviceName'), 'str'))]",
         "appServiceName": "[concat(variables('resourceNamePrefix'), '-as')]",
-        "appServicePlanName": "[concat(variables('resourceNamePrefix'), '-asp')]"
+        "appServicePlanName": "[concat(variables('resourceNamePrefix'), '-asp')]",
+        "redisCacheName": "[concat(variables('resourceNamePrefix'), '-rds')]"
     },
     "resources": [
         {
@@ -110,6 +123,35 @@
                 "parameters": {
                     "storageAccountName": {
                         "value": "[variables('storageAccountName')]"
+                    }
+                }
+            }
+        },
+        {
+            "apiVersion": "2017-05-10",
+            "name": "redis-cache",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'), 'redis.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "redisCacheName": {
+                        "value": "[variables('redisCacheName')]"
+                    },
+                    "redisCacheSKU": {
+                        "value": "[parameters('redisCacheSKU')]"
+                    },
+                    "redisCacheFamily": {
+                        "value": "[parameters('redisCacheFamily')]"
+                    },
+                    "redisCacheCapacity": {
+                        "value": "[parameters('redisCacheCapacity')]"
+                    },
+                    "enableNonSslPort": {
+                        "value": false
                     }
                 }
             }
@@ -243,6 +285,10 @@
                             {
                                 "name": "Authentication:GitHub:RedirectUrl",
                                 "value": "[parameters('gitHubRedirectUrl')]"
+                            },
+                            {
+                                "name": "RedisConnectionString",
+                                "value": "[reference('redis-cache').outputs.PrimaryConnectionString.value]"
                             }
                         ]
                     },

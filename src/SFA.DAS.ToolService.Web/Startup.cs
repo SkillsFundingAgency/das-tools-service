@@ -15,6 +15,9 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.ToolService.Authentication.ServiceCollectionExtensions;
 using SFA.DAS.ToolService.Authentication.Entities;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.DataProtection.StackExchangeRedis;
+using StackExchange.Redis;
 
 namespace SFA.DAS.ToolService.Web
 {
@@ -33,14 +36,20 @@ namespace SFA.DAS.ToolService.Web
         public void ConfigureServices(IServiceCollection services)
         {
             var authenticationOptions = Configuration.GetSection("Authentication");
-            
+
             services.Configure<AuthenticationConfigurationEntity>(authenticationOptions);
-            
+
             services.Configure<ForwardedHeadersOptions>(options =>
             {
-                options.ForwardedHeaders = 
+                options.ForwardedHeaders =
                     ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             });
+
+            var redisConnectionString = Configuration["RedisConnectionString"];
+            var redis = ConnectionMultiplexer.Connect($"{redisConnectionString},DefaultDatabase=0");
+            services.AddDataProtection()
+                .SetApplicationName("das-tools-service")
+                .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
 
             services.Configure<CookiePolicyOptions>(options =>
             {
