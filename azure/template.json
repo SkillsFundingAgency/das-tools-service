@@ -268,8 +268,7 @@
             "dependsOn": [
                 "app-insights",
                 "app-service-plan",
-                "storage-account",
-                "app-service-certificate"
+                "storage-account"
             ]
         }
     ],
