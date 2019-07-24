@@ -100,16 +100,16 @@ namespace SFA.DAS.ToolService.Web
                 context.Response.Headers.Add("X-Xss-Protection", "1");
                 await next();
             });
-            // app.Use(async (context, next) =>
-            // {
-            //     if (context.Request.Headers.ContainsKey("X-Original-Host"))
-            //     {
-            //         var originalHost = context.Request.Headers["X-Original-Host"];
-            //         logger.LogInformation($"Retrieving X-Original-Host value {originalHost}");
-            //         context.Request.Headers.Add("Host", originalHost);
-            //     }
-            //     await next.Invoke();
-            // });
+            app.Use(async (context, next) =>
+            {
+                if (context.Request.Headers.ContainsKey("X-Original-Host"))
+                {
+                    var originalHost = context.Request.Headers["X-Original-Host"];
+                    logger.LogInformation($"Retrieving X-Original-Host value {originalHost}");
+                    context.Request.Headers.Add("Host", originalHost);
+                }
+                await next.Invoke();
+            });
 
             if (env.IsDevelopment())
             {
