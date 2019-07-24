@@ -110,7 +110,6 @@ namespace SFA.DAS.ToolService.Web
                 await next();
             });
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
