@@ -80,22 +80,7 @@ namespace SFA.DAS.ToolService.Web
 
             app.UseForwardedHeaders();
             app.Use(async (context, next) =>
-            {
-                // Request method, scheme, and path
-                _logger.LogDebug("Request Method: {METHOD}", context.Request.Method);
-                _logger.LogDebug("Request Scheme: {SCHEME}", context.Request.Scheme);
-                _logger.LogDebug("Request Path: {PATH}", context.Request.Path);
-
-                // Headers
-                foreach (var header in context.Request.Headers)
-                {
-                    _logger.LogDebug("Header: {KEY}: {VALUE}", header.Key, header.Value);
-                }
-
-                // Connection: RemoteIp
-                _logger.LogDebug("Request RemoteIp: {REMOTE_IP_ADDRESS}",
-                    context.Connection.RemoteIpAddress);
-
+            {                
                 context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
                 context.Response.Headers.Add("X-Xss-Protection", "1");
                 await next();

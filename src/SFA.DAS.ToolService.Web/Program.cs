@@ -15,10 +15,6 @@ namespace SFA.DAS.ToolService.Web
             WebHost.CreateDefaultBuilder(args)
                 .UseApplicationInsights()
                 .UseStartup<Startup>()
-                .ConfigureKestrel((context, options) =>
-                {
-                    // Set properties and call methods on options
-                })
                 .UseNLog();
     }
 }
