@@ -43,6 +43,8 @@ namespace SFA.DAS.ToolService.Web
             {
                 options.ForwardedHeaders =
                     ForwardedHeaders.All;
+                options.KnownNetworks.Clear();
+                options.KnownProxies.Clear();
             });
 
             var redisConnectionString = Configuration["RedisConnectionString"];
