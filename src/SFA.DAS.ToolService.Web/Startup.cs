@@ -76,7 +76,8 @@ namespace SFA.DAS.ToolService.Web
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
-                ForwardedHeaders = ForwardedHeaders.All
+                //ForwardedHeaders = ForwardedHeaders.All
+                ForwardedHeaders = ForwardedHeaders.XForwardedProto;
             });
 
             app.Use(async (context, next) =>
