@@ -42,7 +42,7 @@ namespace SFA.DAS.ToolService.Web
             services.Configure<ForwardedHeadersOptions>(options =>
             {
                 options.ForwardedHeaders =
-                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+                    ForwardedHeaders.All;
             });
 
             var redisConnectionString = Configuration["RedisConnectionString"];
@@ -74,7 +74,10 @@ namespace SFA.DAS.ToolService.Web
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILogger<Startup> logger)
         {
 
-            app.UseForwardedHeaders();
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.All
+            });
 
             app.Use(async (context, next) =>
             {
