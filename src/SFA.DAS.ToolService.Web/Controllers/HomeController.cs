@@ -15,6 +15,19 @@ namespace SFA.DAS.ToolService.Web.Controllers
 
         public IActionResult Index()
         {
+            logger.LogDebug("Request Method: {METHOD}", HttpContext.Request.Method);
+            logger.LogDebug("Request Scheme: {SCHEME}", HttpContext.Request.Scheme);
+            logger.LogDebug("Request Path: {PATH}", HttpContext.Request.Path);
+
+            // Headers
+            foreach (var header in HttpContext.Request.Headers)
+            {
+                logger.LogDebug("Header: {KEY}: {VALUE}", header.Key, header.Value);
+            }
+
+            // Connection: RemoteIp
+            logger.LogDebug("Request RemoteIp: {REMOTE_IP_ADDRESS}",
+                HttpContext.Connection.RemoteIpAddress);
             return View();
         }
 

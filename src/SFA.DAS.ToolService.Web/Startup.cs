@@ -43,8 +43,8 @@ namespace SFA.DAS.ToolService.Web
 
             services.Configure<ForwardedHeadersOptions>(options =>
             {
-                options.ForwardedHeaders =
-                    ForwardedHeaders.All;
+                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor |
+                    ForwardedHeaders.XForwardedProto;
                 options.KnownNetworks.Clear();
                 options.KnownProxies.Clear();
             });
@@ -78,35 +78,7 @@ namespace SFA.DAS.ToolService.Web
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILogger<Startup> logger)
         {
 
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
-            {
-                ForwardedHeaders = ForwardedHeaders.All
-            });
-
-            app.Use(async (context, next) =>
-            {
-                if (context.Request.Headers.ContainsKey("X-Original-Host"))
-                {
-                    var originalHost = context.Request.Headers["X-Original-Host"];
-                    logger.LogInformation($"Retrieving X-Original-Host value {originalHost}");
-                    context.Request.Headers.Add("Host", originalHost);
-                }
-                await next.Invoke();
-            });
-
-            if (env.IsDevelopment())
-            {
-                logger.LogInformation($"App is running in development mode: {env.EnvironmentName}");
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                logger.LogInformation($"App is running in production mode: {env.EnvironmentName}");
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
-
+            app.UseForwardedHeaders();
             app.Use(async (context, next) =>
             {
                 // Request method, scheme, and path
@@ -128,6 +100,29 @@ namespace SFA.DAS.ToolService.Web
                 context.Response.Headers.Add("X-Xss-Protection", "1");
                 await next();
             });
+            // app.Use(async (context, next) =>
+            // {
+            //     if (context.Request.Headers.ContainsKey("X-Original-Host"))
+            //     {
+            //         var originalHost = context.Request.Headers["X-Original-Host"];
+            //         logger.LogInformation($"Retrieving X-Original-Host value {originalHost}");
+            //         context.Request.Headers.Add("Host", originalHost);
+            //     }
+            //     await next.Invoke();
+            // });
+
+            if (env.IsDevelopment())
+            {
+                logger.LogInformation($"App is running in development mode: {env.EnvironmentName}");
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                logger.LogInformation($"App is running in production mode: {env.EnvironmentName}");
+                app.UseExceptionHandler("/Home/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
 
             app.UseStaticFiles();
             app.UseCookiePolicy();
