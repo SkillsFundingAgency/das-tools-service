@@ -1,5 +1,3 @@
-name: "0.2.$(Rev:r)"
-
 trigger:
   batch: true
   branches:
@@ -13,12 +11,17 @@ workspace:
 
 variables:
   buildConfiguration: 'release'
-  buildPlatform: 'anycpu'
 
 pool:
   name: 'DAS - Continuous Integration'
 
 steps:
+- task: gittools.gitversion-preview.gitversion-task.GitVersion@5
+  displayName: GitVersion
+  inputs:
+    configFilePath: GitVersion.yml
+    updateAssemblyInfo: true
+  
 - task: DotNetCoreCLI@2
   displayName: Restore
   inputs:
@@ -41,12 +44,14 @@ steps:
   enabled: false
 
 - task: DotNetCoreCLI@2
-  displayName: 'Publish'
+  displayName: 'Publish Website'
   inputs:
     command: publish
     publishWebProjects: false
+    modifyOutputPath: false
+    zipAfterPublish: false
     projects: 'src/SFA.DAS.ToolService.Web/SFA.DAS.ToolService.Web.csproj'
-    arguments: '--configuration $(buildConfiguration) --output $(build.artifactstagingdirectory)/publish --no-restore --no-build'
+    arguments: '--configuration $(buildConfiguration) --output $(system.defaultworkingdirectory)/src/SFA.DAS.ToolService.Web/publish --no-restore --no-build'
 
 - task: DotNetCoreCLI@2
   displayName: 'Pack'
@@ -57,13 +62,51 @@ steps:
     versioningScheme: byBuildNumber
     buildProperties: 'Version="$(Build.BuildNumber)"'
     
+- task: Docker@2
+  displayName: Login to Docker Hub
+  inputs:
+    command: login
+    containerRegistry: 'Apprenticeships DevOps Docker Hub'
+
+- task: Docker@2
+  displayName: Build Web Image
+  inputs:
+    command: build
+    dockerfile: Web.Dockerfile
+    repository: apprenticeshipsdevops/das-tools-service
+    tags: |
+      $(build.buildnumber)
+      latest
+
+- task: Docker@2
+  displayName: Push Web Image
+  inputs:
+    command: push
+    repository: apprenticeshipsdevops/das-tools-service
+    tags: $(build.buildnumber)
+
+- task: Docker@2
+  displayName: Push Web Image Latest if master
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  inputs:
+    command: push
+    repository: apprenticeshipsdevops/das-tools-service
+    tags: latest
+    
 - task: CopyFiles@2
   displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
   inputs:
-    Contents: |
+    contents: |
      azure/**
-    TargetFolder: '$(build.artifactstagingdirectory)/publish'
-    OverWrite: true
+    targetFolder: '$(build.artifactstagingdirectory)/publish'
+    overWrite: true
+
+- task: ArchiveFiles@2
+  displayName: 'Zip Web'
+  inputs:
+    rootFolderOrFile: $(system.defaultworkingdirectory)/src/SFA.DAS.ToolService.Web/publish
+    includeRootFolder: false
+    archiveFile: $(build.artifactstagingdirectory)/publish/SFA.DAS.ToolService.Web.zip
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact'
