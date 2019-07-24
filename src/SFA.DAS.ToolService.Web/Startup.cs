@@ -24,10 +24,12 @@ namespace SFA.DAS.ToolService.Web
     public class Startup
     {
         private readonly IHostingEnvironment _env;
-        public Startup(IConfiguration configuration, IHostingEnvironment env)
+        private readonly ILogger _logger;
+        public Startup(IConfiguration configuration, IHostingEnvironment env, ILogger<Startup> logger)
         {
             Configuration = configuration;
             _env = env;
+            _logger = logger;
         }
 
         public IConfiguration Configuration { get; }
@@ -41,8 +43,10 @@ namespace SFA.DAS.ToolService.Web
 
             services.Configure<ForwardedHeadersOptions>(options =>
             {
-                options.ForwardedHeaders =
-                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor |
+                    ForwardedHeaders.XForwardedProto;
+                options.KnownNetworks.Clear();
+                options.KnownProxies.Clear();
             });
 
             var redisConnectionString = Configuration["RedisConnectionString"];
@@ -75,7 +79,12 @@ namespace SFA.DAS.ToolService.Web
         {
 
             app.UseForwardedHeaders();
-
+            app.Use(async (context, next) =>
+            {                
+                context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+                context.Response.Headers.Add("X-Xss-Protection", "1");
+                await next();
+            });
             app.Use(async (context, next) =>
             {
                 if (context.Request.Headers.ContainsKey("X-Original-Host"))
@@ -100,14 +109,6 @@ namespace SFA.DAS.ToolService.Web
                 app.UseHsts();
             }
 
-            app.Use(async (context, next) =>
-            {
-                context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
-                context.Response.Headers.Add("X-Xss-Protection", "1");
-                await next();
-            });
-
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
