@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <ProjectGuid>AEA3988E-A70A-403B-9665-98D0456DECF3</ProjectGuid>
     <LangVersion>latest</LangVersion>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
