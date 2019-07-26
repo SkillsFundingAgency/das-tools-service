@@ -10,7 +10,11 @@ workspace:
     clean: all
 
 variables:
-  buildConfiguration: 'release'
+- group: "ESFA - SonarCloud"
+- name: buildConfiguration
+  value: "release"
+- name: sonarCloudProjectKey
+  value: "SkillsFundingAgency_das-tools-service"
 
 pool:
   name: 'DAS - Continuous Integration'
@@ -21,7 +25,18 @@ steps:
   inputs:
     configFilePath: GitVersion.yml
     updateAssemblyInfo: true
-  
+
+- task: SonarCloudPrepare@1
+  displayName: "Prepare Sonar Analyzer"
+  inputs:
+    SonarCloud: "$(SonarCloudConnectionId)"
+    organization: "$(SonarCloudOrganisationKey)"
+    projectName: "$(Build.DefinitionName)"
+    projectKey: "$(sonarCloudProjectKey)"
+    extraProperties: |
+      sonar.pullrequest.provider=GitHub
+      sonar.pullrequest.github.repository=$(Build.Repository.Name)
+
 - task: DotNetCoreCLI@2
   displayName: Restore
   inputs:
@@ -42,6 +57,9 @@ steps:
     projects: '**/*.UnitTests.csproj'
     arguments: '--configuration $(buildConfiguration) --no-build'
   enabled: false
+
+- task: SonarSource.sonarcloud.ce096e50-6155-4de8-8800-4221aaeed4a1.SonarCloudAnalyze@1
+  displayName: "Run Code Analysis"
 
 - task: DotNetCoreCLI@2
   displayName: 'Publish Website'
