@@ -1,13 +1,19 @@
 ﻿@{
-    ViewData["Title"] = "Home";
+ViewData["Title"] = "Home";
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-xl">
-            Tool Service
-        </h1>
+        <h1 class="govuk-heading-xl">Tool Service</h1>
 
-        <p class="govuk-body">Add content..</p>
+        <p class="govuk-body">Use this service to access platform tooling</p>
+
+        <h2 class="govuk-heading-m">Before you start</h2>
+        <p class="govuk-body">You need to <a class="govuk-link" href="#">create an account</a>.</p>
+
+        <a asp-action="SignIn" asp-controller="Account" role="button" draggable="false" class="govuk-button govuk-button--start govuk-!-margin-top-2 govuk-!-margin-bottom-8">
+            Sign in
+        </a>
+
     </div>
 </div>

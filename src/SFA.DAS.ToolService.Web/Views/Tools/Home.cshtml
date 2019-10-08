@@ -1,0 +1,79 @@
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">
+            Tool Service
+        </h1>
+
+        <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+            Message Service
+            </dt>
+            <dd class="govuk-summary-list__value">
+            A secure way to send contextless one time messages.
+            </dd>
+            <dd class="govuk-summary-list__actions">
+            <a class="govuk-link" href=@Url.Content("~/messages")>
+                Open<span class="govuk-visually-hidden"> message service</span>
+            </a>
+            </dd>
+        </div>
+        <!-- <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+            Whitelist Service
+            </dt>
+            <dd class="govuk-summary-list__value">
+            Add ACL entries for your resources.
+            </dd>
+            <dd class="govuk-summary-list__actions">
+            <a class="govuk-link" href=@Url.Content("~/Whitelist")>
+                Open<span class="govuk-visually-hidden"> whitelist service</span>
+            </a>
+            </dd>
+        </div> -->
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+            Logs
+            </dt>
+            <dd class="govuk-summary-list__value">
+            View application logs in Kibana.
+            </dd>
+            <dd class="govuk-summary-list__actions">
+            <a class="govuk-link" href="https://logs.apprenticeships.education.gov.uk/">
+                Open<span class="govuk-visually-hidden"> logs</span>
+            </a>
+            </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+            Grafana
+            </dt>
+            <dd class="govuk-summary-list__value">
+            View or create graphs using service metrics.
+            </dd>
+            <dd class="govuk-summary-list__actions">
+            <a class="govuk-link" href=@Url.Content("~/grafana/login/github")>
+                Open<span class="govuk-visually-hidden"> graphs</span>
+            </a>
+            </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+            Service Health
+            </dt>
+            <dd class="govuk-summary-list__value">
+            View the health of the service.
+            </dd>
+            <dd class="govuk-summary-list__actions">
+            <a class="govuk-link" href="http://status.apprenticeships.education.gov.uk">
+                Open<span class="govuk-visually-hidden"> service health</span>
+            </a>
+            </dd>
+        </div>
+        </dl>
+    </div>
+</div>

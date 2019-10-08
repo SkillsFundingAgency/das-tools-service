@@ -1,19 +1,23 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.ToolService.Web.Models;
 
 namespace SFA.DAS.ToolService.Web.Controllers
 {
-    public class HomeController : Controller
+    [Authorize(Policy="ValidOrgsOnly")]
+    public class ToolsController : Controller
     {
         private readonly ILogger logger;
-        public HomeController(ILogger<HomeController> _logger)
+        
+        public ToolsController(ILogger<AccountController> _logger)
         {
             logger = _logger;
         }
 
-        public IActionResult Index()
+        [Route("Home")]
+        public IActionResult Home()
         {
             return View();
         }
