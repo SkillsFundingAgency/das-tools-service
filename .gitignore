@@ -32,6 +32,8 @@ msbuild.wrn
 .vs/
 
 src/*/appsettings.json
+src/*/appsettings.Development.json
+src/*/appsettings.json
 azure-pipelines.aci.yml
 
 # Test Results

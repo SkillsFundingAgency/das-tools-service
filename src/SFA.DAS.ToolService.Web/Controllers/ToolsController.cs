@@ -6,11 +6,12 @@ using SFA.DAS.ToolService.Web.Models;
 
 namespace SFA.DAS.ToolService.Web.Controllers
 {
-    [Authorize(Policy="ValidOrgsOnly")]
+    // [Authorize(Policy="ValidOrgsOnly")]
+    [Authorize]
     public class ToolsController : Controller
     {
         private readonly ILogger logger;
-        
+
         public ToolsController(ILogger<AccountController> _logger)
         {
             logger = _logger;

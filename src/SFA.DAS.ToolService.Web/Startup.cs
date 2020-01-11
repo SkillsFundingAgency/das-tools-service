@@ -55,6 +55,7 @@ namespace SFA.DAS.ToolService.Web
                 .SetApplicationName("das-tools-service")
                 .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
 
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -69,7 +70,7 @@ namespace SFA.DAS.ToolService.Web
 
             services.AddHealthChecks();
 
-            services.AddAuthenticationProviders(authenticationOptions.Get<AuthenticationConfigurationEntity>());
+            services.AddAuth0(authenticationOptions.Get<AuthenticationConfigurationEntity>());
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -80,11 +81,12 @@ namespace SFA.DAS.ToolService.Web
 
             app.UseForwardedHeaders();
             app.Use(async (context, next) =>
-            {                
+            {
                 context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
                 context.Response.Headers.Add("X-Xss-Protection", "1");
                 await next();
             });
+
             app.Use(async (context, next) =>
             {
                 if (context.Request.Headers.ContainsKey("X-Original-Host"))
