@@ -55,6 +55,10 @@ namespace SFA.DAS.ToolService.Web
                 .SetApplicationName("das-tools-service")
                 .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.Name = ".AspNet.SharedCookie";
+            });
 
             services.Configure<CookiePolicyOptions>(options =>
             {
