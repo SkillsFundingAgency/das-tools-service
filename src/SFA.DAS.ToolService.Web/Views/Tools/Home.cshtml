@@ -1,3 +1,5 @@
+@using System.Threading;
+@using System.Security.Claims;
 @{
     ViewData["Title"] = "Home";
 }
@@ -7,6 +9,22 @@
         <h1 class="govuk-heading-xl">
             Tool Service
         </h1>
+
+        <ul class="govuk-list govuk-list--bullet">
+
+        @{
+        string userDesignation = ((ClaimsIdentity)User.Identity).FindFirst("OperationType").Value;
+        string userImage = ((ClaimsIdentity)User.Identity).FindFirst("ImageLink").Value;
+
+
+        var identity = (ClaimsPrincipal)Thread.CurrentPrincipal;
+
+
+        foreach (Claim c in identity.Claims) {
+            <li> $"{c.Type} : {c.Value}" </li>
+        }
+        }
+        </ul>
 
         <dl class="govuk-summary-list">
         <div class="govuk-summary-list__row">
