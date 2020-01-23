@@ -8,9 +8,11 @@ ViewData["Title"] = "Home";
 
         <p class="govuk-body">Use this service to access platform tooling</p>
 
-        <h2 class="govuk-heading-m">Before you start</h2>
-        <p class="govuk-body">You need to <a class="govuk-link" href="#">create an account</a>.</p>
-
+        <h2 class="govuk-heading-m">Before you start you will need:</h2>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>to be a member of the SkillsFundingAgency GitHub organisation</li>
+            <li>or have a digital.education.gov.uk email address</li>
+        </ul>
         <a asp-action="Login" asp-controller="Account" role="button" draggable="false" class="govuk-button govuk-button--start govuk-!-margin-top-2 govuk-!-margin-bottom-8">
             Sign in
         </a>
