@@ -13,13 +13,8 @@
         <ul class="govuk-list govuk-list--bullet">
 
         @{
-        string userDesignation = ((ClaimsIdentity)User.Identity).FindFirst("OperationType").Value;
-        string userImage = ((ClaimsIdentity)User.Identity).FindFirst("ImageLink").Value;
-
 
         var identity = (ClaimsPrincipal)Thread.CurrentPrincipal;
-
-
         foreach (Claim c in identity.Claims) {
             <li> $"{c.Type} : {c.Value}" </li>
         }
