@@ -1,0 +1,74 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: das-tool-service-web
+    service: das-tool-service
+  name: das-tool-service-web
+  namespace: engineering
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: das-tool-service-web
+  type: ClusterIP
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: das-tool-service-web
+    service: das-tool-service
+  name: das-tool-service-web
+  namespace: engineering
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: das-tool-service-web
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: das-tool-service-web
+        service: das-tool-service
+    spec:
+      containers:
+      - env:
+        - name: ConfigurationStorageConnectionString
+          value: __ConfigurationStorageConnectionString__
+        - name: LoggingRedisConnectionString
+          value: __LoggingRedisConnectionString__
+        - name: LoggingRedisKey
+          value: logstash
+        - name: EnvironmentName
+          value: __EnvironmentName__
+        - name: APPINSIGHTS_INSTRUMENTATIONKEY
+          value: TBA
+        - name: Cdn__Url
+          value: https://das-test-frnt-end.azureedge.net
+        - name: Authentication__Auth0__Domain
+          value: dfe-apprenticeships.eu.auth0.com
+        - name: Authentication__Auth0__ClientId
+          value: __Auth0ClientId__
+        - name: Authentication__Auth0__ClientSecret
+          value: __AUth0ClientSecret__
+        - name: RedisConnectionString
+          value: __RedisConnectionString__
+        image: apprenticeshipsdevops/das-tools-service:__Build_BuildNumber__
+        imagePullPolicy: IfNotPresent
+        name: das-tool-service
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        resources:
+            requests:
+              cpu: 25m
+              memory: 512Mi
