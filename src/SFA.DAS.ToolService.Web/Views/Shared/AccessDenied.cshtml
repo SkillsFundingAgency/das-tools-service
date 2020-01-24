@@ -1,6 +1,4 @@
-﻿@model AccessDeniedViewModel;
-
-@{
+﻿@{
     ViewData["Title"] = "Error";
 }
 
@@ -10,15 +8,7 @@
             Access Denied
         </h1>
         <p class="govuk-body">
-            To access this service you must be a member of one of the following GitHub organizations:
-            <ul class="govuk-list govuk-list--bullet">
-                @foreach (var organization in Model.Organizations)
-                    {
-                        <li>
-                            @organization
-                        </li>
-                    }
-            </ul>
+            You do not have access to this service
         </p>
     </div>
 </div>
