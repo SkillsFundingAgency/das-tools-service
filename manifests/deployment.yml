@@ -20,6 +20,7 @@ kind: Deployment
 metadata:
   labels:
     app: das-tool-service-web
+    version: {{buildNumber}}
     service: das-tool-service
   name: das-tool-service-web
   namespace: engineering
@@ -35,7 +36,6 @@ spec:
     type: RollingUpdate
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: das-tool-service-web
         service: das-tool-service
