@@ -10,6 +10,7 @@ RUN dotnet restore SFA.DAS.ToolService.Web/SFA.DAS.ToolService.Web.csproj
 COPY src/SFA.DAS.ToolService.Authentication/ SFA.DAS.ToolService.Authentication/
 COPY src/SFA.DAS.ToolService.Core/ SFA.DAS.ToolService.Core/
 COPY src/SFA.DAS.ToolService.Infrastructure/ SFA.DAS.ToolService.Infrastructure/
+RUN true
 COPY src/SFA.DAS.ToolService.Web/ SFA.DAS.ToolService.Web/
 WORKDIR /src/SFA.DAS.ToolService.Web
 RUN dotnet build -c release --no-restore
