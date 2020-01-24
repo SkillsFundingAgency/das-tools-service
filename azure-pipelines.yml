@@ -31,7 +31,7 @@ stages:
           containerRegistry: "Apprenticeships DevOps Docker Hub"
 
       - task: Docker@2
-        displayName: Build Web Image
+        displayName: Build Image
         inputs:
           command: build
           dockerfile: Dockerfile
@@ -41,14 +41,14 @@ stages:
             $(build.buildnumber)-production
 
       - task: Docker@2
-        displayName: Push Web Image
+        displayName: Push Image
         inputs:
           command: push
           repository: apprenticeshipsdevops/das-tools-service
           tags: $(build.buildnumber)
 
       - task: Docker@2
-        displayName: Push Web Image Latest if master
+        displayName: Push Image Production if master
         condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
         inputs:
           command: push
@@ -66,6 +66,7 @@ stages:
   dependsOn: build
   jobs:
   - deployment: deploy_dev
+    displayName: Deploy Dev
     environment: DEV
     pool:
       name: 'DAS - Continuous Integration'
@@ -75,7 +76,7 @@ stages:
           steps:
           - task: replacetokens@3
             inputs:
-              rootDirectory: artifact/manifests/
+              rootDirectory: $(Pipeline.Workspace)/artifact/manifests
               targetFiles: '*.yml'
               encoding: 'auto'
               writeBOM: true
@@ -95,4 +96,4 @@ stages:
               useClusterAdmin: true
               command: apply
               useConfigurationFile: true
-              configuration: artifact/manifests/
+              configuration: $(Pipeline.Workspace)/artifact/manifests
