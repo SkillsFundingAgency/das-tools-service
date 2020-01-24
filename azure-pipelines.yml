@@ -8,6 +8,8 @@ pr: none
 
 variables:
   - group: 'Dev Management Resources'
+  - name: buildNumber
+    value: $(Build.BuildNumber)
 
 stages:
 - stage: build
