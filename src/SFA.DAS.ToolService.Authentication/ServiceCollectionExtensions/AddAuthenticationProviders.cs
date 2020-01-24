@@ -1,22 +1,10 @@
 ﻿using System;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
-using Microsoft.AspNetCore.Authorization;
-using SFA.DAS.ToolService.Authentication.AuthorizationHandlers;
 using SFA.DAS.ToolService.Authentication.Entities;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Builder;
 
 namespace SFA.DAS.ToolService.Authentication.ServiceCollectionExtensions
 {
