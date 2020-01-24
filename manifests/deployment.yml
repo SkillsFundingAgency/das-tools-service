@@ -49,7 +49,7 @@ spec:
         - name: LoggingRedisKey
           value: logstash
         - name: EnvironmentName
-          value: {{Release.EnvironmentName}}
+          value: TEST
         - name: APPINSIGHTS_INSTRUMENTATIONKEY
           value: TBA
         - name: Cdn__Url
@@ -62,7 +62,7 @@ spec:
           value: {{AUth0ClientSecret}}
         - name: RedisConnectionString
           value: {{RedisConnectionString}}
-        image: apprenticeshipsdevops/das-tools-service:{{Build.BuildNumber}}
+        image: apprenticeshipsdevops/das-tools-service:{{buildNumber}}
         imagePullPolicy: IfNotPresent
         name: das-tool-service
         ports:
