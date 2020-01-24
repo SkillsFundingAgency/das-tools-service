@@ -82,8 +82,8 @@ stages:
               writeBOM: true
               actionOnMissing: 'fail'
               keepToken: false
-              tokenPrefix: '__'
-              tokenSuffix: '__'
+              tokenPrefix: '{{'
+              tokenSuffix: '}}'
           - task: KubectlInstaller@0
             displayName: 'Install Kubectl latest'
           - task: Kubernetes@1

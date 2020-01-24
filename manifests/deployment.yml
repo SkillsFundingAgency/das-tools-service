@@ -43,13 +43,13 @@ spec:
       containers:
       - env:
         - name: ConfigurationStorageConnectionString
-          value: __ConfigurationStorageConnectionString__
+          value: {{ConfigurationStorageConnectionString}}
         - name: LoggingRedisConnectionString
-          value: __LoggingRedisConnectionString__
+          value: {{LoggingRedisConnectionString}}
         - name: LoggingRedisKey
           value: logstash
         - name: EnvironmentName
-          value: __EnvironmentName__
+          value: {{Release_EnvironmentName}}
         - name: APPINSIGHTS_INSTRUMENTATIONKEY
           value: TBA
         - name: Cdn__Url
@@ -57,12 +57,12 @@ spec:
         - name: Authentication__Auth0__Domain
           value: dfe-apprenticeships.eu.auth0.com
         - name: Authentication__Auth0__ClientId
-          value: __Auth0ClientId__
+          value: {{Auth0ClientId}}
         - name: Authentication__Auth0__ClientSecret
-          value: __AUth0ClientSecret__
+          value: {{AUth0ClientSecret}}
         - name: RedisConnectionString
-          value: __RedisConnectionString__
-        image: apprenticeshipsdevops/das-tools-service:__Build_BuildNumber__
+          value: {{RedisConnectionString}}
+        image: apprenticeshipsdevops/das-tools-service:{{Build_BuildNumber}}
         imagePullPolicy: IfNotPresent
         name: das-tool-service
         ports:
