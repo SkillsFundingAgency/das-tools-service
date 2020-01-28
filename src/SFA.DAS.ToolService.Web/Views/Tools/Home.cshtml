@@ -24,6 +24,19 @@
             </a>
             </dd>
         </div>
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+            Grafana
+            </dt>
+            <dd class="govuk-summary-list__value">
+            View or create graphs using service metrics.
+            </dd>
+            <dd class="govuk-summary-list__actions">
+            <a class="govuk-link" href=@Url.Content("~/grafana")>
+                Open<span class="govuk-visually-hidden"> graphs</span>
+            </a>
+            </dd>
+        </div>
 
         @{
             if (Model.HasApprenticeshipsRole)
@@ -38,19 +51,6 @@
                     <dd class="govuk-summary-list__actions">
                     <a class="govuk-link" href="https://logs.apprenticeships.education.gov.uk/">
                         Open<span class="govuk-visually-hidden"> logs</span>
-                    </a>
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                    Grafana
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                    View or create graphs using service metrics.
-                    </dd>
-                    <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href=@Url.Content("~/grafana")>
-                        Open<span class="govuk-visually-hidden"> graphs</span>
                     </a>
                     </dd>
                 </div>
