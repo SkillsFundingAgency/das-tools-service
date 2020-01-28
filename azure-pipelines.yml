@@ -3,6 +3,12 @@ trigger:
   branches:
     include:
       - "*"
+  paths:
+    include:
+      - manifests/*
+      - src/*
+      - azure-pipelines.yml
+      - Dockerfile
 
 pr: none
 
