@@ -3,116 +3,105 @@ trigger:
   branches:
     include:
       - "*"
-
-pr:
-  branches:
+  paths:
     include:
-      - "*"
+      - manifests/*
+      - src/*
+      - azure-pipelines.yml
+      - Dockerfile
 
-workspace:
-  clean: all
+pr: none
 
 variables:
-  - name: buildConfiguration
-    value: "release"
+  - group: 'Dev Management Resources'
+  - name: buildNumber
+    value: $(Build.BuildNumber)
 
-pool:
-  name: "DAS - Continuous Integration"
+stages:
+- stage: build
+  displayName: Build Image
+  jobs:
+  - job: build_image
+    displayName: Build Image
+    pool:
+      name: "DAS - Continuous Integration"
+    steps:
+      - task: gittools.gitversion.gitversion-task.GitVersion@5
+        displayName: GitVersion
+        inputs:
+          configFilePath: GitVersion.yml
+          updateAssemblyInfo: true
 
-steps:
-  - task: gittools.gitversion-preview.gitversion-task.GitVersion@5
-    displayName: GitVersion
-    inputs:
-      configFilePath: GitVersion.yml
-      updateAssemblyInfo: true
+      - task: Docker@2
+        displayName: Login to Docker Hub
+        inputs:
+          command: login
+          containerRegistry: "Apprenticeships DevOps Docker Hub"
 
-  - task: DotNetCoreCLI@2
-    displayName: Restore
-    inputs:
-      command: restore
-      projects: "src/**/*.csproj"
-      noCache: true
+      - task: Docker@2
+        displayName: Build Image
+        inputs:
+          command: build
+          dockerfile: Dockerfile
+          repository: apprenticeshipsdevops/das-tools-service
+          tags: |
+            $(build.buildnumber)
+            $(build.buildnumber)-production
 
-  - task: DotNetCoreCLI@2
-    displayName: Build
-    inputs:
-      projects: "src/**/*.csproj"
-      arguments: '--configuration $(buildConfiguration) -p:Version=$(Build.BuildNumber)"'
+      - task: Docker@2
+        displayName: Push Image
+        inputs:
+          command: push
+          repository: apprenticeshipsdevops/das-tools-service
+          tags: $(build.buildnumber)
 
-  - task: DotNetCoreCLI@2
-    displayName: Test
-    inputs:
-      command: test
-      projects: "**/*.UnitTests.csproj"
-      arguments: "--configuration $(buildConfiguration) --no-build"
-    enabled: false
+      - task: Docker@2
+        displayName: Push Image Production if master
+        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+        inputs:
+          command: push
+          repository: apprenticeshipsdevops/das-tools-service
+          tags: $(build.buildnumber)-production
 
-  - task: DotNetCoreCLI@2
-    displayName: "Publish Website"
-    inputs:
-      command: publish
-      publishWebProjects: false
-      modifyOutputPath: false
-      zipAfterPublish: false
-      projects: "src/SFA.DAS.ToolService.Web/SFA.DAS.ToolService.Web.csproj"
-      arguments: "--configuration $(buildConfiguration) --output $(system.defaultworkingdirectory)/src/SFA.DAS.ToolService.Web/publish --no-restore --no-build"
+      - task: PublishPipelineArtifact@1
+        displayName: 'Publish Pipeline Artifacts'
+        inputs:
+          path: '$(System.DefaultWorkingDirectory)/'
+          artifactName: 'artifact'
 
-  - task: DotNetCoreCLI@2
-    displayName: "Pack"
-    inputs:
-      command: pack
-      packagesToPack: src/SFA.DAS.ToolService.Authentication/SFA.DAS.ToolService.Authentication.csproj
-      packDirectory: "$(build.artifactstagingdirectory)/publish"
-      versioningScheme: byBuildNumber
-      buildProperties: 'Version="$(Build.BuildNumber)"'
-
-  - task: Docker@2
-    displayName: Login to Docker Hub
-    inputs:
-      command: login
-      containerRegistry: "Apprenticeships DevOps Docker Hub"
-
-  - task: Docker@2
-    displayName: Build Web Image
-    inputs:
-      command: build
-      dockerfile: Web.Dockerfile
-      repository: apprenticeshipsdevops/das-tools-service
-      tags: |
-        $(build.buildnumber)
-        latest
-
-  - task: Docker@2
-    displayName: Push Web Image
-    inputs:
-      command: push
-      repository: apprenticeshipsdevops/das-tools-service
-      tags: $(build.buildnumber)
-
-  - task: Docker@2
-    displayName: Push Web Image Latest if master
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-    inputs:
-      command: push
-      repository: apprenticeshipsdevops/das-tools-service
-      tags: latest
-
-  - task: CopyFiles@2
-    displayName: "Copy Files to: $(build.artifactstagingdirectory)"
-    inputs:
-      contents: |
-        azure/**
-      targetFolder: "$(build.artifactstagingdirectory)/publish"
-      overWrite: true
-
-  - task: ArchiveFiles@2
-    displayName: "Zip Web"
-    inputs:
-      rootFolderOrFile: $(system.defaultworkingdirectory)/src/SFA.DAS.ToolService.Web/publish
-      includeRootFolder: false
-      archiveFile: $(build.artifactstagingdirectory)/publish/SFA.DAS.ToolService.Web.zip
-
-  - task: PublishBuildArtifacts@1
-    displayName: "Publish Artifact"
-    inputs:
-      PathtoPublish: "$(build.artifactstagingdirectory)/publish"
+- stage: deployment
+  displayName: Deploy Application
+  dependsOn: build
+  jobs:
+  - deployment: deploy_dev
+    displayName: Deploy Dev
+    environment: DEV
+    pool:
+      name: 'DAS - Continuous Integration'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: replacetokens@3
+            inputs:
+              rootDirectory: $(Pipeline.Workspace)/artifact/manifests
+              targetFiles: '*.yml'
+              encoding: 'auto'
+              writeBOM: true
+              actionOnMissing: 'fail'
+              keepToken: false
+              tokenPrefix: '{{'
+              tokenSuffix: '}}'
+          - task: KubectlInstaller@0
+            displayName: 'Install Kubectl latest'
+          - task: Kubernetes@1
+            displayName: 'kubectl apply'
+            inputs:
+              connectionType: 'Azure Resource Manager'
+              azureSubscriptionEndpoint: SFA-DAS-DevTest-ARM
+              azureResourceGroup: $(AKSResourceGroupName)
+              kubernetesCluster: $(AKSClusterName)
+              useClusterAdmin: true
+              command: apply
+              useConfigurationFile: true
+              configuration: $(Pipeline.Workspace)/artifact/manifests

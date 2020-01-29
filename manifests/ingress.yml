@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  labels:
+    service: das-tool-service
+  name: das-tool-service
+  namespace: engineering
+spec:
+  rules:
+  - host: tools.apprenticeships.education.gov.uk
+    http:
+      paths:
+      - backend:
+          serviceName: das-tool-service-web
+          servicePort: 80
+        path: /
+      - backend:
+          serviceName: das-secure-message-service-api
+          servicePort: 80
+        path: /api/messages
+      - backend:
+          serviceName: das-secure-message-service-web
+          servicePort: 80
+        path: /messages
+      - backend:
+          serviceName: grafana
+          servicePort: 80
+        path: /grafana
+  tls:
+  - hosts:
+    - tools.apprenticeships.education.gov.uk
+    secretName: wildcard-apprenticeships-education-gov-uk
