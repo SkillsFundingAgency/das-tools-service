@@ -1,0 +1,88 @@
+parameters:
+  azureSubscription:
+  aksResourceGroupName:
+  aksClusterName:
+  environment:
+  variablegroupName:
+
+jobs:
+  - deployment: deploy_${{parameters.environment}}
+    displayName: Deploy ${{parameters.environment}}
+    environment: ${{parameters.environment}}
+
+    variables:
+      - group: ${{parameters.variablegroupName}}
+
+    pool:
+      name: 'DAS - Continuous Integration'
+
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: replacetokens@3
+            displayName: 'Tokenize Manifests'
+            inputs:
+              rootDirectory: $(Pipeline.Workspace)/artifact/manifests
+              targetFiles: '*.yml'
+              encoding: 'auto'
+              writeBOM: true
+              actionOnMissing: 'fail'
+              keepToken: false
+              tokenPrefix: '{{'
+              tokenSuffix: '}}'
+          - task: KubectlInstaller@0
+            displayName: 'Install Kubectl latest'
+          - task: Kubernetes@1
+            displayName: 'Configure Ingress'
+            inputs:
+              connectionType: 'Azure Resource Manager'
+              azureSubscriptionEndpoint: ${{parameters.azureSubscription}}
+              azureResourceGroup: ${{parameters.aksResourceGroupName}}
+              kubernetesCluster: ${{parameters.aksClusterName}}
+              useClusterAdmin: true
+              command: apply
+              useConfigurationFile: true
+              configuration: $(Pipeline.Workspace)/artifact/manifests/ingress-${{parameters.environment}}.yml
+          - task: Kubernetes@1
+            displayName: 'Configure Deployment'
+            inputs:
+              connectionType: 'Azure Resource Manager'
+              azureSubscriptionEndpoint: ${{parameters.azureSubscription}}
+              azureResourceGroup: ${{parameters.aksResourceGroupName}}
+              kubernetesCluster: ${{parameters.aksClusterName}}
+              useClusterAdmin: true
+              command: apply
+              useConfigurationFile: true
+              configuration: $(Pipeline.Workspace)/artifact/manifests/deployment.yml
+
+
+
+  - deployment: deploy_${{parameters.environment}}
+    displayName: 'Deploy user and role definitions to ${{parameters.cluster}}'
+    environment: '${{parameters.environment}}'
+
+    pool:
+      name: 'DAS - Continuous Integration'
+
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureResourceGroupDeployment@2
+            inputs:
+              azureSubscription: '${{parameters.azureSubscription}}'
+              action: 'Create Or Update Resource Group'
+              resourceGroupName: '${{parameters.resourceGroupName}}'
+              location: 'West Europe'
+              templateLocation: 'Linked artifact'
+              csmFile: '$(Pipeline.Workspace)/artifact/azure/template.json'
+              overrideParameters: '-resourceEnvironmentName ${{parameters.resourceEnvironmentName}} -serviceName ${{parameters.serviceName}} -keyVaultAccessPolicies ${{parameters.keyVaultAccessPolicies}}'
+              deploymentMode: 'Incremental'
+          - task: AzurePowerShell@4
+            inputs:
+              azureSubscription: '${{parameters.azureSubscription}}'
+              ScriptType: 'FilePath'
+              ScriptPath: '$(Pipeline.Workspace)/artifact/tools/Set-ElasticsearchSecurityDefinition.ps1'
+              ScriptArguments: '-ElasticsearchBaseUrl ${{parameters.elasticSearchBaseUrl}} -SharedKeyVaultName ${{parameters.sharedKeyvaultName}} -SharedKeyVaultSecretName ${{parameters.sharedkeyvaultSecretName}} -KeyVaultName ${{parameters.keyvaultName}} -Cluster ${{parameters.cluster}} -ElasticsearchApiUser ${{parameters.elasticSearchApiUser}}'
+              azurePowerShellVersion: 'LatestVersion'
