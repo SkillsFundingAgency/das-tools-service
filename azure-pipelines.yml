@@ -14,8 +14,6 @@ pr: none
 
 variables:
   - group: 'Dev Management Resources'
-  - name: buildNumber
-    value: $(Build.BuildNumber)
 
 stages:
 - stage: build
@@ -50,6 +48,7 @@ stages:
 
       - task: Docker@2
         displayName: Push Image
+        condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
         inputs:
           command: push
           repository: apprenticeshipsdevops/das-tools-service
@@ -71,11 +70,50 @@ stages:
 
 - stage: deployment
   displayName: Deploy Application
-  dependsOn: build
   jobs:
   - deployment: deploy_dev
+    dependsOn: build
+    condition: and(succeeded('validate'), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
     displayName: Deploy Dev
     environment: DEV
+    variables:
+      - group: Tools - ENV - DEV
+    pool:
+      name: 'DAS - Continuous Integration'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: replacetokens@3
+            inputs:
+              rootDirectory: $(Pipeline.Workspace)/artifact/manifests
+              targetFiles: '*.yml'
+              encoding: 'auto'
+              writeBOM: true
+              actionOnMissing: 'fail'
+              keepToken: false
+              tokenPrefix: '{{'
+              tokenSuffix: '}}'
+          - task: KubectlInstaller@0
+            displayName: 'Install Kubectl latest'
+          - task: Kubernetes@1
+            displayName: 'kubectl apply'
+            inputs:
+              connectionType: 'Azure Resource Manager'
+              azureSubscriptionEndpoint: SFA-DAS-DevTest-ARM
+              azureResourceGroup: $(AKSResourceGroupName)
+              kubernetesCluster: $(AKSClusterName)
+              useClusterAdmin: true
+              command: apply
+              useConfigurationFile: true
+              configuration: $(Pipeline.Workspace)/artifact/manifests
+  - deployment: deploy_prod
+    dependsOn: build
+    condition: and(succeeded('validate'), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
+    displayName: Deploy Prod
+    environment: PROD
+    variables:
+      - group: Tools - ENV - PROD
     pool:
       name: 'DAS - Continuous Integration'
     strategy:

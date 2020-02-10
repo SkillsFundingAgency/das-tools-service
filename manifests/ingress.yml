@@ -4,10 +4,10 @@ metadata:
   labels:
     service: das-tool-service
   name: das-tool-service
-  namespace: engineering
+  namespace: {{Namespace}}
 spec:
   rules:
-  - host: tools.apprenticeships.education.gov.uk
+  - host: {{IngressHost}}
     http:
       paths:
       - backend:
@@ -28,5 +28,5 @@ spec:
         path: /grafana
   tls:
   - hosts:
-    - tools.apprenticeships.education.gov.uk
+    - {{IngressHost}}
     secretName: wildcard-apprenticeships-education-gov-uk
