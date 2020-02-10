@@ -55,34 +55,3 @@ jobs:
               command: apply
               useConfigurationFile: true
               configuration: $(Pipeline.Workspace)/artifact/manifests/deployment.yml
-
-
-
-  - deployment: deploy_${{parameters.environment}}
-    displayName: 'Deploy user and role definitions to ${{parameters.cluster}}'
-    environment: '${{parameters.environment}}'
-
-    pool:
-      name: 'DAS - Continuous Integration'
-
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: AzureResourceGroupDeployment@2
-            inputs:
-              azureSubscription: '${{parameters.azureSubscription}}'
-              action: 'Create Or Update Resource Group'
-              resourceGroupName: '${{parameters.resourceGroupName}}'
-              location: 'West Europe'
-              templateLocation: 'Linked artifact'
-              csmFile: '$(Pipeline.Workspace)/artifact/azure/template.json'
-              overrideParameters: '-resourceEnvironmentName ${{parameters.resourceEnvironmentName}} -serviceName ${{parameters.serviceName}} -keyVaultAccessPolicies ${{parameters.keyVaultAccessPolicies}}'
-              deploymentMode: 'Incremental'
-          - task: AzurePowerShell@4
-            inputs:
-              azureSubscription: '${{parameters.azureSubscription}}'
-              ScriptType: 'FilePath'
-              ScriptPath: '$(Pipeline.Workspace)/artifact/tools/Set-ElasticsearchSecurityDefinition.ps1'
-              ScriptArguments: '-ElasticsearchBaseUrl ${{parameters.elasticSearchBaseUrl}} -SharedKeyVaultName ${{parameters.sharedKeyvaultName}} -SharedKeyVaultSecretName ${{parameters.sharedkeyvaultSecretName}} -KeyVaultName ${{parameters.keyvaultName}} -Cluster ${{parameters.cluster}} -ElasticsearchApiUser ${{parameters.elasticSearchApiUser}}'
-              azurePowerShellVersion: 'LatestVersion'
