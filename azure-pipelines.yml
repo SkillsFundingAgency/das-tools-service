@@ -69,9 +69,9 @@ stages:
 
 - stage: deployment
   displayName: Deploy Application
+  dependsOn: build
   jobs:
   - deployment: deploy_dev
-    dependsOn: build
     condition: and(succeeded('validate'), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
     displayName: Deploy Dev
     environment: DEV
@@ -107,7 +107,6 @@ stages:
               useConfigurationFile: true
               configuration: $(Pipeline.Workspace)/artifact/manifests
   - deployment: deploy_prod
-    dependsOn: build
     condition: and(succeeded('validate'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     displayName: Deploy Prod
     environment: PROD
