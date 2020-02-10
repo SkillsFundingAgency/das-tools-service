@@ -77,7 +77,7 @@ stages:
       azureSubscription: SFA-DAS-DevTest-ARM
       aksResourceGroupName: $(AKSClusterName)
       aksClusterName: $(AKSClusterName)
-      environment: $(EnvironmentName)
+      environment: dev
       variableGroupName: Tools - ENV - DEV
 
 - stage: deploy_prod
@@ -90,5 +90,5 @@ stages:
       azureSubscription: SFA-DAS-DevTest-ARM
       aksResourceGroupName: $(AKSClusterName)
       aksClusterName: $(AKSClusterName)
-      environment: $(EnvironmentName)
+      environment: prod
       variableGroupName: Tools - ENV - PROD
