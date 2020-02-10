@@ -72,7 +72,7 @@ stages:
   dependsOn: build
   jobs:
   - deployment: deploy_dev
-    condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
+    condition: succeeded()
     displayName: Deploy Dev
     environment: DEV
     variables:
