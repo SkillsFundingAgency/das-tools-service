@@ -120,6 +120,7 @@ stages:
         deploy:
           steps:
           - task: replacetokens@3
+            displayName: 'Tokenize Manifests'
             inputs:
               rootDirectory: $(Pipeline.Workspace)/artifact/manifests
               targetFiles: '*.yml'
@@ -132,7 +133,7 @@ stages:
           - task: KubectlInstaller@0
             displayName: 'Install Kubectl latest'
           - task: Kubernetes@1
-            displayName: 'kubectl apply'
+            displayName: 'Configure Ingress'
             inputs:
               connectionType: 'Azure Resource Manager'
               azureSubscriptionEndpoint: SFA-DAS-DevTest-ARM
@@ -141,4 +142,15 @@ stages:
               useClusterAdmin: true
               command: apply
               useConfigurationFile: true
-              configuration: $(Pipeline.Workspace)/artifact/manifests
+              configuration: $(Pipeline.Workspace)/artifact/manifests/ingress-$(EnvironmentName)
+          - task: Kubernetes@1
+            displayName: 'Configure Deployment'
+            inputs:
+              connectionType: 'Azure Resource Manager'
+              azureSubscriptionEndpoint: SFA-DAS-DevTest-ARM
+              azureResourceGroup: $(AKSResourceGroupName)
+              kubernetesCluster: $(AKSClusterName)
+              useClusterAdmin: true
+              command: apply
+              useConfigurationFile: true
+              configuration: $(Pipeline.Workspace)/artifact/manifests/deployment.yml

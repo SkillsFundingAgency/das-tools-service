@@ -32,4 +32,4 @@ spec:
   tls:
   - hosts:
     - {{IngressHost}}
-    secretName: wildcard-apprenticeships-education-gov-uk
+    secretName: {{TlsSecretName}}

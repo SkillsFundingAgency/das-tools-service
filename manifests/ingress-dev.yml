@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  labels:
+    service: das-tool-service
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/redirect-entry-point: https
+  name: das-tool-service
+  namespace: {{Namespace}}
+spec:
+  rules:
+  - host: {{IngressHost}}
+    http:
+      paths:
+      - backend:
+          serviceName: das-tool-service-web
+          servicePort: 80
+        path: /
+  tls:
+  - hosts:
+    - {{IngressHost}}
+    secretName: {{TlsSecretName}}
