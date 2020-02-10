@@ -48,7 +48,6 @@ stages:
 
       - task: Docker@2
         displayName: Push Image
-        condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
         inputs:
           command: push
           repository: apprenticeshipsdevops/das-tools-service
@@ -109,7 +108,7 @@ stages:
               configuration: $(Pipeline.Workspace)/artifact/manifests
   - deployment: deploy_prod
     dependsOn: build
-    condition: and(succeeded('validate'), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
+    condition: and(succeeded('validate'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     displayName: Deploy Prod
     environment: PROD
     variables:
