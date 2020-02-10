@@ -107,6 +107,7 @@ stages:
               useConfigurationFile: true
               configuration: $(Pipeline.Workspace)/artifact/manifests
   - deployment: deploy_prod
+    dependsOn: "deploy_dev"
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     displayName: Deploy Prod
     environment: PROD
