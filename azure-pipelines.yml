@@ -68,7 +68,7 @@ stages:
           artifactName: 'artifact'
 
 - stage: deploy_dev
-  displayName: Deploy Application
+  displayName: Deploy Dev Environment
   dependsOn: build
   condition: succeeded()
   jobs:
@@ -81,7 +81,7 @@ stages:
       variableGroupName: Tools - ENV - DEV
 
 - stage: deploy_prod
-  displayName: Deploy Application
+  displayName: Deploy Prod Environment
   dependsOn: deploy_dev
   condition: and(succeeded('deploy_dev'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   jobs:
