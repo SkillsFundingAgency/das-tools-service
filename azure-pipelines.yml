@@ -75,7 +75,7 @@ stages:
   - template: azure-pipelines-deployment-template.yml
     parameters:
       azureSubscription: SFA-DAS-DevTest-ARM
-      aksResourceGroupName: $(AKSClusterName)
+      aksResourceGroupName: $(AKSResourceGroupName)
       aksClusterName: $(AKSClusterName)
       environment: dev
       variableGroupName: Tools - ENV - DEV
@@ -88,7 +88,7 @@ stages:
   - template: azure-pipelines-deployment-template.yml
     parameters:
       azureSubscription: SFA-DAS-DevTest-ARM
-      aksResourceGroupName: $(AKSClusterName)
+      aksResourceGroupName: $(AKSResourceGroupName)
       aksClusterName: $(AKSClusterName)
       environment: prod
       variableGroupName: Tools - ENV - PROD
