@@ -20,7 +20,7 @@ spec:
     - web
     - websecure
   routes:
-    - match: Host('{{IngressHost}}')
+    - match: Host(`{{IngressHost}}`)
       kind: Rule
       priority: 1
       services:
