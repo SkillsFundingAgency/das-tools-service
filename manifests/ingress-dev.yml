@@ -1,22 +1,37 @@
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
 metadata:
-  labels:
-    service: das-tool-service
-  annotations:
-    kubernetes.io/ingress.class: traefik
-  name: das-tool-service-ingress
+  name: das-tool-service-redirectscheme
   namespace: {{Namespace}}
 spec:
-  rules:
-  - host: {{IngressHost}}
-    http:
-      paths:
-      - backend:
-          serviceName: das-tool-service-svc
-          servicePort: 80
-        path: /
+  redirectScheme:
+    scheme: https
+    permanent: true
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: das-tool-service-web
+  namespace: {{Namespace}}
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host('{{IngressHost}}'')
+      kind: Rule
+      priority: 1
+      services:
+        - name: das-tool-service-web
+          port: 80
+          healthCheck:
+            path: /health
+            host: {{IngressHost}}
+            intervalSeconds: 7
+            timeoutSeconds: 60
+      middlewares:
+        - name: das-tool-service-redirectscheme
   tls:
-  - hosts:
-    - {{IngressHost}}
     secretName: {{TlsSecretName}}
