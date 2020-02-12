@@ -5,7 +5,7 @@ metadata:
     service: das-tool-service
   annotations:
     kubernetes.io/ingress.class: traefik
-  name: das-tool-service
+  name: das-tool-service-ingress
   namespace: {{Namespace}}
 spec:
   rules:
@@ -13,7 +13,7 @@ spec:
     http:
       paths:
       - backend:
-          serviceName: das-tool-service-web
+          serviceName: das-tool-service-svc
           servicePort: 80
         path: /
   tls:

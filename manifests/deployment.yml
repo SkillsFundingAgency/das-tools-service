@@ -5,7 +5,7 @@ metadata:
   labels:
     app: das-tool-service-web
     service: das-tool-service
-  name: das-tool-service-web
+  name: das-tool-service-svc
   namespace: {{Namespace}}
 spec:
   ports:
