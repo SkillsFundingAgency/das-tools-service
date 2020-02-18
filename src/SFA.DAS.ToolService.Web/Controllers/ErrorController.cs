@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 namespace SFA.DAS.ToolService.Web.Controllers
 {
     [Route("error")]
-    public class ErrorController : Controller
+    public class ErrorController : BaseController
     {
 
         [Route("403")]

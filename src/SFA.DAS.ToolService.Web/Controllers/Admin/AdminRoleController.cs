@@ -9,7 +9,7 @@ using SFA.DAS.ToolService.Web.Models.Admin;
 
 namespace SFA.DAS.ToolService.Web.Controllers.Admin
 {
-    public class AdminRoleController : Controller
+    public class AdminRoleController : BaseController
     {
         private readonly ILogger logger;
         private readonly IApplicationService applicationService;

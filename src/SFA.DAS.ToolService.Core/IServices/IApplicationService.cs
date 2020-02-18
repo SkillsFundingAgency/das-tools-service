@@ -15,5 +15,7 @@ namespace SFA.DAS.ToolService.Core.IServices
         Task AssignApplicationToRole(int applicationId, int roleId);
         void RemoveApplicationFromRole(int applicationId, int roleId);
         Task AddApplication(string name, string description, string path, bool isExternal);
+        Task<List<Application>> GetAllApplications();
+        void RemoveApplication(int id);
     }
 }

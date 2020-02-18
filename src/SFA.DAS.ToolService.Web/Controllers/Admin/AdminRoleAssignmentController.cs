@@ -10,7 +10,7 @@ using SFA.DAS.ToolService.Web.Models.Admin;
 
 namespace SFA.DAS.ToolService.Web.Controllers.Admin
 {
-    public class AdminRoleAssignmentController : Controller
+    public class AdminRoleAssignmentController : BaseController
     {
         private readonly ILogger logger;
         private readonly IApplicationService applicationService;
@@ -35,7 +35,6 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
         [HttpPost("admin/role-assignments")]
         public IActionResult RoleAssignmentHandleChoice(GetAvailableRolesViewModel model)
         {
-
             return RedirectToAction(model.Action, new { roleId = model.RoleId });
         }
 
@@ -78,7 +77,7 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
         {
 
             await applicationService.AssignApplicationToRole(model.ApplicationId, model.RoleId);
-            return RedirectToAction("ActionComplete");
+            return RedirectToAction(nameof(AdminController.ActionComplete), typeof(AdminController), new { message = "The requested role assignment has been updated." });
         }
 
         [HttpPost("admin/role-assignments/{roleId}/remove")]
@@ -87,21 +86,7 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
         {
 
             applicationService.RemoveApplicationFromRole(model.ApplicationId, model.RoleId);
-            return RedirectToAction("ActionComplete");
+            return RedirectToAction(nameof(AdminController.ActionComplete), typeof(AdminController), new { message = "The requested role assignment has been updated." });
         }
-
-
-        [HttpGet("admin/role-assignments/complete")]
-        public IActionResult ActionComplete()
-        {
-
-            var model = new ActionCompleteViewModel
-            {
-                Message = "The requested role assignment has been updated."
-            };
-
-            return View(model);
-        }
-
     }
 }

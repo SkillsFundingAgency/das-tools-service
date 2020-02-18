@@ -17,7 +17,7 @@ namespace SFA.DAS.ToolService.Web.Controllers
 {
     // [Authorize(Policy="ValidOrgsOnly")]
     [Authorize]
-    public class ToolsController : Controller
+    public class ToolsController : BaseController
     {
         private readonly ILogger logger;
         private readonly IHttpContextAccessor contextAccessor;

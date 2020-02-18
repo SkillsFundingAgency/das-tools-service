@@ -1,6 +1,7 @@
 @{
     ViewData["Title"] = "Admin Services";
     @model ManageApplicationsViewModel;
+    @using SFA.DAS.ToolService.Web.Extensions
 }
 
 <div class="govuk-grid-row">
@@ -19,19 +20,17 @@
             <div class="govuk-form-group">
                 <fieldset class="govuk-fieldset">
                     <div class="govuk-radios">
+                        @foreach (var action in Enum.GetValues(typeof(ManageApplicationActions)).Cast<ManageApplicationActions>())
+                        {
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="@action" name="Action" type="radio" value="@action" required>
+                                <label class="govuk-label govuk-radios__label" for="@action">
+                                    @action.GetDescription()
+                                </label>
+                            </div>
+                        }
 
-                        <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="role-action-1" name="Action" type="radio" value="AddApplication" required>
-                            <label class="govuk-label govuk-radios__label" for="role-action-1">
-                                Add an application
-                            </label>
-                        </div>
-                        <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="role-action-2" name="Action" type="radio" value="RemoveApplication" required>
-                            <label class="govuk-label govuk-radios__label" for="role-action-2">
-                                Remove an application
-                            </label>
-                        </div>
+
                     </div>
                 </fieldset>
             </div>

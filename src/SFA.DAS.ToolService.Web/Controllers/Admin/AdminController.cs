@@ -7,7 +7,7 @@ using SFA.DAS.ToolService.Web.Models;
 namespace SFA.DAS.ToolService.Web.Controllers.Admin
 {
     [Authorize(Policy = "admin")]
-    public class AdminController : Controller
+    public class AdminController : BaseController
     {
         private readonly ILogger logger;
         private readonly IApplicationService applicationService;
@@ -38,5 +38,16 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
             return RedirectToRoute(model.Choice);
         }
 
+        [HttpGet("admin/complete")]
+        public IActionResult ActionComplete(string message)
+        {
+
+            var model = new ActionCompleteViewModel
+            {
+                Message = message
+            };
+
+            return View(model);
+        }
     }
 }

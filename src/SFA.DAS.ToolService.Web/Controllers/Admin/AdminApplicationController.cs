@@ -8,7 +8,7 @@ using SFA.DAS.ToolService.Web.Models.Admin;
 
 namespace SFA.DAS.ToolService.Web.Controllers.Admin
 {
-    public class AdminApplicationController : Controller
+    public class AdminApplicationController : BaseController
     {
         private readonly ILogger _logger;
         private readonly IApplicationService _applicationService;
@@ -29,37 +29,42 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
         [HttpPost("admin/manage-applications")]
         public IActionResult ManageApplicationsHandleChoice(ManageApplicationsViewModel model)
         {
-
-            return RedirectToAction(model.Action);
+            return RedirectToAction(model.Action.ToString());
         }
 
-        [HttpGet("admin/manage-applications/add-application")]
+        [HttpGet("admin/manage-applications/add")]
         public IActionResult AddApplication()
         {
             return View();
         }
 
-        [HttpPost("admin/manage-applications/add-application")]
+        [HttpPost("admin/manage-applications/add")]
         public async Task<IActionResult> AddApplication(AddApplicationViewModel model)
         {
             if (ModelState.IsValid)
             {
                 Uri.TryCreate(model.Path, UriKind.RelativeOrAbsolute, out var outUri);
                 await _applicationService.AddApplication(model.Name, model.Description, model.Path, outUri.IsAbsoluteUri);
-                return RedirectToAction("ActionComplete");
+                return RedirectToAction(nameof(AdminController.ActionComplete), typeof(AdminController), new { message = "The requested application has been added." });
             }
             return View();
         }
 
-        [HttpGet("admin/manage-applications/add-application/complete")]
-        public IActionResult ActionComplete()
+        [HttpGet("admin/manage-applications/remove")]
+        public async Task<IActionResult> RemoveApplication()
         {
+            var existingApplications = await _applicationService.GetAllApplications();
+            return View(new RemoveApplicationViewModel { ExistingApplications = existingApplications });
+        }
 
-            var model = new ActionCompleteViewModel
+        [HttpPost("admin/manage-applications/remove")]
+        public IActionResult RemoveApplication(RemoveApplicationViewModel model)
+        {
+            if (ModelState.IsValid)
             {
-                Message = "The requested application has been added."
-            };
-
+                _applicationService.RemoveApplication(model.SelectedApplication);
+                return RedirectToAction(nameof(AdminController.ActionComplete), typeof(AdminController), new { message = "The requested application has been removed." });
+            }
             return View(model);
         }
     }

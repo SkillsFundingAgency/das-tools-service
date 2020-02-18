@@ -72,5 +72,15 @@ namespace SFA.DAS.ToolService.Core.Services
             };
             await _applicationRepository.AddApplication(application);
         }
+
+        public async Task<List<Application>> GetAllApplications()
+        {
+            return await _applicationRepository.GetApplications();
+        }
+
+        public void RemoveApplication(int id)
+        {
+            _applicationRepository.RemoveApplication(id);
+        }
     }
 }
