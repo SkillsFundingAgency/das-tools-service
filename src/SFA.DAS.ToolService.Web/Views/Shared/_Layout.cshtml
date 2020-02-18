@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -23,14 +23,22 @@
                     Tool Service
                 </a>
             </div>
-                <span id="navigation" class="govuk-header__navigation das-float-right" aria-hidden="true">
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <a class="govuk-header__link" asp-controller="Account" asp-action="Logout">
-                            Logout
-                        </a>
-                    }
-                </span>
+            <span id="navigation" class="govuk-header__navigation das-float-right" aria-hidden="true">
+
+                @if (User.IsInRole(ApplicationConstants.AdminRole) & (Context.Request.Path != "/"))
+                {
+                    <a class="govuk-header__link" asp-controller="Admin" asp-action="Index">
+                        Admin
+                    </a>
+                }
+
+                @if (User.Identity.IsAuthenticated & (Context.Request.Path != "/"))
+                {
+                    <a class="govuk-header__link" asp-controller="Account" asp-action="Logout">
+                        Logout
+                    </a>
+                }
+            </span>
         </div>
     </header>
     <div class="govuk-width-container">

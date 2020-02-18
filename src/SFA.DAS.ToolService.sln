@@ -1,21 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ToolService.Web", "SFA.DAS.ToolService.Web\SFA.DAS.ToolService.Web.csproj", "{8F5F5D09-6BE2-4573-8D90-E1D43CE657AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ToolService.Web", "SFA.DAS.ToolService.Web\SFA.DAS.ToolService.Web.csproj", "{8F5F5D09-6BE2-4573-8D90-E1D43CE657AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ToolService.Web.UnitTests", "SFA.DAS.ToolService.Web.UnitTests\SFA.DAS.ToolService.Web.UnitTests.csproj", "{9031B37D-0251-4177-BDA6-294ECFE2D9F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ToolService.Web.UnitTests", "SFA.DAS.ToolService.Web.UnitTests\SFA.DAS.ToolService.Web.UnitTests.csproj", "{9031B37D-0251-4177-BDA6-294ECFE2D9F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ToolService.Infrastructure", "SFA.DAS.ToolService.Infrastructure\SFA.DAS.ToolService.Infrastructure.csproj", "{8F20F8C8-B733-484F-8211-06A0B7E7697E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ToolService.Infrastructure", "SFA.DAS.ToolService.Infrastructure\SFA.DAS.ToolService.Infrastructure.csproj", "{8F20F8C8-B733-484F-8211-06A0B7E7697E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ToolService.Infrastructure.UnitTests", "SFA.DAS.ToolService.Infrastructure.UnitTests\SFA.DAS.ToolService.Infrastructure.UnitTests.csproj", "{AD0657F2-0BEB-4FDD-8E78-7A8E4DFCC177}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ToolService.Infrastructure.UnitTests", "SFA.DAS.ToolService.Infrastructure.UnitTests\SFA.DAS.ToolService.Infrastructure.UnitTests.csproj", "{AD0657F2-0BEB-4FDD-8E78-7A8E4DFCC177}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ToolService.Core", "SFA.DAS.ToolService.Core\SFA.DAS.ToolService.Core.csproj", "{35501A08-31EB-49AD-8586-7B204C745BFF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ToolService.Core", "SFA.DAS.ToolService.Core\SFA.DAS.ToolService.Core.csproj", "{35501A08-31EB-49AD-8586-7B204C745BFF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ToolService.Core.UnitTests", "SFA.DAS.ToolService.Core.UnitTests\SFA.DAS.ToolService.Core.UnitTests.csproj", "{B2B3FDFA-F3B0-4220-B7FF-1D2CC7281AC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ToolService.Core.UnitTests", "SFA.DAS.ToolService.Core.UnitTests\SFA.DAS.ToolService.Core.UnitTests.csproj", "{B2B3FDFA-F3B0-4220-B7FF-1D2CC7281AC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ToolService.Authentication", "SFA.DAS.ToolService.Authentication\SFA.DAS.ToolService.Authentication.csproj", "{AEA3988E-A70A-403B-9665-98D0456DECF3}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "SFA.DAS.ToolService.Database", "SFA.DAS.ToolService.Database\SFA.DAS.ToolService.Database.sqlproj", "{FE9F219A-296E-4C88-9EDA-18C7ED6579CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,9 +25,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{8F5F5D09-6BE2-4573-8D90-E1D43CE657AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -102,17 +99,29 @@ Global
 		{B2B3FDFA-F3B0-4220-B7FF-1D2CC7281AC0}.Release|x64.Build.0 = Release|Any CPU
 		{B2B3FDFA-F3B0-4220-B7FF-1D2CC7281AC0}.Release|x86.ActiveCfg = Release|Any CPU
 		{B2B3FDFA-F3B0-4220-B7FF-1D2CC7281AC0}.Release|x86.Build.0 = Release|Any CPU
-		{AEA3988E-A70A-403B-9665-98D0456DECF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AEA3988E-A70A-403B-9665-98D0456DECF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AEA3988E-A70A-403B-9665-98D0456DECF3}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{AEA3988E-A70A-403B-9665-98D0456DECF3}.Debug|x64.Build.0 = Debug|Any CPU
-		{AEA3988E-A70A-403B-9665-98D0456DECF3}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{AEA3988E-A70A-403B-9665-98D0456DECF3}.Debug|x86.Build.0 = Debug|Any CPU
-		{AEA3988E-A70A-403B-9665-98D0456DECF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AEA3988E-A70A-403B-9665-98D0456DECF3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AEA3988E-A70A-403B-9665-98D0456DECF3}.Release|x64.ActiveCfg = Release|Any CPU
-		{AEA3988E-A70A-403B-9665-98D0456DECF3}.Release|x64.Build.0 = Release|Any CPU
-		{AEA3988E-A70A-403B-9665-98D0456DECF3}.Release|x86.ActiveCfg = Release|Any CPU
-		{AEA3988E-A70A-403B-9665-98D0456DECF3}.Release|x86.Build.0 = Release|Any CPU
+		{FE9F219A-296E-4C88-9EDA-18C7ED6579CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE9F219A-296E-4C88-9EDA-18C7ED6579CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE9F219A-296E-4C88-9EDA-18C7ED6579CF}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{FE9F219A-296E-4C88-9EDA-18C7ED6579CF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FE9F219A-296E-4C88-9EDA-18C7ED6579CF}.Debug|x64.Build.0 = Debug|Any CPU
+		{FE9F219A-296E-4C88-9EDA-18C7ED6579CF}.Debug|x64.Deploy.0 = Debug|Any CPU
+		{FE9F219A-296E-4C88-9EDA-18C7ED6579CF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FE9F219A-296E-4C88-9EDA-18C7ED6579CF}.Debug|x86.Build.0 = Debug|Any CPU
+		{FE9F219A-296E-4C88-9EDA-18C7ED6579CF}.Debug|x86.Deploy.0 = Debug|Any CPU
+		{FE9F219A-296E-4C88-9EDA-18C7ED6579CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE9F219A-296E-4C88-9EDA-18C7ED6579CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE9F219A-296E-4C88-9EDA-18C7ED6579CF}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{FE9F219A-296E-4C88-9EDA-18C7ED6579CF}.Release|x64.ActiveCfg = Release|Any CPU
+		{FE9F219A-296E-4C88-9EDA-18C7ED6579CF}.Release|x64.Build.0 = Release|Any CPU
+		{FE9F219A-296E-4C88-9EDA-18C7ED6579CF}.Release|x64.Deploy.0 = Release|Any CPU
+		{FE9F219A-296E-4C88-9EDA-18C7ED6579CF}.Release|x86.ActiveCfg = Release|Any CPU
+		{FE9F219A-296E-4C88-9EDA-18C7ED6579CF}.Release|x86.Build.0 = Release|Any CPU
+		{FE9F219A-296E-4C88-9EDA-18C7ED6579CF}.Release|x86.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9D3223FB-125C-4F15-84F6-6182FD3A8D0A}
 	EndGlobalSection
 EndGlobal

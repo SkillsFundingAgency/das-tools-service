@@ -1,7 +1,6 @@
-@model ToolsHomeViewModel;
-
 @{
     ViewData["Title"] = "Home";
+    @model ToolsHomeViewModel;
 }
 
 <div class="govuk-grid-row">
@@ -9,67 +8,34 @@
         <h1 class="govuk-heading-xl">
             Your Services
         </h1>
+        @if (Model.Applications.Count > 0)
+        {
+            <dl class="govuk-summary-list">
 
-        <dl class="govuk-summary-list">
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-            Message Service
-            </dt>
-            <dd class="govuk-summary-list__value">
-            A secure way to send contextless one time messages.
-            </dd>
-            <dd class="govuk-summary-list__actions">
-            <a class="govuk-link" href=@Url.Content("~/messages")>
-                Open<span class="govuk-visually-hidden"> message service</span>
-            </a>
-            </dd>
-        </div>
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-            Grafana
-            </dt>
-            <dd class="govuk-summary-list__value">
-            View or create graphs using service metrics.
-            </dd>
-            <dd class="govuk-summary-list__actions">
-            <a class="govuk-link" href=@Url.Content("~/grafana")>
-                Open<span class="govuk-visually-hidden"> graphs</span>
-            </a>
-            </dd>
-        </div>
+                @foreach (var m in @Model.Applications)
+                {
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            @m.Name
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @m.Description
+                        </dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" href=@Url.Content(m.Path)>
+                                Open<span class="govuk-visually-hidden"> @m.Name</span>
+                            </a>
+                        </dd>
+                    </div>
+                }
 
-        @{
-            if (Model.HasApprenticeshipsRole)
-            {
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                    Logs
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                    View application logs in Kibana.
-                    </dd>
-                    <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="https://logs.apprenticeships.education.gov.uk/">
-                        Open<span class="govuk-visually-hidden"> logs</span>
-                    </a>
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                    Service Health
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                    View the health of the service.
-                    </dd>
-                    <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="https://status.apprenticeships.education.gov.uk">
-                        Open<span class="govuk-visually-hidden"> service health</span>
-                    </a>
-                    </dd>
-                </div>
-            }
+            </dl>
+        }
+        else
+        {
+            <p class="govuk-body">You don't have any services yet.</p>
+
         }
 
-        </dl>
     </div>
 </div>
