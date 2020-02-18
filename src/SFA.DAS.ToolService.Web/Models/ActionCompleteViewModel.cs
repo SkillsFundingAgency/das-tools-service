@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SFA.DAS.ToolService.Web.Models.Admin
+namespace SFA.DAS.ToolService.Web.Models
 {
     public class ActionCompleteViewModel
     {

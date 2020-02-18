@@ -103,5 +103,12 @@ namespace SFA.DAS.ToolService.Infrastructure.Repositories
 
             _toolServiceDbContext.SaveChanges();
         }
+
+        public async Task AddApplication(Application application)
+        {
+            await _toolServiceDbContext.Application.AddAsync(application);
+
+            _toolServiceDbContext.SaveChanges();
+        }
     }
 }

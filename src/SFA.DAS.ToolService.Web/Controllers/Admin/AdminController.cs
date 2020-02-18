@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using SFA.DAS.ToolService.Core.IServices;
 using SFA.DAS.ToolService.Web.Models;
 
-namespace SFA.DAS.ToolService.Web.Controllers
+namespace SFA.DAS.ToolService.Web.Controllers.Admin
 {
     [Authorize(Policy = "admin")]
     public class AdminController : Controller

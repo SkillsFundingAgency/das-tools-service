@@ -60,5 +60,17 @@ namespace SFA.DAS.ToolService.Core.Services
         {
             return await _applicationRepository.GetRoles();
         }
+
+        public async Task AddApplication(string name, string description, string path, bool isExternal)
+        {
+            var application = new Application()
+            {
+                Name = name,
+                Description = description,
+                Path = path,
+                IsExternal = isExternal? 1:0
+            };
+            await _applicationRepository.AddApplication(application);
+        }
     }
 }

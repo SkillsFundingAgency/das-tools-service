@@ -1,0 +1,43 @@
+@{
+    ViewData["Title"] = "Admin Services";
+    @model ManageApplicationsViewModel;
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <div class="govuk-warning-text">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text">
+                <span class="govuk-warning-text__assistive">Warning</span>
+                This area is for admin users only.
+            </strong>
+        </div>
+
+        <form asp-controller="AdminApplication" asp-action="ManageApplicationsHandleChoice" method="post">
+            <h1 class="govuk-heading-xl">Manage applications</h1>
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <div class="govuk-radios">
+
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="role-action-1" name="Action" type="radio" value="AddApplication" required>
+                            <label class="govuk-label govuk-radios__label" for="role-action-1">
+                                Add an application
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="role-action-2" name="Action" type="radio" value="RemoveApplication" required>
+                            <label class="govuk-label govuk-radios__label" for="role-action-2">
+                                Remove an application
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <button class="govuk-button" data-module="govuk-button">
+                Continue
+            </button>
+        </form>
+    </div>
+</div>

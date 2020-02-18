@@ -13,5 +13,6 @@ namespace SFA.DAS.ToolService.Core.IRepositories
         Task<int> GetRoleId(string name);
         Task InsertApplicationRoleMapping(int applicationId, int roleId);
         void DeleteApplicationRoleMapping(int applicationId, int roleId);
+        Task AddApplication(Application application);
     }
 }
