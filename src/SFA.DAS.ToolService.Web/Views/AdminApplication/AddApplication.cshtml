@@ -1,6 +1,8 @@
 @{
     ViewData["Title"] = "Admin Services";
     @model AddApplicationViewModel
+    @using SFA.DAS.ToolService.Web.Controllers.Admin
+    @using SFA.DAS.ToolService.Web.Extensions
 }
 
 <div class="govuk-grid-row">
@@ -14,7 +16,7 @@
             </strong>
         </div>
 
-        <form asp-controller="AdminApplication" asp-action="AddApplication" method="post">
+        <form asp-controller="@typeof(AdminApplicationController).GetControllerName()" asp-action="@nameof(AdminApplicationController.AddApplication)" method="post">
             <div class="govuk-form-group">
                 <label asp-for="Name" class="govuk-label control-label">
                     Application Name

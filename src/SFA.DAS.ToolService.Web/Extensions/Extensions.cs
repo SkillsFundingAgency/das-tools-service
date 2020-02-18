@@ -20,5 +20,10 @@ namespace SFA.DAS.ToolService.Web.Extensions
             }
             return GenericEnum.ToString();
         }
+
+        public static string GetControllerName(this Type controller)
+        {
+            return controller.Name.Replace("Controller", "");
+        }
     }
 }

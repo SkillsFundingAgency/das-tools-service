@@ -1,7 +1,8 @@
 @{
     ViewData["Title"] = "Admin Services";
     @model ApplicationsForRoleViewModel;
-
+    @using SFA.DAS.ToolService.Web.Controllers.Admin
+    @using SFA.DAS.ToolService.Web.Extensions
 }
 
 <div class="govuk-grid-row">
@@ -17,7 +18,7 @@
 
         @if (@Model.Applications.Count > 0)
         {
-            <form asp-controller="Admin" asp-action="RemoveApplicationFromRole" method="post">
+            <form asp-controller="@typeof(AdminRoleAssignmentController).GetControllerName()" asp-action="@nameof(AdminRoleAssignmentController.RemoveApplicationFromRole)" method="post">
 
                 <div class="govuk-form-group">
                     <fieldset class="govuk-fieldset">
@@ -53,9 +54,8 @@
         {
             <p class="govuk-body">There are no applications assigned to this role.</p>
             <p class="govuk-body">
-                You can return to the start by clicking <a asp-controller="Admin" asp-action="Index">this link</a>.
+                You can return to the start by clicking <a asp-controller="@typeof(AdminController).GetControllerName()" asp-action="@nameof(AdminController.Index)">this link</a>.
             </p>
         }
-
     </div>
 </div>

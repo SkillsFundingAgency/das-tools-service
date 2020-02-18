@@ -1,6 +1,7 @@
 @{
     ViewData["Title"] = "Admin Services";
     @model ManageApplicationsViewModel;
+    @using SFA.DAS.ToolService.Web.Controllers.Admin
     @using SFA.DAS.ToolService.Web.Extensions
 }
 
@@ -15,7 +16,7 @@
             </strong>
         </div>
 
-        <form asp-controller="AdminApplication" asp-action="ManageApplicationsHandleChoice" method="post">
+        <form asp-controller="@typeof(AdminApplicationController).GetControllerName()" asp-action="@nameof(AdminApplicationController.ManageApplicationsHandleChoice)" method="post">
             <h1 class="govuk-heading-xl">Manage applications</h1>
             <div class="govuk-form-group">
                 <fieldset class="govuk-fieldset">

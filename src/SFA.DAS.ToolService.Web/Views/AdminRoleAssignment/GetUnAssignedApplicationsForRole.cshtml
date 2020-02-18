@@ -1,7 +1,8 @@
 @{
     ViewData["Title"] = "Admin Services";
     @model ApplicationsForRoleViewModel;
-
+    @using SFA.DAS.ToolService.Web.Controllers.Admin
+    @using SFA.DAS.ToolService.Web.Extensions
 }
 
 <div class="govuk-grid-row">
@@ -17,7 +18,7 @@
 
         @if (@Model.Applications.Count > 0)
         {
-            <form asp-controller="Admin" asp-action="AssignRoleToApplication" method="post">
+            <form asp-controller="@typeof(AdminRoleAssignmentController).GetControllerName()" asp-action="@nameof(AdminRoleAssignmentController.AssignRoleToApplication)" method="post">
 
                 <div class="govuk-form-group">
                     <fieldset class="govuk-fieldset">
@@ -54,6 +55,5 @@
             <p class="govuk-body">There are no applications available to assign to this role.</p>
 
         }
-
     </div>
 </div>

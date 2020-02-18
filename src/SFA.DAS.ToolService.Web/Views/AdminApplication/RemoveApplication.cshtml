@@ -1,6 +1,8 @@
 @{
     ViewData["Title"] = "Admin Services";
     @model RemoveApplicationViewModel
+    @using SFA.DAS.ToolService.Web.Controllers.Admin
+    @using SFA.DAS.ToolService.Web.Extensions
 }
 
 <div class="govuk-grid-row">
@@ -16,7 +18,7 @@
 
         @if (Model.ExistingApplications.Count > 0)
         {
-            <form asp-controller="AdminApplication" asp-action="RemoveApplication" method="post">
+            <form asp-controller="@typeof(AdminApplicationController).GetControllerName()" asp-action="@nameof(AdminApplicationController.RemoveApplication)" method="post">
                 <div class="govuk-form-group">
                     <fieldset class="govuk-fieldset">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
@@ -49,7 +51,7 @@
         {
             <p class="govuk-body">There are no applications.</p>
             <p class="govuk-body">
-                You can return to the start by clicking <a asp-controller="Admin" asp-action="Index">this link</a>.
+                You can return to the start by clicking <a asp-controller="@typeof(AdminController).GetControllerName()" asp-action="@nameof(AdminController.Index)">this link</a>.
             </p>
 
         }

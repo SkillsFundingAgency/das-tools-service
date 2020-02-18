@@ -1,7 +1,8 @@
-
 @{
     ViewData["Title"] = "Admin Services";
-    @model ActionCompleteViewModel;
+    @model AdminActionCompleteViewModel;
+    @using SFA.DAS.ToolService.Web.Controllers.Admin
+    @using SFA.DAS.ToolService.Web.Extensions
 }
 
 <div class="govuk-grid-row">
@@ -24,10 +25,8 @@
             </div>
         </div>
 
-
         <p class="govuk-body">
-        You can return to the start by clicking <a asp-controller="Admin" asp-action="Index">this link</a>.
+            You can return to the start by clicking <a asp-controller="@typeof(AdminController).GetControllerName()" asp-action="@nameof(AdminController.Index)">this link</a>.
         </p>
-
     </div>
 </div>

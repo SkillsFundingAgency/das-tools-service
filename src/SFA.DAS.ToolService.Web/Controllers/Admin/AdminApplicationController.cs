@@ -44,7 +44,7 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
             {
                 Uri.TryCreate(model.Path, UriKind.RelativeOrAbsolute, out var outUri);
                 await _applicationService.AddApplication(model.Name, model.Description, model.Path, outUri.IsAbsoluteUri);
-                return RedirectToAction(nameof(AdminController.ActionComplete), typeof(AdminController), new { message = "The requested application has been added." });
+                return RedirectToAction(nameof(AdminController.AdminActionComplete), typeof(AdminController), new { message = "The requested application has been added." });
             }
             return View();
         }
@@ -62,7 +62,7 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
             if (ModelState.IsValid)
             {
                 _applicationService.RemoveApplication(model.SelectedApplication);
-                return RedirectToAction(nameof(AdminController.ActionComplete), typeof(AdminController), new { message = "The requested application has been removed." });
+                return RedirectToAction(nameof(AdminController.AdminActionComplete), typeof(AdminController), new { message = "The requested application has been removed." });
             }
             return View(model);
         }

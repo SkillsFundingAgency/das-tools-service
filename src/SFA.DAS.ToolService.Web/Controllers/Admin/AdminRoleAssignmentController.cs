@@ -69,7 +69,7 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
         public async Task<IActionResult> AssignRoleToApplication(ApplicationsForRoleViewModel model)
         {
             await applicationService.AssignApplicationToRole(model.ApplicationId, model.RoleId);
-            return RedirectToAction(nameof(AdminController.ActionComplete), typeof(AdminController), new { message = "The requested role assignment has been updated." });
+            return RedirectToAction(nameof(AdminController.AdminActionComplete), typeof(AdminController), new { message = "The requested role assignment has been updated." });
         }
 
         [HttpPost("admin/role-assignments/{roleId}/remove")]
@@ -77,7 +77,7 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
         public IActionResult RemoveApplicationFromRole(ApplicationsForRoleViewModel model)
         {
             applicationService.RemoveApplicationFromRole(model.ApplicationId, model.RoleId);
-            return RedirectToAction(nameof(AdminController.ActionComplete), typeof(AdminController), new { message = "The requested role assignment has been updated." });
+            return RedirectToAction(nameof(AdminController.AdminActionComplete), typeof(AdminController), new { message = "The requested role assignment has been updated." });
         }
     }
 }
