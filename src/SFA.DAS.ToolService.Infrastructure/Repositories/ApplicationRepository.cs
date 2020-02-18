@@ -50,10 +50,9 @@ namespace SFA.DAS.ToolService.Infrastructure.Repositories
             return result;
         }
 
-        public async Task<List<Application>> GetAppications()
+        public async Task<List<Application>> GetApplications()
         {
-            var result = await _toolServiceDbContext.Application
-                .Where(c => c.Public.Equals(0)).ToListAsync();
+            var result = await _toolServiceDbContext.Application.ToListAsync();
 
             return result;
         }
@@ -101,6 +100,22 @@ namespace SFA.DAS.ToolService.Infrastructure.Repositories
             _toolServiceDbContext.ApplicationRole
                 .Remove(mappingId);
 
+            _toolServiceDbContext.SaveChanges();
+        }
+
+        public async Task AddApplication(Application application)
+        {
+            await _toolServiceDbContext.Application.AddAsync(application);
+
+            _toolServiceDbContext.SaveChanges();
+        }
+
+        public void RemoveApplication(int id)
+        {
+            var app = _toolServiceDbContext.Application.First(a => a.Id == id);
+            var appRoles = _toolServiceDbContext.ApplicationRole.Where(r => r.ApplicationId == app.Id);
+            _toolServiceDbContext.ApplicationRole.RemoveRange(appRoles);
+            _toolServiceDbContext.Application.Remove(app);
             _toolServiceDbContext.SaveChanges();
         }
     }

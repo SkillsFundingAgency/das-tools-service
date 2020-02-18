@@ -1,15 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.ToolService.Core.IServices;
-using SFA.DAS.ToolService.Web.Models.Admin;
 
-namespace SFA.DAS.ToolService.Web.Controllers
+namespace SFA.DAS.ToolService.Web.Controllers.Admin
 {
-    public class AdminRoleController : Controller
+    public class AdminRoleController : BaseController
     {
         private readonly ILogger logger;
         private readonly IApplicationService applicationService;
@@ -26,6 +21,5 @@ namespace SFA.DAS.ToolService.Web.Controllers
         {
             return View();
         }
-
     }
 }

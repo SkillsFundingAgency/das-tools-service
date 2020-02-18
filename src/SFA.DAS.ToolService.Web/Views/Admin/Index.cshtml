@@ -1,6 +1,8 @@
 @{
     ViewData["Title"] = "Admin Services";
     @model IndexViewModel;
+    @using SFA.DAS.ToolService.Web.Controllers.Admin
+    @using SFA.DAS.ToolService.Web.Extensions
 }
 
 <div class="govuk-grid-row">
@@ -14,7 +16,7 @@
             </strong>
         </div>
 
-        <form asp-controller="Admin" asp-action="IndexHandleChoice" method="post">
+        <form asp-controller="@typeof(AdminController).GetControllerName()" asp-action="@nameof(AdminController.IndexHandleChoice)" method="post">
 
             <div class="govuk-form-group">
                 <fieldset class="govuk-fieldset">
@@ -46,15 +48,9 @@
                 </fieldset>
             </div>
 
-
             <button class="govuk-button" data-module="govuk-button">
                 Continue
             </button>
         </form>
-
-
-
-
-
     </div>
 </div>

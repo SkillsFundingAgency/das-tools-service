@@ -1,15 +1,13 @@
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using SFA.DAS.ToolService.Web.Models;
 
 namespace SFA.DAS.ToolService.Web.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private readonly ILogger logger;
 
@@ -32,6 +30,5 @@ namespace SFA.DAS.ToolService.Web.Controllers
             });
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
-
     }
 }

@@ -1,3 +1,7 @@
+@using SFA.DAS.ToolService.Web.Controllers;
+@using SFA.DAS.ToolService.Web.Controllers.Admin;
+@using SFA.DAS.ToolService.Web.Extensions;
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,7 +23,7 @@
     <header class="govuk-header das-header " role="banner" data-module="header">
         <div class="govuk-header__container govuk-width-container">
             <div class="govuk-header__content">
-                <a href="/" class="govuk-header__link govuk-header__link--service-name">
+                <a asp-controller="@typeof(ToolsController).GetControllerName()" asp-action="@nameof(ToolsController.Home)" class="govuk-header__link govuk-header__link--service-name">
                     Tool Service
                 </a>
             </div>
@@ -27,14 +31,14 @@
 
                 @if (User.IsInRole(ApplicationConstants.AdminRole) & (Context.Request.Path != "/"))
                 {
-                    <a class="govuk-header__link" asp-controller="Admin" asp-action="Index">
+                    <a class="govuk-header__link" asp-controller="@typeof(AdminController).GetControllerName()" asp-action="@nameof(AdminController.Index)">
                         Admin
                     </a>
                 }
 
                 @if (User.Identity.IsAuthenticated & (Context.Request.Path != "/"))
                 {
-                    <a class="govuk-header__link" asp-controller="Account" asp-action="Logout">
+                    <a class="govuk-header__link" asp-controller="@typeof(AccountController).GetControllerName()" asp-action="@nameof(AccountController.Logout)">
                         Logout
                     </a>
                 }
@@ -43,7 +47,8 @@
     </header>
     <div class="govuk-width-container">
         <div class="govuk-phase-banner">
-            <p class="govuk-phase-banner__content"><strong class="govuk-tag govuk-phase-banner__content__tag">
+            <p class="govuk-phase-banner__content">
+                <strong class="govuk-tag govuk-phase-banner__content__tag">
                     preview
                 </strong>
                 <span class="govuk-phase-banner__text">
@@ -55,10 +60,9 @@
         <main class="govuk-main-wrapper " id="main-content" role="main">
 
             @RenderBody()
-
         </main>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    </body>
+</body>
 </html>

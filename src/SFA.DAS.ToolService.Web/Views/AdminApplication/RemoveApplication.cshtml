@@ -1,6 +1,6 @@
 @{
     ViewData["Title"] = "Admin Services";
-    @model ApplicationsForRoleViewModel;
+    @model RemoveApplicationViewModel
     @using SFA.DAS.ToolService.Web.Controllers.Admin
     @using SFA.DAS.ToolService.Web.Extensions
 }
@@ -16,26 +16,23 @@
             </strong>
         </div>
 
-        @if (@Model.Applications.Count > 0)
+        @if (Model.ExistingApplications.Count > 0)
         {
-            <form asp-controller="@typeof(AdminRoleAssignmentController).GetControllerName()" asp-action="@nameof(AdminRoleAssignmentController.AssignRoleToApplication)" method="post">
-
+            <form asp-controller="@typeof(AdminApplicationController).GetControllerName()" asp-action="@nameof(AdminApplicationController.RemoveApplication)" method="post">
                 <div class="govuk-form-group">
                     <fieldset class="govuk-fieldset">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
                             <h1 class="govuk-fieldset__heading">
-                                Pick an Application
+                                Pick an Application to remove
                             </h1>
                         </legend>
 
-                        <input id="role-id" name="RoleId" value="@Model.RoleId" type="hidden">
-
                         <div class="govuk-radios">
 
-                            @foreach (var app in @Model.Applications)
+                            @foreach (var app in @Model.ExistingApplications)
                             {
                                 <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" id="app-choice" name="ApplicationId" type="radio" value="@app.Id">
+                                    <input class="govuk-radios__input" id="app-choice" name="SelectedApplication" type="radio" value="@app.Id">
                                     <label class="govuk-label govuk-radios__label" for="app-choice">
                                         @app.Name
                                     </label>
@@ -52,7 +49,10 @@
         }
         else
         {
-            <p class="govuk-body">There are no applications available to assign to this role.</p>
+            <p class="govuk-body">There are no applications.</p>
+            <p class="govuk-body">
+                You can return to the start by clicking <a asp-controller="@typeof(AdminController).GetControllerName()" asp-action="@nameof(AdminController.Index)">this link</a>.
+            </p>
 
         }
     </div>

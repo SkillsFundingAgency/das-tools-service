@@ -3,11 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.ToolService.Core.IServices;
 using SFA.DAS.ToolService.Web.Models;
+using SFA.DAS.ToolService.Web.Models.Admin;
 
-namespace SFA.DAS.ToolService.Web.Controllers
+namespace SFA.DAS.ToolService.Web.Controllers.Admin
 {
     [Authorize(Policy = "admin")]
-    public class AdminController : Controller
+    public class AdminController : BaseController
     {
         private readonly ILogger logger;
         private readonly IApplicationService applicationService;
@@ -29,7 +30,6 @@ namespace SFA.DAS.ToolService.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult IndexHandleChoice(IndexViewModel model)
         {
-
             if (string.IsNullOrEmpty(model.Choice))
             {
                 return new BadRequestResult();
@@ -38,5 +38,15 @@ namespace SFA.DAS.ToolService.Web.Controllers
             return RedirectToRoute(model.Choice);
         }
 
+        [HttpGet("admin/complete")]
+        public IActionResult AdminActionComplete(string message)
+        {
+            var model = new AdminActionCompleteViewModel
+            {
+                Message = message
+            };
+
+            return View(model);
+        }
     }
 }
