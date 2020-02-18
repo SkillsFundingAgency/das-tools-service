@@ -3,8 +3,6 @@
     @model AddApplicationViewModel
 }
 
-
-
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
@@ -23,19 +21,19 @@
                 </label>
                 <span asp-validation-for="Name" class="ext-danger">
                 </span>
-                <input asp-for="Name" class="govuk-input" required/>
+                <input asp-for="Name" class="govuk-input" required />
             </div>
             <div class="govuk-form-group">
                 <label asp-for="Description" class="govuk-label">
                     Application Description
                 </label>
-                <input asp-for="Description" class="govuk-input" required/>
+                <input asp-for="Description" class="govuk-input" required />
             </div>
             <div class="govuk-form-group">
                 <label asp-for="Path" class="govuk-label">
                     Path to Application
                 </label>
-                <input asp-for="Path" class="govuk-input" required/>
+                <input asp-for="Path" class="govuk-input" required />
             </div>
             <div class="govuk-form-group">
                 <button class="govuk-button" data-module="govuk-button">

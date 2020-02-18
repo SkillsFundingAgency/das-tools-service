@@ -1,17 +1,12 @@
-using System.Diagnostics;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using SFA.DAS.ToolService.Web.Models;
-using Microsoft.AspNetCore.Http;
-using System.Security.Claims;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using SFA.DAS.ToolService.Core.IRepositories;
 using SFA.DAS.ToolService.Core.IServices;
-using SFA.DAS.ToolService.Core.Entities;
+using SFA.DAS.ToolService.Web.Models;
 
 namespace SFA.DAS.ToolService.Web.Controllers
 {
@@ -39,7 +34,8 @@ namespace SFA.DAS.ToolService.Web.Controllers
             var userName = user.FindFirst(ClaimTypes.NameIdentifier).Value;
             var roles = user.FindAll(ClaimTypes.Role).Select(x => x.Value).ToArray();
             var applications = await applicationService.GetApplicationsForRole(roles);
-            var model = new ToolsHomeViewModel {
+            var model = new ToolsHomeViewModel
+            {
                 UserName = userName,
                 Applications = applications
             };

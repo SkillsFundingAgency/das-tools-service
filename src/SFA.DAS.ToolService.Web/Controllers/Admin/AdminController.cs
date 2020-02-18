@@ -29,7 +29,6 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
         [ValidateAntiForgeryToken]
         public IActionResult IndexHandleChoice(IndexViewModel model)
         {
-
             if (string.IsNullOrEmpty(model.Choice))
             {
                 return new BadRequestResult();
@@ -41,7 +40,6 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
         [HttpGet("admin/complete")]
         public IActionResult ActionComplete(string message)
         {
-
             var model = new ActionCompleteViewModel
             {
                 Message = message
