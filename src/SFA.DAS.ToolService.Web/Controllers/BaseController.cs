@@ -10,5 +10,10 @@ namespace SFA.DAS.ToolService.Web.Controllers
         {
             return base.RedirectToAction(actionName, controller.GetControllerName(), routeValues);
         }
+
+        public RedirectToActionResult RedirectToAction(string actionName, Type controller)
+        {
+            return base.RedirectToAction(actionName, controller.GetControllerName());
+        }
     }
 }
