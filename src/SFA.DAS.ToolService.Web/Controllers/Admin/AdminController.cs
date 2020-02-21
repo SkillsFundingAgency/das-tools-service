@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.ToolService.Core.IServices;
+using SFA.DAS.ToolService.Web.Extensions;
+using SFA.DAS.ToolService.Web.Infrastructure;
 using SFA.DAS.ToolService.Web.Models;
 using SFA.DAS.ToolService.Web.Models.Admin;
 
@@ -39,13 +41,9 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
         }
 
         [HttpGet("admin/complete")]
-        public IActionResult AdminActionComplete(string message)
+        public IActionResult AdminActionComplete()
         {
-            var model = new AdminActionCompleteViewModel
-            {
-                Message = message
-            };
-
+            var model = Extensions.Extensions.Get<AdminActionCompleteViewModel>(TempData, "model");
             return View(model);
         }
     }

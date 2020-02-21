@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.ToolService.Core.IServices;
 using SFA.DAS.ToolService.Web.Models.Admin;
+using SFA.DAS.ToolService.Web.Extensions;
 
 namespace SFA.DAS.ToolService.Web.Controllers.Admin
 {
@@ -44,7 +45,8 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
             {
                 Uri.TryCreate(model.Path, UriKind.RelativeOrAbsolute, out var outUri);
                 await _applicationService.AddApplication(model.Name, model.Description, model.Path, outUri.IsAbsoluteUri);
-                return RedirectToAction(nameof(AdminController.AdminActionComplete), typeof(AdminController), new { message = "The requested application has been added." });
+                TempData.Put("model", new { Message = "The requested application has been added." });
+                return RedirectToAction(nameof(AdminController.AdminActionComplete), typeof(AdminController));
             }
             return View();
         }
@@ -55,14 +57,15 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
             var existingApplications = await _applicationService.GetAllApplications();
             return View(new RemoveApplicationViewModel { ExistingApplications = existingApplications });
         }
-
+        
         [HttpPost("admin/manage-applications/remove")]
         public IActionResult RemoveApplication(RemoveApplicationViewModel model)
         {
             if (ModelState.IsValid)
             {
                 _applicationService.RemoveApplication(model.SelectedApplication);
-                return RedirectToAction(nameof(AdminController.AdminActionComplete), typeof(AdminController), new { message = "The requested application has been removed." });
+                TempData.Put("model", new { Message = "The requested application has been removed." });
+                return RedirectToAction(nameof(AdminController.AdminActionComplete), typeof(AdminController));
             }
             return View(model);
         }
