@@ -1,25 +1,41 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using SFA.DAS.ToolService.Core.Configuration;
 using SFA.DAS.ToolService.Core.IServices;
+using SFA.DAS.ToolService.Web.Extensions;
+using SFA.DAS.ToolService.Web.Models.Admin;
+using System.Threading.Tasks;
 
 namespace SFA.DAS.ToolService.Web.Controllers.Admin
 {
-    public class AdminRoleController : BaseController
+    [Authorize(Policy = "admin")]
+    [Route("admin/manage-roles")]
+    public class AdminRoleController : BaseController<AdminRoleController>
     {
-        private readonly ILogger logger;
-        private readonly IApplicationService applicationService;
+        private readonly IRoleService roleService;
 
-        public AdminRoleController(ILogger<AdminRoleController> _logger,
-            IApplicationService _applicationService)
+        public AdminRoleController(IRoleService _roleService)
         {
-            logger = _logger;
-            applicationService = _applicationService;
+            roleService = _roleService;
         }
 
-        [HttpGet("admin/manage-roles")]
-        public IActionResult ManageRoles()
+        [HttpGet("", Name = AdminRoleRouteNames.ManageRoles)]
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var identiyProviderRoles = await roleService.GetRoles();
+            var model = new ManageRolesViewModel
+            {
+                IdentiyProviderRoles = identiyProviderRoles
+            };
+            return View(model);
+        }
+
+        [HttpPost("", Name = AdminRoleRouteNames.SyncRoles)]
+        public async Task<IActionResult> SyncRoles(ManageRolesViewModel model)
+        {
+            await roleService.SyncIdentityProviderRoles();
+            TempData.Put("model", new { Message = "Role sync has been started." });
+            return RedirectToAction(nameof(AdminController.AdminActionComplete), typeof(AdminController));
         }
     }
 }
