@@ -1,44 +1,44 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using SFA.DAS.ToolService.Core.IServices;
 using SFA.DAS.ToolService.Web.Models.Admin;
 using SFA.DAS.ToolService.Web.Extensions;
+using SFA.DAS.ToolService.Core.Configuration;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SFA.DAS.ToolService.Web.Controllers.Admin
 {
-    public class AdminApplicationController : BaseController
+    [Authorize(Policy = "admin")]
+    [Route("admin/manage-applications")]
+    public class AdminApplicationController : BaseController<AdminApplicationController>
     {
-        private readonly ILogger _logger;
         private readonly IApplicationService _applicationService;
 
-        public AdminApplicationController(ILogger<AdminApplicationController> logger,
-            IApplicationService applicationService)
+        public AdminApplicationController(IApplicationService applicationService)
         {
-            _logger = logger;
             _applicationService = applicationService;
         }
 
-        [HttpGet("admin/manage-applications", Name = "ManageApplications")]
-        public IActionResult ManageApplications()
+        [HttpGet("", Name = AdminApplicationRouteNames.ManageApplications)]
+        public IActionResult Index()
         {
             return View(new ManageApplicationsViewModel());
         }
 
-        [HttpPost("admin/manage-applications")]
+        [HttpPost("")]
         public IActionResult ManageApplicationsHandleChoice(ManageApplicationsViewModel model)
         {
             return RedirectToAction(model.Action.ToString());
         }
 
-        [HttpGet("admin/manage-applications/add")]
+        [HttpGet("add")]
         public IActionResult AddApplication()
         {
             return View();
         }
 
-        [HttpPost("admin/manage-applications/add")]
+        [HttpPost("add")]
         public async Task<IActionResult> AddApplication(AddApplicationViewModel model)
         {
             if (ModelState.IsValid)
@@ -51,14 +51,14 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
             return View();
         }
 
-        [HttpGet("admin/manage-applications/remove")]
+        [HttpGet("remove")]
         public async Task<IActionResult> RemoveApplication()
         {
-            var existingApplications = await _applicationService.GetAllApplications();
+            var existingApplications = await _applicationService.GetUnassignedApplications();
             return View(new RemoveApplicationViewModel { ExistingApplications = existingApplications });
         }
         
-        [HttpPost("admin/manage-applications/remove")]
+        [HttpPost("remove")]
         public IActionResult RemoveApplication(RemoveApplicationViewModel model)
         {
             if (ModelState.IsValid)
