@@ -1,11 +1,16 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.ToolService.Web.Extensions;
 
 namespace SFA.DAS.ToolService.Web.Controllers
 {
-    public class BaseController : Controller
+    public abstract class BaseController<T>: Controller where T : BaseController<T>
     {
+        private ILogger<T> _logger;
+        protected ILogger<T> Logger => _logger ?? (_logger = HttpContext?.RequestServices.GetService<ILogger<T>>());
+
         public RedirectToActionResult RedirectToAction(string actionName, Type controller, object routeValues)
         {
             return base.RedirectToAction(actionName, controller.GetControllerName(), routeValues);

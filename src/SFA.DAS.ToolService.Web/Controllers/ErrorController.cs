@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace SFA.DAS.ToolService.Web.Controllers
 {
     [Route("error")]
-    public class ErrorController : BaseController
+    public class ErrorController : BaseController<ErrorController>
     {
         [Route("403")]
         public IActionResult AccessDenied()

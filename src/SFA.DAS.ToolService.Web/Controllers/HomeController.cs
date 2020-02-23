@@ -1,15 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace SFA.DAS.ToolService.Web.Controllers
 {
-    public class HomeController : BaseController
+    public class HomeController : BaseController<HomeController>
     {
-        private readonly ILogger logger;
 
-        public HomeController(ILogger<HomeController> _logger)
+        public HomeController()
         {
-            logger = _logger;
         }
 
         public IActionResult Index()
