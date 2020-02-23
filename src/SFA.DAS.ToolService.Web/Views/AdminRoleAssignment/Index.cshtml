@@ -1,0 +1,44 @@
+@{
+    ViewData["Title"] = "Admin Services";
+    @model RoleAssignmentsViewModel;
+    @using SFA.DAS.ToolService.Web.Controllers.Admin
+    @using SFA.DAS.ToolService.Web.Extensions
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <div class="govuk-warning-text">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text">
+                <span class="govuk-warning-text__assistive">Warning</span>
+                This area is for admin users only.
+            </strong>
+        </div>
+
+        <form asp-controller="@typeof(AdminRoleAssignmentController).GetControllerName()" asp-action="@nameof(AdminRoleAssignmentController.HandleAssignmentChoice)" method="post">
+            <h1 class="govuk-heading-xl">Manage role assignments</h1>
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <div class="govuk-radios">
+
+                        @foreach (var role in @Model.Roles)
+                        {
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="role-choice" name="RoleId" type="radio" value=@role.Id required>
+                                <label class="govuk-label govuk-radios__label" for="role-choice">
+                                    @role.Name
+                                </label>
+                            </div>
+                        }
+                    </div>
+                </fieldset>
+
+            </div>
+
+            <button class="govuk-button" data-module="govuk-button">
+                Continue
+            </button>
+        </form>
+    </div>
+</div>
