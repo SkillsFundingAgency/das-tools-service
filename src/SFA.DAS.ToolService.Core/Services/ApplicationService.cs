@@ -81,7 +81,7 @@ namespace SFA.DAS.ToolService.Core.Services
                 Path = path,
                 IsExternal = isExternal? 1:0
             };
-            await applicationRepository.AddApplication(application);
+            await _applicationRepository.AddApplication(application);
         }
 
         public async Task<List<Application>> GetAllApplications()
