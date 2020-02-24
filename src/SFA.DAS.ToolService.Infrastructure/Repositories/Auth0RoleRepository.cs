@@ -11,7 +11,7 @@ using SFA.DAS.ToolService.Infrastructure.Auth0;
 
 namespace SFA.DAS.ToolService.Infrastructure.Repositories
 {
-    public class Auth0RoleRepository : IAuth0RoleRepository
+    public class Auth0RoleRepository : IExternalRoleRepository
     {
         private readonly ILogger<Auth0RoleRepository> _logger;
         private readonly IAuth0ApiClient _client;
@@ -21,7 +21,7 @@ namespace SFA.DAS.ToolService.Infrastructure.Repositories
             _client = client;
         }
 
-        public async Task<List<Auth0Role>> GetRoles()
+        public async Task<List<Auth0Role>> GetExternalRoles()
         {
             var roles = await _client.GetAuth0Roles();
             return roles.Select(c => new Auth0Role { Id = c.Id, Name = c.Name , Description = c.Description}).ToList();

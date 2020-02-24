@@ -25,7 +25,7 @@ namespace SFA.DAS.ToolService.Web.AppStart
             services.AddScoped<IAuth0ApiClient, Auth0ApiClient>();
             services.AddScoped<IApplicationRepository, ApplicationRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
-            services.AddScoped<IAuth0RoleRepository, Auth0RoleRepository>();
+            services.AddScoped<IExternalRoleRepository, Auth0RoleRepository>();
             services.AddSingleton<IAuthorizationHandler, AdminUserAuthorizationHandler>();
             services.AddRouting(options => options.LowercaseUrls = true);
         }

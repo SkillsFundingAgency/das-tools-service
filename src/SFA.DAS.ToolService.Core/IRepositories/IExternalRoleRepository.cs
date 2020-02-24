@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.ToolService.Core.IRepositories
 {
-    public interface IAuth0RoleRepository
+    public interface IExternalRoleRepository
     {
-        Task<List<Auth0Role>> GetRoles();
+        Task<List<Auth0Role>> GetExternalRoles();
     }
 }

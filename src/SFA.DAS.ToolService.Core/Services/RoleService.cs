@@ -11,10 +11,10 @@ namespace SFA.DAS.ToolService.Core.Services
     public class RoleService: IRoleService
     {
         private readonly ILogger<RoleService> _logger;
-        private readonly IAuth0RoleRepository _identityProviderRoleRepository;
+        private readonly IExternalRoleRepository _identityProviderRoleRepository;
         private readonly IRoleRepository _localRoleRepository;
 
-        public RoleService(ILogger<RoleService> logger, IAuth0RoleRepository identityProviderRoleRepository, IRoleRepository localRoleRepository)
+        public RoleService(ILogger<RoleService> logger, IExternalRoleRepository identityProviderRoleRepository, IRoleRepository localRoleRepository)
         {
             _logger = logger;
             _identityProviderRoleRepository = identityProviderRoleRepository;
@@ -24,13 +24,13 @@ namespace SFA.DAS.ToolService.Core.Services
 
         public async Task<List<Auth0Role>> GetRoles()
         {
-            return await _identityProviderRoleRepository.GetRoles();
+            return await _identityProviderRoleRepository.GetExternalRoles();
         }
 
         public async Task SyncIdentityProviderRoles()
         {
             // TODO: try harder
-            var idpRoles = await _identityProviderRoleRepository.GetRoles();
+            var idpRoles = await _identityProviderRoleRepository.GetExternalRoles();
 
             foreach (var role in idpRoles)
             {
