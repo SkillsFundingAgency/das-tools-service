@@ -37,7 +37,8 @@ namespace SFA.DAS.ToolService.Infrastructure.Auth0
 
     private string GetToken()
         {
-            var client = new RestClient($"https://{_configuration.Value.Domain}/oauth/token");
+            var client = new RestClient($"https://{_configuration.Value.Domain}/oauth/token";
+
             var request = new RestRequest(Method.POST);
 
             request.AddHeader("content-type", "application/x-www-form-urlencoded");
@@ -54,20 +55,21 @@ namespace SFA.DAS.ToolService.Infrastructure.Auth0
 
             var tokenResponse = JsonConvert.DeserializeObject<TokenResponse>(response.Content);
             return tokenResponse.AccessToken;
+
         }
 
         public async Task<IPagedList<Role>> GetAuth0Roles()
         {
             var token = GetToken();
             var uri = new Uri($"https://{_configuration.Value.Domain}/api/v2");
-            var client = new ManagementApiClient(token, uri);
+            using (var client = new ManagementApiClient(token, uri)){
+                var request = new GetRolesRequest
+                {
+                    NameFilter = ""
+                };
 
-            var request = new GetRolesRequest
-            {
-                NameFilter = ""
-            };
-
-            return await client.Roles.GetAllAsync(request);
+                return await client.Roles.GetAllAsync(request);
+            }
         }
     }
 }
