@@ -22,7 +22,7 @@ namespace SFA.DAS.ToolService.Web.AppStart
             services.AddScoped<IApplicationService, ApplicationService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddSingleton<IManagementConnection, HttpClientManagementConnection>();
-            services.AddScoped<IApiClient, ApiClient>();
+            services.AddScoped<IAuth0ApiClient, Auth0ApiClient>();
             services.AddScoped<IApplicationRepository, ApplicationRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IAuth0RoleRepository, Auth0RoleRepository>();

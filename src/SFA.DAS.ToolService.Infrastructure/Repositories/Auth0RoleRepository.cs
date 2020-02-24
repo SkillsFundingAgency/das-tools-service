@@ -13,17 +13,17 @@ namespace SFA.DAS.ToolService.Infrastructure.Repositories
 {
     public class Auth0RoleRepository : IAuth0RoleRepository
     {
-        private readonly ILogger<Auth0RoleRepository> logger;
-        private readonly IApiClient client;
-        public Auth0RoleRepository(ILogger<Auth0RoleRepository> _logger, IApiClient _client)
+        private readonly ILogger<Auth0RoleRepository> _logger;
+        private readonly IAuth0ApiClient _client;
+        public Auth0RoleRepository(ILogger<Auth0RoleRepository> logger, IAuth0ApiClient client)
         {
-            logger = _logger;
-            client = _client;
+            _logger = logger;
+            _client = client;
         }
 
         public async Task<List<Auth0Role>> GetRoles()
         {
-            var roles = await client.GetRoles();
+            var roles = await _client.GetAuth0Roles();
             return roles.Select(c => new Auth0Role { Id = c.Id, Name = c.Name , Description = c.Description}).ToList();
         }
     }

@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.ToolService.Infrastructure.Auth0
 {
-    public interface IApiClient
+    public interface IAuth0ApiClient
     {
-        Task<IPagedList<Role>> GetRoles();
+        Task<IPagedList<Role>> GetAuth0Roles();
     }
 }

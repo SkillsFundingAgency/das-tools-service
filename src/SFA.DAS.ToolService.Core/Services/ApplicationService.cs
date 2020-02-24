@@ -41,18 +41,19 @@ namespace SFA.DAS.ToolService.Core.Services
         public async Task<List<Application>> GetApplicationsForRoleId(int roleId)
         {
             var applications = await applicationRepository.GetApplicationsInRole(roleId);
-            return applications;
+            return applications.OrderBy(c => c.Name).ToList();
         }
 
         public async Task<List<Application>> GetUnassignedApplications()
         {
-            return await applicationRepository.GetApplicationsWithNoRoleAssignment();
+            var applications = await applicationRepository.GetApplicationsWithNoRoleAssignment();
+            return applications.OrderBy(c => c.Name).ToList();
         }
 
         public async Task<List<Application>> GetUnassignedApplicationsForRole(int id)
         {
             var applications = await applicationRepository.GetApplicationsNotInRole(id);
-            return applications;
+            return applications.OrderBy(c => c.Name).ToList(); ;
         }
 
         public async Task AssignApplicationToRole(int applicationId, int roleId)
@@ -67,7 +68,8 @@ namespace SFA.DAS.ToolService.Core.Services
 
         public async Task<List<Role>> GetRoles()
         {
-            return await applicationRepository.GetRoles();
+            var roles = await applicationRepository.GetRoles();
+            return roles.OrderBy(c => c.Name).ToList(); 
         }
 
         public async Task AddApplication(string name, string description, string path, bool isExternal)
@@ -84,7 +86,8 @@ namespace SFA.DAS.ToolService.Core.Services
 
         public async Task<List<Application>> GetAllApplications()
         {
-            return await applicationRepository.GetApplications();
+            var applications = await applicationRepository.GetApplications();
+            return applications.OrderBy(c => c.Name).ToList();
         }
 
         public void RemoveApplication(int id)

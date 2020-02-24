@@ -12,18 +12,18 @@ namespace SFA.DAS.ToolService.Infrastructure.Repositories
 {
     public class RoleRepository : IRoleRepository
     {
-        private readonly IToolServiceDbContext toolServiceDbContext;
-        private readonly ILogger<RoleRepository> logger;
+        private readonly IToolServiceDbContext _toolServiceDbContext;
+        private readonly ILogger<RoleRepository> _logger;
 
-        public RoleRepository(IToolServiceDbContext _toolServiceDbContext, ILogger<RoleRepository> _logger)
+        public RoleRepository(IToolServiceDbContext toolServiceDbContext, ILogger<RoleRepository> logger)
         {
-            toolServiceDbContext = _toolServiceDbContext;
-            logger = _logger;
+            _toolServiceDbContext = toolServiceDbContext;
+            _logger = logger;
         }
 
         public async Task<List<Role>> GetRoles()
         {
-            var result = await toolServiceDbContext.Role
+            var result = await _toolServiceDbContext.Role
                 .ToListAsync();
 
             return result;
@@ -31,19 +31,19 @@ namespace SFA.DAS.ToolService.Infrastructure.Repositories
 
         public async Task<Role> GetRole(string name)
         {
-            return await toolServiceDbContext.Role.FirstOrDefaultAsync(role => role.Name.ToLowerInvariant() == name.ToLowerInvariant());
+            return await _toolServiceDbContext.Role.FirstOrDefaultAsync(role => role.Name.ToLowerInvariant() == name.ToLowerInvariant());
         }
 
         public void UpdateRole(Role role)
         { 
-            toolServiceDbContext.Role.Update(role);
-            toolServiceDbContext.SaveChanges();
+            _toolServiceDbContext.Role.Update(role);
+            _toolServiceDbContext.SaveChanges();
         }
 
         public async Task AddRole(Role role)
         {
-            await toolServiceDbContext.Role.AddAsync(role);
-            toolServiceDbContext.SaveChanges();
+            await _toolServiceDbContext.Role.AddAsync(role);
+            _toolServiceDbContext.SaveChanges();
         }
     }
 }

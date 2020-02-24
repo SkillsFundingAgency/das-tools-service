@@ -11,16 +11,16 @@ using Newtonsoft.Json;
 
 namespace SFA.DAS.ToolService.Infrastructure.Auth0
 {
-    public class ApiClient : IApiClient
+    public class Auth0ApiClient : IAuth0ApiClient
     {
 
-        private readonly ILogger<ApiClient> logger;
-        private readonly IOptions<AuthenticationConfiguration> configuration;
+        private readonly ILogger<Auth0ApiClient> _logger;
+        private readonly IOptions<AuthenticationConfiguration> _configuration;
 
-        public ApiClient(ILogger<ApiClient> _logger, IOptions<AuthenticationConfiguration> _configuration)
+        public Auth0ApiClient(ILogger<Auth0ApiClient> logger, IOptions<AuthenticationConfiguration> configuration)
         {
-            logger = _logger;
-            configuration = _configuration;
+            _logger = logger;
+            _configuration = configuration;
         }
 
         public class TokenResponse
@@ -37,13 +37,13 @@ namespace SFA.DAS.ToolService.Infrastructure.Auth0
 
     private string GetToken()
         {
-            var client = new RestClient($"https://{configuration.Value.Domain}/oauth/token");
+            var client = new RestClient($"https://{_configuration.Value.Domain}/oauth/token");
             var request = new RestRequest(Method.POST);
 
             request.AddHeader("content-type", "application/x-www-form-urlencoded");
 
-            var audience = $"https://{configuration.Value.Domain}/api/v2/";
-            request.AddParameter("application/x-www-form-urlencoded", $"grant_type=client_credentials&client_id={configuration.Value.ManagementApiClientId}&client_secret={configuration.Value.ManagementApiClientSecret}&audience={Uri.EscapeUriString(audience)}", ParameterType.RequestBody);
+            var audience = $"https://{_configuration.Value.Domain}/api/v2/";
+            request.AddParameter("application/x-www-form-urlencoded", $"grant_type=client_credentials&client_id={_configuration.Value.ManagementApiClientId}&client_secret={_configuration.Value.ManagementApiClientSecret}&audience={Uri.EscapeUriString(audience)}", ParameterType.RequestBody);
 
             var response = client.Execute(request);
 
@@ -56,10 +56,10 @@ namespace SFA.DAS.ToolService.Infrastructure.Auth0
             return tokenResponse.AccessToken;
         }
 
-        public async Task<IPagedList<Role>> GetRoles()
+        public async Task<IPagedList<Role>> GetAuth0Roles()
         {
             var token = GetToken();
-            var uri = new Uri($"https://{configuration.Value.Domain}/api/v2");
+            var uri = new Uri($"https://{_configuration.Value.Domain}/api/v2");
             var client = new ManagementApiClient(token, uri);
 
             var request = new GetRolesRequest
