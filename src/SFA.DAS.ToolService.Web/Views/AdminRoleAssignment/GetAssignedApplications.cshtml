@@ -18,7 +18,7 @@
 
         @if (@Model.Applications.Count > 0)
         {
-    <form asp-route=@AdminRoleAssignmentRouteNames.RemoveApplication method="post">
+    <form asp-route="@AdminRoleAssignmentRouteNames.RemoveApplication" method="post">
         <h1 class="govuk-heading-xl">Applications for role: @Model.RoleId</h1>
         <div class="govuk-form-group">
             <fieldset class="govuk-fieldset">
