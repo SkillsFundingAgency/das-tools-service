@@ -37,7 +37,7 @@ namespace SFA.DAS.ToolService.Infrastructure.Auth0
 
     private string GetToken()
         {
-            var client = new RestClient($"https://{_configuration.Value.Domain}/oauth/token";
+            var client = new RestClient($"https://{_configuration.Value.Domain}/oauth/token");
 
             var request = new RestRequest(Method.POST);
 
