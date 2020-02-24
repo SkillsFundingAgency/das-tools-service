@@ -1,34 +1,27 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using SFA.DAS.ToolService.Core.IServices;
-using SFA.DAS.ToolService.Web.Extensions;
-using SFA.DAS.ToolService.Web.Infrastructure;
 using SFA.DAS.ToolService.Web.Models;
 using SFA.DAS.ToolService.Web.Models.Admin;
 
 namespace SFA.DAS.ToolService.Web.Controllers.Admin
 {
     [Authorize(Policy = "admin")]
-    public class AdminController : BaseController
+    [Route("admin")]
+    public class AdminController : BaseController<AdminController>
     {
-        private readonly ILogger logger;
-        private readonly IApplicationService applicationService;
 
-        public AdminController(ILogger<AdminController> _logger,
-            IApplicationService _applicationService)
+        public AdminController()
         {
-            logger = _logger;
-            applicationService = _applicationService;
         }
 
-        [HttpGet("admin")]
+        [HttpGet("")]
         public IActionResult Index()
         {
             return View("Index", new IndexViewModel());
         }
 
-        [HttpPost("admin")]
+        [HttpPost("")]
         [ValidateAntiForgeryToken]
         public IActionResult IndexHandleChoice(IndexViewModel model)
         {
@@ -40,7 +33,7 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
             return RedirectToRoute(model.Choice);
         }
 
-        [HttpGet("admin/complete")]
+        [HttpGet("complete")]
         public IActionResult AdminActionComplete()
         {
             var model = Extensions.Extensions.Get<AdminActionCompleteViewModel>(TempData, "model");

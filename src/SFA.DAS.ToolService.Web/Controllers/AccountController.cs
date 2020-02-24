@@ -3,17 +3,13 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace SFA.DAS.ToolService.Web.Controllers
 {
-    public class AccountController : BaseController
+    public class AccountController : BaseController<AccountController>
     {
-        private readonly ILogger logger;
-
-        public AccountController(ILogger<AccountController> _logger)
+        public AccountController()
         {
-            logger = _logger;
         }
 
         public async Task Login(string returnUrl = "/home")

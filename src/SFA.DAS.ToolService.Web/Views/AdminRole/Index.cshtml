@@ -1,0 +1,42 @@
+@{
+    ViewData["Title"] = "Admin Services";
+    @model ManageRolesViewModel;
+    @using SFA.DAS.ToolService.Web.Controllers.Admin
+    @using SFA.DAS.ToolService.Web.Extensions
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <div class="govuk-warning-text">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text">
+                <span class="govuk-warning-text__assistive">Warning</span>
+                This area is for admin users only.
+            </strong>
+        </div>
+
+        <h1 class="govuk-heading-xl">Manage roles</h1>
+
+        <p class="govuk-body">Use this feature to add or update roles.</p>
+
+        <table class="govuk-table">
+            <tbody class="govuk-table__body">
+
+                @foreach (var role in Model.IdentiyProviderRoles)
+                {
+                    <tr class="govuk-table__row">
+                        <th scope="row" class="govuk-table__header">@role.Name</th>
+                        <td class="govuk-table__cell">@role.Description</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <form asp-controller="@typeof(AdminRoleController).GetControllerName()" asp-action="@nameof(AdminRoleController.SyncRoles)" method="post">
+            <button class="govuk-button" data-module="govuk-button">
+                Sync
+            </button>
+        </form>
+
+    </div>
+</div>

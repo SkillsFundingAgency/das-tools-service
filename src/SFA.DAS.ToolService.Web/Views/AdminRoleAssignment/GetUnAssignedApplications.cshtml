@@ -53,6 +53,9 @@
         else
         {
             <p class="govuk-body">There are no applications available to assign to this role.</p>
+            <p class="govuk-body">
+                You can return to the start by clicking <a asp-controller="@typeof(AdminController).GetControllerName()" asp-action="@nameof(AdminController.Index)"> here</a>, or add a <a asp-route="@AdminRoleAssignmentRouteNames.GetUnassignedApplications">new application</a>.
+            </p>
 
         }
     </div>

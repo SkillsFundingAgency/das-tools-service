@@ -37,11 +37,21 @@ namespace SFA.DAS.ToolService.Infrastructure.Repositories
                 .Select(c => c.ApplicationId).ToArrayAsync();
 
             var result = await _toolServiceDbContext.Application
-                .Where(c => !roleMappings.Contains(c.Id)).ToListAsync();
-           
+                .Where(c => !roleMappings.Contains(c.Id) & c.Public == 0).ToListAsync();
+
             return result;
         }
 
+        public async Task<List<Application>> GetApplicationsWithNoRoleAssignment()
+        {
+            var roleMappings = await _toolServiceDbContext.ApplicationRole
+                .Select(c => c.ApplicationId).ToArrayAsync();
+
+            var result = await _toolServiceDbContext.Application
+                .Where(c => !roleMappings.Contains(c.Id) & c.Public == 0).ToListAsync();
+
+            return result;
+        }
         public async Task<List<Application>> GetPublicApplications()
         {
             var result = await _toolServiceDbContext.Application
@@ -59,8 +69,7 @@ namespace SFA.DAS.ToolService.Infrastructure.Repositories
 
         public async Task<List<Role>> GetRoles()
         {
-            var result = await _toolServiceDbContext.Role
-                .ToListAsync();
+            var result = await _toolServiceDbContext.Role.ToListAsync();
 
             return result;
         }

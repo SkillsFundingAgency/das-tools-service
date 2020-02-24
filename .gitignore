@@ -45,3 +45,5 @@ src/SFA.DAS.ToolService.Web/appsettings.Development.json
 
 
 manifests-dev
+*.jfm
+*.dbmdl

@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using SFA.DAS.ToolService.Core.Entities;
 using SFA.DAS.ToolService.Core.IRepositories;
 using SFA.DAS.ToolService.Core.IServices;
@@ -10,10 +11,12 @@ namespace SFA.DAS.ToolService.Core.Services
 {
     public class ApplicationService: IApplicationService
     {
+        private readonly ILogger<ApplicationService> _logger;
         private readonly IApplicationRepository _applicationRepository;
 
-        public ApplicationService(IApplicationRepository applicationRepository)
+        public ApplicationService(ILogger<ApplicationService> logger, IApplicationRepository applicationRepository)
         {
+            _logger = logger;
             _applicationRepository = applicationRepository;
         }
 
@@ -31,19 +34,26 @@ namespace SFA.DAS.ToolService.Core.Services
                 applications.AddRange(app);
             }
 
-            return applications;
+            // Distinct to remove duplicate apps from if in more than one role
+            return applications.Distinct().OrderBy(c => c.Name).ToList();
         }
 
         public async Task<List<Application>> GetApplicationsForRoleId(int roleId)
         {
             var applications = await _applicationRepository.GetApplicationsInRole(roleId);
-            return applications;
+            return applications.OrderBy(c => c.Name).ToList();
+        }
+
+        public async Task<List<Application>> GetUnassignedApplications()
+        {
+            var applications = await _applicationRepository.GetApplicationsWithNoRoleAssignment();
+            return applications.OrderBy(c => c.Name).ToList();
         }
 
         public async Task<List<Application>> GetUnassignedApplicationsForRole(int id)
         {
             var applications = await _applicationRepository.GetApplicationsNotInRole(id);
-            return applications;
+            return applications.OrderBy(c => c.Name).ToList(); ;
         }
 
         public async Task AssignApplicationToRole(int applicationId, int roleId)
@@ -58,7 +68,8 @@ namespace SFA.DAS.ToolService.Core.Services
 
         public async Task<List<Role>> GetRoles()
         {
-            return await _applicationRepository.GetRoles();
+            var roles = await _applicationRepository.GetRoles();
+            return roles.OrderBy(c => c.Name).ToList(); 
         }
 
         public async Task AddApplication(string name, string description, string path, bool isExternal)
@@ -75,12 +86,14 @@ namespace SFA.DAS.ToolService.Core.Services
 
         public async Task<List<Application>> GetAllApplications()
         {
-            return await _applicationRepository.GetApplications();
+            var applications = await _applicationRepository.GetApplications();
+            return applications.OrderBy(c => c.Name).ToList();
         }
 
         public void RemoveApplication(int id)
         {
             _applicationRepository.RemoveApplication(id);
         }
+
     }
 }

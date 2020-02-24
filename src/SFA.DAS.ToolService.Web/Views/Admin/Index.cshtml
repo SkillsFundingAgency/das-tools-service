@@ -18,24 +18,22 @@
 
         <form asp-controller="@typeof(AdminController).GetControllerName()" asp-action="@nameof(AdminController.IndexHandleChoice)" method="post">
 
+            <h1 class="govuk-heading-xl">
+                What do you want to do?
+            </h1>
             <div class="govuk-form-group">
                 <fieldset class="govuk-fieldset">
-                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                        <h1 class="govuk-fieldset__heading">
-                            What do you want to do?
-                        </h1>
-                    </legend>
                     <div class="govuk-radios">
                         <div class="govuk-radios__item">
                             <input class="govuk-radios__input" id="admin-choice" name="Choice" type="radio" value="ManageApplications">
                             <label class="govuk-label govuk-radios__label" for="admin-choice">
-                                Add or remove an application
+                                Manage applications
                             </label>
                         </div>
                         <div class="govuk-radios__item">
                             <input class="govuk-radios__input" id="admin-choice-2" name="Choice" type="radio" value="ManageRoles">
                             <label class="govuk-label govuk-radios__label" for="admin-choice-2">
-                                Add or remove a role
+                                Manage roles
                             </label>
                         </div>
                         <div class="govuk-radios__item">

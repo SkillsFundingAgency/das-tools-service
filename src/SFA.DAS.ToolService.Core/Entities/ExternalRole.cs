@@ -4,10 +4,9 @@ using System.Text;
 
 namespace SFA.DAS.ToolService.Core.Entities
 {
-    public class Role
+    public class ExternalRole
     {
-        public int Id { get; set; }
-        public string ExternalId { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
 
