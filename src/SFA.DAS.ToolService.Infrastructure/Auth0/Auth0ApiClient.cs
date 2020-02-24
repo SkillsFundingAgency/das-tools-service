@@ -23,7 +23,7 @@ namespace SFA.DAS.ToolService.Infrastructure.Auth0
             _configuration = configuration;
         }
 
-        public class TokenResponse
+        private class TokenResponse
         {
             [JsonProperty("access_token")]
             public string AccessToken { get; set; }
