@@ -22,7 +22,7 @@ namespace SFA.DAS.ToolService.Core.Services
         }
 
 
-        public async Task<List<Auth0Role>> GetRoles()
+        public async Task<List<ExternalRole>> GetRoles()
         {
             return await _identityProviderRoleRepository.GetExternalRoles();
         }

@@ -1,6 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
 namespace SFA.DAS.ToolService.Core.Entities
 {
-    public class Auth0Role
+    public class ExternalRole
     {
         public string Id { get; set; }
         public string Name { get; set; }

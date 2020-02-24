@@ -6,7 +6,7 @@ namespace SFA.DAS.ToolService.Web.Models.Admin
 {
     public class ManageRolesViewModel
     {
-        public List<Auth0Role> IdentiyProviderRoles { get; set; }
+        public List<ExternalRole> IdentiyProviderRoles { get; set; }
     }
 
 }

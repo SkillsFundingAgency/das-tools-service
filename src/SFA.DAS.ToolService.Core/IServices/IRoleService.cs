@@ -8,7 +8,7 @@ namespace SFA.DAS.ToolService.Core.IServices
 {
     public interface IRoleService
     {
-        Task<List<Auth0Role>> GetRoles();
+        Task<List<ExternalRole>> GetRoles();
         Task SyncIdentityProviderRoles();
     }
 }

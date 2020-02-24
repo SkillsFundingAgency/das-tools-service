@@ -21,10 +21,10 @@ namespace SFA.DAS.ToolService.Infrastructure.Repositories
             _client = client;
         }
 
-        public async Task<List<Auth0Role>> GetExternalRoles()
+        public async Task<List<ExternalRole>> GetExternalRoles()
         {
             var roles = await _client.GetAuth0Roles();
-            return roles.Select(c => new Auth0Role { Id = c.Id, Name = c.Name , Description = c.Description}).ToList();
+            return roles.Select(c => new ExternalRole { Id = c.Id, Name = c.Name, Description = c.Description }).ToList();
         }
     }
 }

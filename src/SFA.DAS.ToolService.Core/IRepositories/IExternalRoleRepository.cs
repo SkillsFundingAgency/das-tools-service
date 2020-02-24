@@ -7,6 +7,6 @@ namespace SFA.DAS.ToolService.Core.IRepositories
 {
     public interface IExternalRoleRepository
     {
-        Task<List<Auth0Role>> GetExternalRoles();
+        Task<List<ExternalRole>> GetExternalRoles();
     }
 }
