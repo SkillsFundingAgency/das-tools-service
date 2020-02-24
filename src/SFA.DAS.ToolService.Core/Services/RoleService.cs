@@ -10,44 +10,44 @@ namespace SFA.DAS.ToolService.Core.Services
 {
     public class RoleService: IRoleService
     {
-        private readonly ILogger<RoleService> logger;
-        private readonly IAuth0RoleRepository identityProviderRoleRepository;
-        private readonly IRoleRepository localRoleRepository;
+        private readonly ILogger<RoleService> _logger;
+        private readonly IAuth0RoleRepository _identityProviderRoleRepository;
+        private readonly IRoleRepository _localRoleRepository;
 
-        public RoleService(ILogger<RoleService> _logger, IAuth0RoleRepository _identityProviderRoleRepository, IRoleRepository _localRoleRepository)
+        public RoleService(ILogger<RoleService> logger, IAuth0RoleRepository identityProviderRoleRepository, IRoleRepository localRoleRepository)
         {
-            logger = _logger;
-            identityProviderRoleRepository = _identityProviderRoleRepository;
-            localRoleRepository = _localRoleRepository;
+            _logger = logger;
+            _identityProviderRoleRepository = identityProviderRoleRepository;
+            _localRoleRepository = localRoleRepository;
         }
 
 
         public async Task<List<Auth0Role>> GetRoles()
         {
-            return await identityProviderRoleRepository.GetRoles();
+            return await _identityProviderRoleRepository.GetRoles();
         }
 
         public async Task SyncIdentityProviderRoles()
         {
             // TODO: try harder
-            var idpRoles = await identityProviderRoleRepository.GetRoles();
+            var idpRoles = await _identityProviderRoleRepository.GetRoles();
 
             foreach (var role in idpRoles)
             {
-                var dbEntity = await localRoleRepository.GetRole(role.Name);
+                var dbEntity = await _localRoleRepository.GetRole(role.Name);
 
                 if (dbEntity != null)
                 {
-                    logger.LogInformation($"Updating role [{dbEntity.Name}] from external idp.");
+                    _logger.LogInformation($"Updating role [{dbEntity.Name}] from external idp.");
                     dbEntity.Name = role.Name;
                     dbEntity.ExternalId = role.Id;
                     dbEntity.Description = role.Description;
 
-                    localRoleRepository.UpdateRole(dbEntity);
+                    _localRoleRepository.UpdateRole(dbEntity);
                 } else
                 {
-                    logger.LogInformation($"Adding external role [{role.Name}] to database from external idp.");
-                    await localRoleRepository.AddRole(new Role
+                    _logger.LogInformation($"Adding external role [{role.Name}] to database from external idp.");
+                    await _localRoleRepository.AddRole(new Role
                     {
                         Name = role.Name,
                         ExternalId = role.Id,

@@ -11,26 +11,26 @@ namespace SFA.DAS.ToolService.Core.Services
 {
     public class ApplicationService: IApplicationService
     {
-        private readonly ILogger<ApplicationService> logger;
-        private readonly IApplicationRepository applicationRepository;
+        private readonly ILogger<ApplicationService> _logger;
+        private readonly IApplicationRepository _applicationRepository;
 
-        public ApplicationService(ILogger<ApplicationService> _logger, IApplicationRepository _applicationRepository)
+        public ApplicationService(ILogger<ApplicationService> logger, IApplicationRepository applicationRepository)
         {
-            logger = _logger;
-            applicationRepository = _applicationRepository;
+            _logger = logger;
+            _applicationRepository = applicationRepository;
         }
 
         public async Task<List<Application>> GetApplicationsForRole(string[] roles)
         {
 
             var applications = new List<Application>();
-            var publicApplications = await applicationRepository.GetPublicApplications();
+            var publicApplications = await _applicationRepository.GetPublicApplications();
             applications.AddRange(publicApplications);
 
             foreach (var role in roles)
             {
-                var roleId = await applicationRepository.GetRoleId(role);
-                var app = await applicationRepository.GetApplicationsInRole(roleId);
+                var roleId = await _applicationRepository.GetRoleId(role);
+                var app = await _applicationRepository.GetApplicationsInRole(roleId);
                 applications.AddRange(app);
             }
 
@@ -40,35 +40,35 @@ namespace SFA.DAS.ToolService.Core.Services
 
         public async Task<List<Application>> GetApplicationsForRoleId(int roleId)
         {
-            var applications = await applicationRepository.GetApplicationsInRole(roleId);
+            var applications = await _applicationRepository.GetApplicationsInRole(roleId);
             return applications.OrderBy(c => c.Name).ToList();
         }
 
         public async Task<List<Application>> GetUnassignedApplications()
         {
-            var applications = await applicationRepository.GetApplicationsWithNoRoleAssignment();
+            var applications = await _applicationRepository.GetApplicationsWithNoRoleAssignment();
             return applications.OrderBy(c => c.Name).ToList();
         }
 
         public async Task<List<Application>> GetUnassignedApplicationsForRole(int id)
         {
-            var applications = await applicationRepository.GetApplicationsNotInRole(id);
+            var applications = await _applicationRepository.GetApplicationsNotInRole(id);
             return applications.OrderBy(c => c.Name).ToList(); ;
         }
 
         public async Task AssignApplicationToRole(int applicationId, int roleId)
         {
-            await applicationRepository.InsertApplicationRoleMapping(applicationId, roleId);
+            await _applicationRepository.InsertApplicationRoleMapping(applicationId, roleId);
         }
 
         public void RemoveApplicationFromRole(int applicationId, int roleId)
         {
-            applicationRepository.DeleteApplicationRoleMapping(applicationId, roleId);
+            _applicationRepository.DeleteApplicationRoleMapping(applicationId, roleId);
         }
 
         public async Task<List<Role>> GetRoles()
         {
-            var roles = await applicationRepository.GetRoles();
+            var roles = await _applicationRepository.GetRoles();
             return roles.OrderBy(c => c.Name).ToList(); 
         }
 
@@ -86,13 +86,13 @@ namespace SFA.DAS.ToolService.Core.Services
 
         public async Task<List<Application>> GetAllApplications()
         {
-            var applications = await applicationRepository.GetApplications();
+            var applications = await _applicationRepository.GetApplications();
             return applications.OrderBy(c => c.Name).ToList();
         }
 
         public void RemoveApplication(int id)
         {
-            applicationRepository.RemoveApplication(id);
+            _applicationRepository.RemoveApplication(id);
         }
 
     }
