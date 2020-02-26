@@ -1,11 +1,11 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using System;
 using SFA.DAS.ToolService.Core.Configuration;
+using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 
 namespace SFA.DAS.ToolService.Web.AppStart
 {
@@ -13,7 +13,6 @@ namespace SFA.DAS.ToolService.Web.AppStart
     {
         public static IServiceCollection AddAuth0Authentication(this IServiceCollection services, IOptions<AuthenticationConfiguration> configuration)
         {
-
             // Add authentication services
             services.AddAuthentication(options =>
             {
@@ -69,8 +68,6 @@ namespace SFA.DAS.ToolService.Web.AppStart
             });
 
             return services;
-
         }
-
     }
 }

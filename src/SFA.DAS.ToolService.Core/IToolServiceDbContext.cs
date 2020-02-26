@@ -10,6 +10,5 @@ namespace SFA.DAS.ToolService.Core.IRepositories
         DbSet<ApplicationRole> ApplicationRole { get; set; }
 
         int SaveChanges();
-
     }
 }

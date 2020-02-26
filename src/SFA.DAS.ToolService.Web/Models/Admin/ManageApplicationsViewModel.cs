@@ -11,7 +11,8 @@ namespace SFA.DAS.ToolService.Web.Models.Admin
     {
         [Description("Add an Application")]
         AddApplication,
+
         [Description("Remove an Application")]
-        RemoveApplication        
+        RemoveApplication
     }
 }

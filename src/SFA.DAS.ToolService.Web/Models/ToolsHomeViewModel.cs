@@ -1,6 +1,5 @@
 using SFA.DAS.ToolService.Core.Entities;
 using System.Collections.Generic;
-using System.Security.Claims;
 
 namespace SFA.DAS.ToolService.Web.Models
 {

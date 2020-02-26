@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace SFA.DAS.ToolService.Core.Entities
 {
     public class Application
