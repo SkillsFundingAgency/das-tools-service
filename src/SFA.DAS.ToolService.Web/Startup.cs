@@ -1,21 +1,20 @@
-﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System.IO;
-using Microsoft.IdentityModel.Logging;
-using SFA.DAS.ToolService.Web.AppStart;
 using Microsoft.Extensions.Options;
-using System;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Logging;
 using SFA.DAS.ToolService.Core;
 using SFA.DAS.ToolService.Core.Configuration;
 using SFA.DAS.ToolService.Core.IRepositories;
-using Microsoft.AspNetCore.Authorization;
-using SFA.DAS.ToolService.Web.Infrastructure;
+using SFA.DAS.ToolService.Web.AppStart;
+using System;
+using System.IO;
 
 namespace SFA.DAS.ToolService.Web
 {
@@ -81,13 +80,11 @@ namespace SFA.DAS.ToolService.Web
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                 options.Cookie.IsEssential = true;
             });
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -100,9 +97,9 @@ namespace SFA.DAS.ToolService.Web
             }
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
-                    {
-                        ForwardedHeaders = ForwardedHeaders.XForwardedProto
-                    });
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedProto
+            });
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
