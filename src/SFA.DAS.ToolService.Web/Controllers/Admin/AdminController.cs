@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.ToolService.Core.IServices;
 using SFA.DAS.ToolService.Web.Models;
 using SFA.DAS.ToolService.Web.Models.Admin;
 
@@ -10,7 +9,6 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
     [Route("admin")]
     public class AdminController : BaseController<AdminController>
     {
-
         public AdminController()
         {
         }

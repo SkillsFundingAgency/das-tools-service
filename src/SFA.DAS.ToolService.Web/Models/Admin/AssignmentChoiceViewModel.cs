@@ -11,6 +11,7 @@ namespace SFA.DAS.ToolService.Web.Models.Admin
     {
         [Description("Add assignment")]
         GetUnassignedApplications,
+
         [Description("Remove assignment")]
         GetAssignedApplications
     }

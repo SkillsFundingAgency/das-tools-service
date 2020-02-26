@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace SFA.DAS.ToolService.Core.Entities
 {
     public class Role
@@ -10,6 +6,5 @@ namespace SFA.DAS.ToolService.Core.Entities
         public string ExternalId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-
     }
 }

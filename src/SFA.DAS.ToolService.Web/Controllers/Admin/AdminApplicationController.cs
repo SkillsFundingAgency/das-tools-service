@@ -1,11 +1,11 @@
-using System;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ToolService.Core.IServices;
-using SFA.DAS.ToolService.Web.Models.Admin;
-using SFA.DAS.ToolService.Web.Extensions;
 using SFA.DAS.ToolService.Web.Configuration;
-using Microsoft.AspNetCore.Authorization;
+using SFA.DAS.ToolService.Web.Extensions;
+using SFA.DAS.ToolService.Web.Models.Admin;
+using System;
+using System.Threading.Tasks;
 
 namespace SFA.DAS.ToolService.Web.Controllers.Admin
 {
@@ -57,7 +57,7 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
             var existingApplications = await _applicationService.GetUnassignedApplications();
             return View(new RemoveApplicationViewModel { ExistingApplications = existingApplications });
         }
-        
+
         [HttpPost("remove")]
         public IActionResult RemoveApplication(RemoveApplicationViewModel model)
         {

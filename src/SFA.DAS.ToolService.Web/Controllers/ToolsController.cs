@@ -1,11 +1,11 @@
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ToolService.Core.IServices;
 using SFA.DAS.ToolService.Web.Models;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace SFA.DAS.ToolService.Web.Controllers
 {

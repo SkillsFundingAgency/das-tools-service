@@ -1,14 +1,13 @@
+using Microsoft.Extensions.Logging;
 using SFA.DAS.ToolService.Core.Entities;
-using SFA.DAS.ToolService.Core.IServices;
 using SFA.DAS.ToolService.Core.IRepositories;
+using SFA.DAS.ToolService.Core.IServices;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using System.Linq;
 
 namespace SFA.DAS.ToolService.Core.Services
 {
-    public class RoleService: IRoleService
+    public class RoleService : IRoleService
     {
         private readonly ILogger<RoleService> _logger;
         private readonly IExternalRoleRepository _identityProviderRoleRepository;
@@ -20,7 +19,6 @@ namespace SFA.DAS.ToolService.Core.Services
             _identityProviderRoleRepository = identityProviderRoleRepository;
             _localRoleRepository = localRoleRepository;
         }
-
 
         public async Task<List<ExternalRole>> GetRoles()
         {
@@ -44,7 +42,8 @@ namespace SFA.DAS.ToolService.Core.Services
                     dbEntity.Description = role.Description;
 
                     _localRoleRepository.UpdateRole(dbEntity);
-                } else
+                }
+                else
                 {
                     _logger.LogInformation($"Adding external role [{role.Name}] to database from external idp.");
                     await _localRoleRepository.AddRole(new Role

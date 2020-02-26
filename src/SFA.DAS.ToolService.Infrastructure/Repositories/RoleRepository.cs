@@ -1,12 +1,9 @@
-using SFA.DAS.ToolService.Core.IRepositories;
-using SFA.DAS.ToolService.Core.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
+using Microsoft.Extensions.Logging;
+using SFA.DAS.ToolService.Core.Entities;
+using SFA.DAS.ToolService.Core.IRepositories;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SFA.DAS.ToolService.Infrastructure.Repositories
 {
@@ -35,7 +32,7 @@ namespace SFA.DAS.ToolService.Infrastructure.Repositories
         }
 
         public void UpdateRole(Role role)
-        { 
+        {
             _toolServiceDbContext.Role.Update(role);
             _toolServiceDbContext.SaveChanges();
         }

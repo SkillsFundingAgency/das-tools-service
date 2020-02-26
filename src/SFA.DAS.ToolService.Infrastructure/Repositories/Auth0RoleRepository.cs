@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Castle.Core.Logging;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.ToolService.Core.Entities;
 using SFA.DAS.ToolService.Core.IRepositories;
 using SFA.DAS.ToolService.Infrastructure.Auth0;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SFA.DAS.ToolService.Infrastructure.Repositories
 {
@@ -15,6 +12,7 @@ namespace SFA.DAS.ToolService.Infrastructure.Repositories
     {
         private readonly ILogger<Auth0RoleRepository> _logger;
         private readonly IAuth0ApiClient _client;
+
         public Auth0RoleRepository(ILogger<Auth0RoleRepository> logger, IAuth0ApiClient client)
         {
             _logger = logger;

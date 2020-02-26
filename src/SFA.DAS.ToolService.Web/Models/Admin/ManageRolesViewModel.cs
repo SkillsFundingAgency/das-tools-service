@@ -1,6 +1,5 @@
 using SFA.DAS.ToolService.Core.Entities;
 using System.Collections.Generic;
-using System.ComponentModel;
 
 namespace SFA.DAS.ToolService.Web.Models.Admin
 {
@@ -8,5 +7,4 @@ namespace SFA.DAS.ToolService.Web.Models.Admin
     {
         public List<ExternalRole> IdentiyProviderRoles { get; set; }
     }
-
 }

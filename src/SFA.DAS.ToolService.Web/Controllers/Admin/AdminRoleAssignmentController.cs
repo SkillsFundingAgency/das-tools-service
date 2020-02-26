@@ -1,10 +1,10 @@
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.ToolService.Web.Configuration;
 using SFA.DAS.ToolService.Core.IServices;
+using SFA.DAS.ToolService.Web.Configuration;
 using SFA.DAS.ToolService.Web.Extensions;
 using SFA.DAS.ToolService.Web.Models.Admin;
+using System.Threading.Tasks;
 
 namespace SFA.DAS.ToolService.Web.Controllers.Admin
 {
@@ -39,14 +39,14 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
             return View(new AssignmentChoiceViewModel());
         }
 
-        [HttpPost("{roleId}", Name= AdminRoleAssignmentRouteNames.HandleAssignmentChoice)]
+        [HttpPost("{roleId}", Name = AdminRoleAssignmentRouteNames.HandleAssignmentChoice)]
         public IActionResult HandleAssignmentChoice(int roleId, AssignmentChoiceViewModel model)
         {
             return RedirectToAction(model.Action.ToString(), new { roleId = roleId });
         }
 
         // list unassigned applications for role id
-        [HttpGet("{roleId}/add", Name= AdminRoleAssignmentRouteNames.GetUnassignedApplications)]
+        [HttpGet("{roleId}/add", Name = AdminRoleAssignmentRouteNames.GetUnassignedApplications)]
         public async Task<IActionResult> GetUnassignedApplications(int roleId)
         {
             if (roleId == 0)
@@ -85,7 +85,7 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
             });
         }
 
-        [HttpPost("{roleId}/remove",Name = AdminRoleAssignmentRouteNames.RemoveApplication)]
+        [HttpPost("{roleId}/remove", Name = AdminRoleAssignmentRouteNames.RemoveApplication)]
         [ValidateAntiForgeryToken]
         public IActionResult RemoveApplicationFromRole(ApplicationsForRoleViewModel model)
         {

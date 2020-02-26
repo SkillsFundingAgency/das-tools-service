@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace SFA.DAS.ToolService.Web.Configuration
 {
     public class AdminRoleAssignmentRouteNames
@@ -18,7 +14,6 @@ namespace SFA.DAS.ToolService.Web.Configuration
     public class AdminApplicationRouteNames
     {
         public const string ManageApplications = "ManageApplications";
-
     }
 
     public class AdminRoleRouteNames
@@ -26,5 +21,4 @@ namespace SFA.DAS.ToolService.Web.Configuration
         public const string ManageRoles = "ManageRoles";
         public const string SyncRoles = "SyncRoles";
     }
-
 }

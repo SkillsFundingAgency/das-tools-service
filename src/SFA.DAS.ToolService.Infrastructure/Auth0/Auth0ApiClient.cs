@@ -1,19 +1,18 @@
-using Microsoft.Extensions.Logging;
-using System;
-using System.Threading.Tasks;
 using Auth0.ManagementApi;
-using Microsoft.Extensions.Options;
-using SFA.DAS.ToolService.Core.Configuration;
 using Auth0.ManagementApi.Models;
 using Auth0.ManagementApi.Paging;
-using RestSharp;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using RestSharp;
+using SFA.DAS.ToolService.Core.Configuration;
+using System;
+using System.Threading.Tasks;
 
 namespace SFA.DAS.ToolService.Infrastructure.Auth0
 {
     public class Auth0ApiClient : IAuth0ApiClient
     {
-
         private readonly ILogger<Auth0ApiClient> _logger;
         private readonly IOptions<AuthenticationConfiguration> _configuration;
 
@@ -27,15 +26,18 @@ namespace SFA.DAS.ToolService.Infrastructure.Auth0
         {
             [JsonProperty("access_token")]
             public string AccessToken { get; set; }
+
             [JsonProperty("expires_in")]
             public long ExpiresIn { get; set; }
+
             [JsonProperty("scope")]
             public string Scope { get; set; }
+
             [JsonProperty("token_type")]
             public string TokenType { get; set; }
         }
 
-    private string GetToken()
+        private string GetToken()
         {
             var client = new RestClient($"https://{_configuration.Value.Domain}/oauth/token");
 
@@ -55,14 +57,14 @@ namespace SFA.DAS.ToolService.Infrastructure.Auth0
 
             var tokenResponse = JsonConvert.DeserializeObject<TokenResponse>(response.Content);
             return tokenResponse.AccessToken;
-
         }
 
         public async Task<IPagedList<Role>> GetAuth0Roles()
         {
             var token = GetToken();
             var uri = new Uri($"https://{_configuration.Value.Domain}/api/v2");
-            using (var client = new ManagementApiClient(token, uri)){
+            using (var client = new ManagementApiClient(token, uri))
+            {
                 var request = new GetRolesRequest
                 {
                     NameFilter = ""

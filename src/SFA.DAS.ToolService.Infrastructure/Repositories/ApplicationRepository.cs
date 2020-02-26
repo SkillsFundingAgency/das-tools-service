@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.ToolService.Infrastructure.Repositories
 {
-   public class ApplicationRepository : IApplicationRepository
+    public class ApplicationRepository : IApplicationRepository
     {
         private readonly IToolServiceDbContext _toolServiceDbContext;
         private readonly ILogger<ToolServiceDbContext> _logger;
@@ -31,7 +31,6 @@ namespace SFA.DAS.ToolService.Infrastructure.Repositories
 
         public async Task<List<Application>> GetApplicationsNotInRole(int id)
         {
-
             var roleMappings = await _toolServiceDbContext.ApplicationRole
                 .Where(c => c.RoleId.Equals(id))
                 .Select(c => c.ApplicationId).ToArrayAsync();
@@ -52,6 +51,7 @@ namespace SFA.DAS.ToolService.Infrastructure.Repositories
 
             return result;
         }
+
         public async Task<List<Application>> GetPublicApplications()
         {
             var result = await _toolServiceDbContext.Application
@@ -102,7 +102,6 @@ namespace SFA.DAS.ToolService.Infrastructure.Repositories
 
         public void DeleteApplicationRoleMapping(int applicationId, int roleId)
         {
-
             var mappingId = _toolServiceDbContext.ApplicationRole
                 .Where(c => c.ApplicationId.Equals(applicationId) && c.RoleId.Equals(roleId)).FirstOrDefault();
 

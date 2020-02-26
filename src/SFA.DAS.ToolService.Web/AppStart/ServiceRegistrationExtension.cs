@@ -1,3 +1,4 @@
+using Auth0.ManagementApi;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -6,10 +7,9 @@ using SFA.DAS.ToolService.Core.Configuration;
 using SFA.DAS.ToolService.Core.IRepositories;
 using SFA.DAS.ToolService.Core.IServices;
 using SFA.DAS.ToolService.Core.Services;
-using SFA.DAS.ToolService.Infrastructure.Repositories;
 using SFA.DAS.ToolService.Infrastructure.Auth0;
+using SFA.DAS.ToolService.Infrastructure.Repositories;
 using SFA.DAS.ToolService.Web.Infrastructure;
-using Auth0.ManagementApi;
 
 namespace SFA.DAS.ToolService.Web.AppStart
 {
