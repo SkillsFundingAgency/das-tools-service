@@ -41,7 +41,7 @@ coverage.json
 coverage.*.xml
 lcov.info
 lcov.json
-src/SFA.DAS.ToolService.Web/appsettings.Development.json
+appsettings.Development.json
 
 
 manifests-dev
