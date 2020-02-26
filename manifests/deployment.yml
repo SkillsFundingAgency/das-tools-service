@@ -70,7 +70,6 @@ spec:
           value: {{RedisConnectionString}}
         - name: DatabaseConnectionString
           value: {{DatabaseConnectionString}}
-        -
         image: apprenticeshipsdevops/das-tools-service:{{buildNumber}}
         imagePullPolicy: IfNotPresent
         name: das-tool-service
