@@ -55,15 +55,22 @@ spec:
         - name: APPINSIGHTS_INSTRUMENTATIONKEY
           value: TBA
         - name: Cdn__Url
-          value: https://das-test-frnt-end.azureedge.net
-        - name: Authentication__Auth0__Domain
+          value: {{CdnUrl}}
+        - name: Authentication__Domain
           value: dfe-apprenticeships.eu.auth0.com
-        - name: Authentication__Auth0__ClientId
+        - name: Authentication__ClientId
           value: {{Auth0ClientId}}
-        - name: Authentication__Auth0__ClientSecret
+        - name: Authentication__ClientSecret
           value: {{AUth0ClientSecret}}
+        - name: Authentication__ManagementApiClientId
+          value: {{ManagementApiClientId}}
+        - name: Authentication__ManagementApiClientSecret
+          value: {{ManagementApiClientSecret}}
         - name: RedisConnectionString
           value: {{RedisConnectionString}}
+        - name: DatabaseConnectionString
+          value: {{DatabaseConnectionString}}
+        -
         image: apprenticeshipsdevops/das-tools-service:{{buildNumber}}
         imagePullPolicy: IfNotPresent
         name: das-tool-service
