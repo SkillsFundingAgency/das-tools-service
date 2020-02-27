@@ -31,6 +31,17 @@ spec:
             host: {{IngressHost}}
             intervalSeconds: 7
             timeoutSeconds: 60
+    - match: Host(`{{IngressHost}}`) && PathPrefix(`/messages`)
+      kind: Rule
+      priority: 1
+      services:
+        - name: das-tool-service-web
+          port: 80
+          healthCheck:
+            path: /messages/health
+            host: {{IngressHost}}
+            intervalSeconds: 7
+            timeoutSeconds: 60
       middlewares:
         - name: das-tool-service-redirectscheme
   tls:
