@@ -35,7 +35,7 @@ spec:
       kind: Rule
       priority: 1
       services:
-        - name: das-tool-service-web
+        - name: das-secure-message-service-web
           port: 80
           healthCheck:
             path: /messages/health
