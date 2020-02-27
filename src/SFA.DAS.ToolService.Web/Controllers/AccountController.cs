@@ -17,7 +17,6 @@ namespace SFA.DAS.ToolService.Web.Controllers
             await HttpContext.ChallengeAsync("Auth0", new AuthenticationProperties() { RedirectUri = returnUrl });
         }
 
-        [Authorize]
         public async Task Logout()
         {
             await HttpContext.SignOutAsync("Auth0", new AuthenticationProperties

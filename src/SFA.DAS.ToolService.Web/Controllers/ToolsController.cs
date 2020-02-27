@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.ToolService.Web.Controllers
 {
-    [Authorize]
     [Route("home")]
     public class ToolsController : BaseController<ToolsController>
     {
