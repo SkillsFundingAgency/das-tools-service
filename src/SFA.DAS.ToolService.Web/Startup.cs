@@ -70,6 +70,8 @@ namespace SFA.DAS.ToolService.Web
 
             services.AddHealthChecks();
 
+            services.AddRouting(options => options.LowercaseUrls = true);
+
             services.AddMvc()
             .AddControllersAsServices()
             .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
