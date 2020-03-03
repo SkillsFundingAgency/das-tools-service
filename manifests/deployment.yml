@@ -53,7 +53,7 @@ spec:
         - name: EnvironmentName
           value: {{EnvironmentName}}
         - name: APPINSIGHTS_INSTRUMENTATIONKEY
-          value: TBA
+          value: {{appInsightsInstrumentationkey}}
         - name: Cdn__Url
           value: {{CdnUrl}}
         - name: Authentication__Domain
