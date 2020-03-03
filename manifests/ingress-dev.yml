@@ -33,7 +33,7 @@ spec:
             timeoutSeconds: 60
     - match: Host(`{{IngressHost}}`) && PathPrefix(`/messages`)
       kind: Rule
-      priority: 1
+      priority: 2
       services:
         - name: das-secure-message-service-web
           port: 80
