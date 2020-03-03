@@ -58,11 +58,16 @@
     <Folder Include="Properties" />
     <Folder Include="Tables" />
     <Folder Include="StoredProcedures" />
+    <Folder Include="Scripts\PostDeployment" />
+    <Folder Include="Scripts\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Application.sql" />
     <Build Include="Tables\ApplicationRole.sql" />
     <Build Include="StoredProcedures\AddApplicationRoleMapping.sql" />
     <Build Include="Tables\Role.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\PostDeployment\SeedDatabase.sql" />
   </ItemGroup>
 </Project>
