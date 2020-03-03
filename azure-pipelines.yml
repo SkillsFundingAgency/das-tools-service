@@ -61,14 +61,41 @@ stages:
           repository: apprenticeshipsdevops/das-tools-service
           tags: $(build.buildnumber)-production
 
-      - task: PublishPipelineArtifact@1
-        displayName: 'Publish Pipeline Artifacts'
+      - task: CopyFiles@2
+        displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
         inputs:
-          path: '$(System.DefaultWorkingDirectory)/'
-          artifactName: 'artifact'
+          contents: |
+            azure/**
+            manifests/**
+          targetFolder: '$(build.artifactstagingdirectory)/publish'
 
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Artifact'
+        inputs:
+          pathtoPublish: '$(build.artifactstagingdirectory)/publish'
 
+  - job: 'build_dacpac'
+    pool:
+      vmImage: 'windows-2019'
+    workspace:
+      clean: all
+    steps:
+    - task: VSBuild@1
+      displayName: 'Build DACPAC'
+      inputs:
+        solution: 'src/SFA.DAS.ToolService.Database/SFA.DAS.ToolService.Database.sqlproj'
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
+        msbuildArgs: '/p:PackageLocation="$(build.artifactstagingdirectory)/publish"'
 
-          logAnalyticsSubscriptionId 68208b91-0105-498e-a1bc-40d75596c01a
-          logAnalyticsWorkspaceName das-dev-oms-ws
-          SharedManagementResourceGroup SharedManagementResourceGroup
+    - task: CopyFiles@2
+      displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+      inputs:
+        contents: |
+          src/**/*.dacpac
+        targetFolder: '$(build.artifactstagingdirectory)/publish'
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact'
+      inputs:
+        pathtoPublish: '$(build.artifactstagingdirectory)/publish'
