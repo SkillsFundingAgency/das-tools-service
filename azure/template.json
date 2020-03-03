@@ -36,7 +36,7 @@
   "variables": {
     "deploymentUrlBase": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/",
     "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
-    "appInsightsName": "[concat(variables('resourceNamePrefix'), '-ai')]",
+    "appInsightsName": "[concat(variables('resourceNamePrefix'), 'ui-ai')]",
     "databaseName": "[concat(variables('resourceNamePrefix'), '-db')]"
   },
   "resources": [
