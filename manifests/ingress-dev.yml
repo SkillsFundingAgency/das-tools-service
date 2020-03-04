@@ -44,5 +44,18 @@ spec:
             timeoutSeconds: 60
       middlewares:
         - name: das-tool-service-redirectscheme
+     - match: Host(`{{IngressHost}}`) && PathPrefix(`/api/messages`)
+      kind: Rule
+      priority: 3
+      services:
+        - name: das-secure-message-service-api
+          port: 80
+          healthCheck:
+            path: /api/messages/health
+            host: {{IngressHost}}
+            intervalSeconds: 7
+            timeoutSeconds: 60
+      middlewares:
+        - name: das-tool-service-redirectscheme       
   tls:
     secretName: {{TlsSecretName}}
