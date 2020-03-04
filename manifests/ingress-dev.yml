@@ -57,5 +57,18 @@ spec:
             timeoutSeconds: 60
       middlewares:
         - name: das-tool-service-redirectscheme
+    - match: Host(`{{IngressHost}}`) && PathPrefix(`/grafana`)
+      kind: Rule
+      priority: 4
+      services:
+        - name: grafana
+          port: 80
+          healthCheck:
+            path: /grafana/api/health
+            host: {{IngressHost}}
+            intervalSeconds: 7
+            timeoutSeconds: 60
+      middlewares:
+        - name: das-tool-service-redirectscheme
   tls:
     secretName: {{TlsSecretName}}
