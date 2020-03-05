@@ -27,8 +27,7 @@ namespace SFA.DAS.ToolService.Core.Services
 
             foreach (var role in roles)
             {
-                var roleId = await _applicationRepository.GetRoleId(role);
-                var app = await _applicationRepository.GetApplicationsInRole(roleId);
+                var app = await _applicationRepository.GetApplicationsByRoleName(role);
                 applications.AddRange(app);
             }
 

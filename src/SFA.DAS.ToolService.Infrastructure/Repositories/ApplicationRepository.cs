@@ -20,6 +20,14 @@ namespace SFA.DAS.ToolService.Infrastructure.Repositories
             _logger = logger;
         }
 
+        public async Task<List<Application>> GetApplicationsByRoleName(string name)
+        {
+            var result = await _toolServiceDbContext.ApplicationRole
+                .Where(c => c.Role.Name.Equals(name))
+                .Select(c => c.Application).ToListAsync();
+            return result;
+        }
+
         public async Task<List<Application>> GetApplicationsInRole(int id)
         {
             var result = await _toolServiceDbContext.ApplicationRole
