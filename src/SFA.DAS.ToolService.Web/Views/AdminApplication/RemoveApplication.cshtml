@@ -1,0 +1,59 @@
+@{
+    ViewData["Title"] = "Admin Services";
+    @model RemoveApplicationViewModel
+    @using SFA.DAS.ToolService.Web.Controllers.Admin
+    @using SFA.DAS.ToolService.Web.Extensions
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <div class="govuk-warning-text">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text">
+                <span class="govuk-warning-text__assistive">Warning</span>
+                This area is for admin users only.
+            </strong>
+        </div>
+
+        @if (Model.ExistingApplications.Count > 0)
+        {
+            <form asp-controller="@typeof(AdminApplicationController).GetControllerName()" asp-action="@nameof(AdminApplicationController.RemoveApplication)" method="post">
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
+                            <h1 class="govuk-fieldset__heading">
+                                Pick an Application to remove
+                            </h1>
+                        </legend>
+
+                        <div class="govuk-radios">
+
+                            @foreach (var app in @Model.ExistingApplications)
+                            {
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="app-choice" name="SelectedApplication" type="radio" value="@app.Id">
+                                    <label class="govuk-label govuk-radios__label" for="app-choice">
+                                        @app.Name
+                                    </label>
+                                </div>
+                            }
+                        </div>
+                    </fieldset>
+                </div>
+
+                <button class="govuk-button" data-module="govuk-button">
+                    Continue
+                </button>
+            </form>
+        }
+        else
+        {
+            <p class="govuk-body">There are no applications available. If the application you want to remove exists, ensure that it is not assigned to a role. </p>
+            <p class="govuk-body">
+                You can return to the start by clicking <a asp-controller="@typeof(AdminController).GetControllerName()" asp-action="@nameof(AdminController.Index)">this link</a>.
+            </p>
+
+        }
+    </div>
+</div>

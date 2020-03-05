@@ -1,0 +1,54 @@
+@{
+    ViewData["Title"] = "Admin Services";
+    @model IndexViewModel;
+    @using SFA.DAS.ToolService.Web.Controllers.Admin
+    @using SFA.DAS.ToolService.Web.Extensions
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <div class="govuk-warning-text">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text">
+                <span class="govuk-warning-text__assistive">Warning</span>
+                This area is for admin users only.
+            </strong>
+        </div>
+
+        <form asp-controller="@typeof(AdminController).GetControllerName()" asp-action="@nameof(AdminController.IndexHandleChoice)" method="post">
+
+            <h1 class="govuk-heading-xl">
+                What do you want to do?
+            </h1>
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <div class="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="admin-choice" name="Choice" type="radio" value="ManageApplications">
+                            <label class="govuk-label govuk-radios__label" for="admin-choice">
+                                Manage applications
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="admin-choice-2" name="Choice" type="radio" value="ManageRoles">
+                            <label class="govuk-label govuk-radios__label" for="admin-choice-2">
+                                Manage roles
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="admin-choice-3" name="Choice" type="radio" value="RoleAssignment">
+                            <label class="govuk-label govuk-radios__label" for="admin-choice-3">
+                                Manage role assignments
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <button class="govuk-button" data-module="govuk-button">
+                Continue
+            </button>
+        </form>
+    </div>
+</div>

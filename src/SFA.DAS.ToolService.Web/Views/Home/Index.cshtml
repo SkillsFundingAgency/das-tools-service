@@ -1,5 +1,7 @@
-﻿@{
-ViewData["Title"] = "Home";
+@{
+    ViewData["Title"] = "Home";
+    @using SFA.DAS.ToolService.Web.Controllers
+    @using SFA.DAS.ToolService.Web.Extensions
 }
 
 <div class="govuk-grid-row">
@@ -10,12 +12,11 @@ ViewData["Title"] = "Home";
 
         <h2 class="govuk-heading-m">Before you start you will need:</h2>
         <ul class="govuk-list govuk-list--bullet">
-            <li>to be a member of the SkillsFundingAgency GitHub organisation</li>
-            <li>or have a digital.education.gov.uk email address</li>
+            <li>to be a member of the <strong>SkillsFundingAgency</strong> GitHub organisation</li>
+            <li>or have a <strong>digital.education.gov.uk</strong> or <strong>education.gov.uk</strong> email address</li>
         </ul>
-        <a asp-action="Login" asp-controller="Account" role="button" draggable="false" class="govuk-button govuk-button--start govuk-!-margin-top-2 govuk-!-margin-bottom-8">
+        <a asp-action="@nameof(AccountController.Login)" asp-controller="@typeof(AccountController).GetControllerName()" role="button" draggable="false" class="govuk-button govuk-button--start govuk-!-margin-top-2 govuk-!-margin-bottom-8">
             Sign in
         </a>
-
     </div>
 </div>

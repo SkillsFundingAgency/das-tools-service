@@ -1,65 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
-using SFA.DAS.ToolService.Authentication.ServiceCollectionExtensions;
-using SFA.DAS.ToolService.Authentication.Entities;
-using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.DataProtection.StackExchangeRedis;
-using StackExchange.Redis;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Logging;
+using SFA.DAS.ToolService.Core;
+using SFA.DAS.ToolService.Core.Configuration;
+using SFA.DAS.ToolService.Core.IRepositories;
+using SFA.DAS.ToolService.Web.AppStart;
+using System;
+using System.IO;
 
 namespace SFA.DAS.ToolService.Web
 {
     public class Startup
     {
-        private readonly IHostingEnvironment _env;
-        private readonly ILogger _logger;
-        public Startup(IConfiguration configuration, IHostingEnvironment env, ILogger<Startup> logger)
-        {
-            Configuration = configuration;
-            _env = env;
-            _logger = logger;
-        }
+        private readonly IConfiguration _configuration;
+        private readonly IHostingEnvironment _environment;
 
-        public IConfiguration Configuration { get; }
+        public Startup(IConfiguration configuration, IHostingEnvironment environment)
+        {
+            _environment = environment;
+            var config = new ConfigurationBuilder()
+                .AddConfiguration(configuration)
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", true)
+                .AddJsonFile("appsettings.Development.json", true)
+                .AddEnvironmentVariables()
+                .Build();
+
+            _configuration = config;
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var authenticationOptions = Configuration.GetSection("Authentication");
-
-            services.Configure<AuthenticationConfigurationEntity>(authenticationOptions);
-
-            services.Configure<ForwardedHeadersOptions>(options =>
-            {
-                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor |
-                    ForwardedHeaders.XForwardedProto;
-                options.KnownNetworks.Clear();
-                options.KnownProxies.Clear();
-            });
-
-            var redisConnectionString = Configuration["RedisConnectionString"];
-            var redis = ConnectionMultiplexer.Connect($"{redisConnectionString},DefaultDatabase=0");
-            services.AddDataProtection()
-                .SetApplicationName("das-tools-service")
-                .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
-
-            services.ConfigureApplicationCookie(options =>
-            {
-                options.Cookie.Name = ".AspNet.SharedCookie";
-            });
-
+            IdentityModelEventSource.ShowPII = false;
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -67,23 +50,72 @@ namespace SFA.DAS.ToolService.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddServices(_configuration);
+
+            services.AddDbContext<ToolServiceDbContext>(options =>
+                options.UseSqlServer(_configuration["DatabaseConnectionString"]));
+
+            services.AddScoped<IToolServiceDbContext, ToolServiceDbContext>(provider => provider.GetService<ToolServiceDbContext>());
+            services.AddTransient(provider => new Lazy<ToolServiceDbContext>(provider.GetService<ToolServiceDbContext>()));
+
+            services.AddOptions();
+
             services.AddAntiforgery(options =>
             {
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             });
 
+            var serviceProvider = services.BuildServiceProvider();
+            services.AddAuthorizationService();
+
+            services.AddAuth0Authentication(serviceProvider.GetService<IOptions<AuthenticationConfiguration>>());
+
             services.AddHealthChecks();
 
-            services.AddAuth0(authenticationOptions.Get<AuthenticationConfigurationEntity>());
+            services.AddRouting(options => options.LowercaseUrls = true);
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(options =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
+            })
+            .AddControllersAsServices()
+            .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddApplicationInsightsTelemetry(_configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
+
+            services.AddDistributedCache(_configuration, _environment);
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                options.Cookie.IsEssential = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILogger<Startup> logger)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
 
-            app.UseForwardedHeaders();
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedProto
+            });
+
             app.Use(async (context, next) =>
             {
                 context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
@@ -91,32 +123,30 @@ namespace SFA.DAS.ToolService.Web
                 await next();
             });
 
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+
             app.Use(async (context, next) =>
             {
-                if (context.Request.Headers.ContainsKey("X-Original-Host"))
+                if (context.Response.Headers.ContainsKey("X-Frame-Options"))
                 {
-                    var originalHost = context.Request.Headers["X-Original-Host"];
-                    logger.LogInformation($"Retrieving X-Original-Host value {originalHost}");
-                    context.Request.Headers.Add("Host", originalHost);
+                    context.Response.Headers.Remove("X-Frame-Options");
                 }
-                await next.Invoke();
+
+                context.Response.Headers.Add("X-Frame-Options", "SAMEORIGIN");
+
+                await next();
+
+                if (context.Response.StatusCode == 404 && !context.Response.HasStarted)
+                {
+                    //Re-execute the request so the user gets the error page
+                    var originalPath = context.Request.Path.Value;
+                    context.Items["originalPath"] = originalPath;
+                    context.Request.Path = "/error/404";
+                    await next();
+                }
             });
 
-            if (env.IsDevelopment())
-            {
-                logger.LogInformation($"App is running in development mode: {env.EnvironmentName}");
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                logger.LogInformation($"App is running in production mode: {env.EnvironmentName}");
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
-
-            app.UseStaticFiles();
-            app.UseCookiePolicy();
             app.UseAuthentication();
             app.UseHealthChecks("/health");
 

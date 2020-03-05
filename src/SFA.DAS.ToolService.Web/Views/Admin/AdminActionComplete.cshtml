@@ -1,0 +1,32 @@
+@{
+    ViewData["Title"] = "Admin Services";
+    @model AdminActionCompleteViewModel;
+    @using SFA.DAS.ToolService.Web.Controllers.Admin
+    @using SFA.DAS.ToolService.Web.Extensions
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <div class="govuk-warning-text">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text">
+                <span class="govuk-warning-text__assistive">Warning</span>
+                This area is for admin users only.
+            </strong>
+        </div>
+
+        <div class="govuk-panel govuk-panel--confirmation">
+            <h1 class="govuk-panel__title">
+                You're done!
+            </h1>
+            <div class="govuk-panel__body">
+                @Model.Message
+            </div>
+        </div>
+
+        <p class="govuk-body">
+            You can return to the start by clicking <a asp-controller="@typeof(AdminController).GetControllerName()" asp-action="@nameof(AdminController.Index)">this link</a>.
+        </p>
+    </div>
+</div>

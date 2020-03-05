@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Home";
+    @model ToolsHomeViewModel;
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">
+            Your Services
+        </h1>
+        @if (Model.Applications.Count > 0)
+        {
+            <dl class="govuk-summary-list">
+
+                @foreach (var m in @Model.Applications)
+                {
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            @m.Name
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @m.Description
+                        </dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" href=@Url.Content(m.Path)>
+                                Open<span class="govuk-visually-hidden"> @m.Name</span>
+                            </a>
+                        </dd>
+                    </div>
+                }
+            </dl>
+        }
+        else
+        {
+            <p class="govuk-body">You don't have any services yet.</p>
+
+        }
+    </div>
+</div>

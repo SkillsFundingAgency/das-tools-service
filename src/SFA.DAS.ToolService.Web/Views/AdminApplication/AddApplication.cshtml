@@ -1,0 +1,47 @@
+@{
+    ViewData["Title"] = "Admin Services";
+    @model AddApplicationViewModel
+    @using SFA.DAS.ToolService.Web.Controllers.Admin
+    @using SFA.DAS.ToolService.Web.Extensions
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <div class="govuk-warning-text">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text">
+                <span class="govuk-warning-text__assistive">Warning</span>
+                This area is for admin users only.
+            </strong>
+        </div>
+
+        <form asp-controller="@typeof(AdminApplicationController).GetControllerName()" asp-action="@nameof(AdminApplicationController.AddApplication)" method="post">
+            <div class="govuk-form-group">
+                <label asp-for="Name" class="govuk-label control-label">
+                    Application Name
+                </label>
+                <span asp-validation-for="Name" class="ext-danger">
+                </span>
+                <input asp-for="Name" class="govuk-input" required />
+            </div>
+            <div class="govuk-form-group">
+                <label asp-for="Description" class="govuk-label">
+                    Application Description
+                </label>
+                <input asp-for="Description" class="govuk-input" required />
+            </div>
+            <div class="govuk-form-group">
+                <label asp-for="Path" class="govuk-label">
+                    Path to Application
+                </label>
+                <input asp-for="Path" class="govuk-input" required />
+            </div>
+            <div class="govuk-form-group">
+                <button class="govuk-button" data-module="govuk-button">
+                    Save and continue
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
