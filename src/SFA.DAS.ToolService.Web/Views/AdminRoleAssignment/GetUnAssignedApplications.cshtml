@@ -6,7 +6,7 @@
 }
 
 <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column-full">
 
         <div class="govuk-warning-text">
             <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
@@ -18,36 +18,38 @@
 
         @if (@Model.Applications.Count > 0)
         {
-            <form asp-controller="@typeof(AdminRoleAssignmentController).GetControllerName()" asp-action="@nameof(AdminRoleAssignmentController.AssignRoleToApplication)" method="post">
-
+            <form asp-route="@AdminRoleAssignmentRouteNames.AddApplication" method="post">
+                <h1 class="govuk-heading-xl">Manage role assignments</h1>
                 <div class="govuk-form-group">
                     <fieldset class="govuk-fieldset">
-                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                            <h1 class="govuk-fieldset__heading">
-                                Pick an Application
-                            </h1>
+
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                            <span class="govuk-caption-xl">Current role: @Model.RoleName</span>
                         </legend>
 
                         <input id="role-id" name="RoleId" value="@Model.RoleId" type="hidden">
-
-                        <div class="govuk-radios">
+                        <dl class="govuk-summary-list">
 
                             @foreach (var app in @Model.Applications)
                             {
-                                <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" id="app-choice" name="ApplicationId" type="radio" value="@app.Id">
-                                    <label class="govuk-label govuk-radios__label" for="app-choice">
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">
                                         @app.Name
-                                    </label>
+                                    </dt>
+                                    <dd class="govuk-summary-list__value">
+                                        @app.Description
+                                    </dd>
+                                    <dd class="govuk-summary-list__actions">
+                                        <input id="for-id" asp-for="ApplicationId" value="@app.Id" type="hidden">
+                                        <button class="govuk-button" data-module="govuk-button">
+                                            Add
+                                        </button>
+                                    </dd>
                                 </div>
                             }
-                        </div>
+                        </dl>
                     </fieldset>
                 </div>
-
-                <button class="govuk-button" data-module="govuk-button">
-                    Continue
-                </button>
             </form>
         }
         else
@@ -56,7 +58,6 @@
             <p class="govuk-body">
                 You can return to the start by clicking <a asp-controller="@typeof(AdminController).GetControllerName()" asp-action="@nameof(AdminController.Index)"> here</a>, or add a <a asp-route="@AdminRoleAssignmentRouteNames.GetUnassignedApplications">new application</a>.
             </p>
-
         }
     </div>
 </div>

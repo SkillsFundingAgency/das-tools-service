@@ -31,6 +31,11 @@ namespace SFA.DAS.ToolService.Infrastructure.Repositories
             return await _toolServiceDbContext.Role.FirstOrDefaultAsync(role => role.Name.ToLowerInvariant() == name.ToLowerInvariant());
         }
 
+        public async Task<Role> GetRole(int id)
+        {
+            return await _toolServiceDbContext.Role.SingleOrDefaultAsync(role => role.Id == id);
+        }
+
         public void UpdateRole(Role role)
         {
             _toolServiceDbContext.Role.Update(role);

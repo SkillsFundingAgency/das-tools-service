@@ -16,8 +16,6 @@ namespace SFA.DAS.ToolService.Core.IServices
 
         Task<List<Application>> GetUnassignedApplicationsForRole(int id);
 
-        Task<List<Role>> GetRoles();
-
         Task AssignApplicationToRole(int applicationId, int roleId);
 
         Task AddApplication(string name, string description, string path, bool isExternal);

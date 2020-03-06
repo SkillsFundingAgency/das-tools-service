@@ -6,7 +6,7 @@
 }
 
 <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column-full">
 
         <div class="govuk-warning-text">
             <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
@@ -19,9 +19,14 @@
         @if (@Model.Applications.Count > 0)
         {
             <form asp-route="@AdminRoleAssignmentRouteNames.RemoveApplication" method="post">
-                <h1 class="govuk-heading-xl">Applications for role: @Model.RoleId</h1>
+                <h1 class="govuk-heading-xl">Manage role assignments</h1>
                 <div class="govuk-form-group">
                     <fieldset class="govuk-fieldset">
+
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                            <span class="govuk-caption-xl">Current role: @Model.RoleName</span>
+                        </legend>
+
                         <input id="role-id" name="RoleId" value="@Model.RoleId" type="hidden">
                         <dl class="govuk-summary-list">
 

@@ -22,7 +22,7 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
         [HttpGet("", Name = AdminRoleRouteNames.ManageRoles)]
         public async Task<IActionResult> Index()
         {
-            var identiyProviderRoles = await roleService.GetRoles();
+            var identiyProviderRoles = await roleService.GetExternalRoles();
             var model = new ManageRolesViewModel
             {
                 IdentiyProviderRoles = identiyProviderRoles

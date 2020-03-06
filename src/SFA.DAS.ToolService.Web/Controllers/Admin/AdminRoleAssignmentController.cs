@@ -4,6 +4,7 @@ using SFA.DAS.ToolService.Core.IServices;
 using SFA.DAS.ToolService.Web.Configuration;
 using SFA.DAS.ToolService.Web.Extensions;
 using SFA.DAS.ToolService.Web.Models.Admin;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SFA.DAS.ToolService.Web.Controllers.Admin
@@ -13,17 +14,19 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
     public class AdminRoleAssignmentController : BaseController<AdminRoleAssignmentController>
     {
         private readonly IApplicationService applicationService;
+        private readonly IRoleService roleService;
 
-        public AdminRoleAssignmentController(IApplicationService _applicationService)
+        public AdminRoleAssignmentController(IApplicationService _applicationService, IRoleService _roleService)
         {
             applicationService = _applicationService;
+            roleService = _roleService;
         }
 
         // list roles
         [HttpGet("", Name = AdminRoleAssignmentRouteNames.RoleAssignment)]
         public async Task<IActionResult> Index()
         {
-            var roles = await applicationService.GetRoles();
+            var roles = await roleService.GetRoles();
             return View(new RoleAssignmentsViewModel { Roles = roles });
         }
 
@@ -55,10 +58,12 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
             }
 
             var applications = await applicationService.GetUnassignedApplicationsForRole(roleId);
+            var role = await roleService.GetRole(roleId);
 
             return View(new ApplicationsForRoleViewModel
             {
                 RoleId = roleId,
+                RoleName = role.Name,
                 Applications = applications
             });
         }
@@ -78,9 +83,11 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
         public async Task<IActionResult> GetAssignedApplications(int roleId)
         {
             var applications = await applicationService.GetApplicationsForRoleId(roleId);
+            var role = await roleService.GetRole(roleId);
             return View(new ApplicationsForRoleViewModel
             {
                 RoleId = roleId,
+                RoleName = role.Name,
                 Applications = applications
             });
         }
