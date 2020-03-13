@@ -21,14 +21,23 @@ BEGIN
         END
 
 	IF NOT EXISTS (SELECT NAME FROM dbo.Application
-					WHERE NAME IN ('Message Service', 'Admin Services'))
+					WHERE NAME = 'Message Service')
 		BEGIN
 			INSERT INTO dbo.Application (Name, Description, Path, IsExternal, [Public], Admin)
 			VALUES 
-			('Message Service', 'A secure way to send contextless one time messages.', '~/messages', 0, 1, 0),
+			('Message Service', 'A secure way to send contextless one time messages.', '~/messages', 0, 1, 0)
+
+			PRINT 'Database application seeded'
+		END
+
+	IF NOT EXISTS (SELECT NAME FROM dbo.Application
+					WHERE NAME = 'Admin Services')
+        BEGIN
+			INSERT INTO dbo.Application (Name, Description, Path, IsExternal, [Public], Admin)
+			VALUES 
 			('Admin Services', 'Perform basic administrative tasks on tools service', '~/admin', 0, 0, 1)
 
-			PRINT 'Database applications seeded'
+			PRINT 'Database application seeded'
 		END
 
         IF NOT EXISTS (
