@@ -32,7 +32,7 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
             return RedirectToAction(model.Action.ToString());
         }
 
-        [HttpGet("add")]
+        [HttpGet("add", Name = AdminApplicationRouteNames.AddNewApplication)]
         public IActionResult AddApplication()
         {
             return View();

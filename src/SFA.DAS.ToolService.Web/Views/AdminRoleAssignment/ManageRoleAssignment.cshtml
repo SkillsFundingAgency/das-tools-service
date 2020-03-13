@@ -1,0 +1,103 @@
+@{
+    ViewData["Title"] = "Admin Services";
+    @model ApplicationsForRoleViewModel;
+    @using SFA.DAS.ToolService.Web.Configuration
+    @using SFA.DAS.ToolService.Web.Controllers.Admin
+    @using SFA.DAS.ToolService.Web.Extensions
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+
+        <div class="govuk-warning-text">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text">
+                <span class="govuk-warning-text__assistive">Warning</span>
+                This area is for admin users only.
+            </strong>
+        </div>
+
+        <h1 class="govuk-heading-xl">Manage role assignments</h1>
+        <h2 class="govuk-heading-m">@Model.RoleName</h2>
+
+        <div class="govuk-tabs" data-module="govuk-tabs">
+            <h2 class="govuk-tabs__title">
+                Contents
+            </h2>
+            <ul class="govuk-tabs__list">
+                <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
+                    <a class="govuk-tabs__tab" href="#Add">
+                        Add
+                    </a>
+                </li>
+                <li class="govuk-tabs__list-item">
+                    <a class="govuk-tabs__tab" href="#Remove">
+                        Remove
+                    </a>
+                </li>
+            </ul>
+            <div class="govuk-tabs__panel govuk-tabs__panel--hidden" id="Add">
+                <table class="govuk-table">
+                    <tbody class="govuk-table__body">
+
+                        @if (@Model.UnassignedApplications.Count > 0)
+                        {
+                            <form asp-route="@AdminRoleAssignmentRouteNames.AddApplication" method="post">
+
+                                @foreach (var app in @Model.UnassignedApplications)
+                                {
+
+                                    <tr class="govuk-table__row">
+                                        <td class="govuk-table__cell">@app.Name</td>
+                                        <td class="govuk-table__cell">@app.Description</td>
+                                        <td class="govuk-table__cell">
+                                            <input id="for-id" asp-for="ApplicationId" value="@app.Id" type="hidden">
+                                            <button class="govuk-button" data-module="govuk-button">
+                                                Add
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </form>
+                        }
+                        else
+                        {
+                            <p class="govuk-body">There are no applications assigned to this role.</p>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="govuk-tabs__panel govuk-tabs__panel--hidden" id="Remove">
+                <table class="govuk-table">
+                    <tbody class="govuk-table__body">
+
+                        @if (@Model.AssignedApplications.Count > 0)
+                        {
+                            <form asp-route="@AdminRoleAssignmentRouteNames.RemoveApplication" method="post">
+
+                                @foreach (var app in @Model.AssignedApplications)
+                                {
+
+                                    <tr class="govuk-table__row">
+                                        <td class="govuk-table__cell">@app.Name</td>
+                                        <td class="govuk-table__cell">@app.Description</td>
+                                        <td class="govuk-table__cell">
+                                            <input id="for-id" asp-for="ApplicationId" value="@app.Id" type="hidden">
+                                            <button class="govuk-button govuk-button--warning" data-module="govuk-button">
+                                                Remove
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </form>
+                        }
+                        else
+                        {
+                            <p class="govuk-body">There are no applications assigned to this role.</p>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

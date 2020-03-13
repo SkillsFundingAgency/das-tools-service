@@ -38,7 +38,7 @@ namespace SFA.DAS.ToolService.Core.Services
         public async Task<List<Application>> GetApplicationsForRoleId(int roleId)
         {
             var applications = await _applicationRepository.GetApplicationsInRole(roleId);
-            return applications.OrderBy(c => c.Name).ToList();
+            return applications.Where(c => c.Admin != 1).OrderBy(c => c.Name).ToList();
         }
 
         public async Task<List<Application>> GetUnassignedApplications()
@@ -50,7 +50,7 @@ namespace SFA.DAS.ToolService.Core.Services
         public async Task<List<Application>> GetUnassignedApplicationsForRole(int id)
         {
             var applications = await _applicationRepository.GetApplicationsNotInRole(id);
-            return applications.OrderBy(c => c.Name).ToList();
+            return applications.Where(c => c.Admin != 1).OrderBy(c => c.Name).ToList();
         }
 
         public async Task AssignApplicationToRole(int applicationId, int roleId)

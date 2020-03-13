@@ -6,7 +6,6 @@
     <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
-
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="2.2.0" />
@@ -24,5 +23,4 @@
     <ProjectReference Include="..\SFA.DAS.ToolService.Core\SFA.DAS.ToolService.Core.csproj" />
     <ProjectReference Include="..\SFA.DAS.ToolService.Infrastructure\SFA.DAS.ToolService.Infrastructure.csproj" />
   </ItemGroup>
-
 </Project>

@@ -1,16 +1,18 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.ToolService.Core.Entities;
 using SFA.DAS.ToolService.Core.IServices;
 using SFA.DAS.ToolService.Web.Configuration;
 using SFA.DAS.ToolService.Web.Extensions;
 using SFA.DAS.ToolService.Web.Models.Admin;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace SFA.DAS.ToolService.Web.Controllers.Admin
 {
     [Authorize(Policy = "admin")]
-    [Route("admin/role-assignments")]
+    [Route("admin/manage-roles/assignments")]
     public class AdminRoleAssignmentController : BaseController<AdminRoleAssignmentController>
     {
         private readonly IApplicationService applicationService;
@@ -22,49 +24,19 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
             roleService = _roleService;
         }
 
-        // list roles
-        [HttpGet("", Name = AdminRoleAssignmentRouteNames.RoleAssignment)]
-        public async Task<IActionResult> Index()
+        [HttpGet("{roleId}", Name = AdminRoleAssignmentRouteNames.ManageRoleAssignment)]
+        public async Task<IActionResult> ManageRoleAssignment(int roleId)
         {
-            var roles = await roleService.GetRoles();
-            return View(new RoleAssignmentsViewModel { Roles = roles });
-        }
+            var assignedApplications = await applicationService.GetApplicationsForRoleId(roleId);
+            var unassignedApplications = await applicationService.GetUnassignedApplicationsForRole(roleId);
 
-        [HttpPost]
-        public IActionResult IndexHandleChoice(RoleAssignmentsViewModel model)
-        {
-            return RedirectToRoute("AssignmentChoice", new { roleId = model.RoleId });
-        }
-
-        [HttpGet("{roleId}", Name = AdminRoleAssignmentRouteNames.AssignmentChoice)]
-        public IActionResult AssignmentChoice(int roleId)
-        {
-            return View(new AssignmentChoiceViewModel());
-        }
-
-        [HttpPost("{roleId}", Name = AdminRoleAssignmentRouteNames.HandleAssignmentChoice)]
-        public IActionResult HandleAssignmentChoice(int roleId, AssignmentChoiceViewModel model)
-        {
-            return RedirectToAction(model.Action.ToString(), new { roleId = roleId });
-        }
-
-        // list unassigned applications for role id
-        [HttpGet("{roleId}/add", Name = AdminRoleAssignmentRouteNames.GetUnassignedApplications)]
-        public async Task<IActionResult> GetUnassignedApplications(int roleId)
-        {
-            if (roleId == 0)
-            {
-                return new BadRequestResult();
-            }
-
-            var applications = await applicationService.GetUnassignedApplicationsForRole(roleId);
             var role = await roleService.GetRole(roleId);
-
             return View(new ApplicationsForRoleViewModel
             {
                 RoleId = roleId,
                 RoleName = role.Name,
-                Applications = applications
+                AssignedApplications = assignedApplications,
+                UnassignedApplications = unassignedApplications
             });
         }
 
@@ -76,20 +48,6 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
             await applicationService.AssignApplicationToRole(model.ApplicationId, model.RoleId);
             TempData.Put("model", new { Message = "The requested role assignment has been updated." });
             return RedirectToAction(nameof(AdminController.AdminActionComplete), typeof(AdminController));
-        }
-
-        // list all applications for role id
-        [HttpGet("{roleId}/remove", Name = AdminRoleAssignmentRouteNames.GetAssignedApplications)]
-        public async Task<IActionResult> GetAssignedApplications(int roleId)
-        {
-            var applications = await applicationService.GetApplicationsForRoleId(roleId);
-            var role = await roleService.GetRole(roleId);
-            return View(new ApplicationsForRoleViewModel
-            {
-                RoleId = roleId,
-                RoleName = role.Name,
-                Applications = applications
-            });
         }
 
         [HttpPost("{roleId}/remove", Name = AdminRoleAssignmentRouteNames.RemoveApplication)]
