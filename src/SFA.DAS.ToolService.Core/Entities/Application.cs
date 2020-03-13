@@ -8,5 +8,6 @@ namespace SFA.DAS.ToolService.Core.Entities
         public string Path { get; set; }
         public int IsExternal { get; set; }
         public int Public { get; set; }
+        public int Admin { get; set; }
     }
 }

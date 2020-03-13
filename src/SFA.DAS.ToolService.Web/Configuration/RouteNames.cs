@@ -4,8 +4,8 @@ namespace SFA.DAS.ToolService.Web.Configuration
     {
         public const string AddApplication = "AddApplication";
         public const string RemoveApplication = "RemoveApplication";
-        public const string GetUnassignedApplications = "GetUnassignedApplications";
-        public const string GetAssignedApplications = "GetAssignedApplications";
+        public const string AddRoleAssignment = "AddRoleAssignment";
+        public const string ManageRoleAssignment = "ManageRoleAssignment";
         public const string RoleAssignment = "RoleAssignment";
         public const string AssignmentChoice = "AssignmentChoice";
         public const string HandleAssignmentChoice = "HandleAssignmentChoice";
@@ -14,6 +14,8 @@ namespace SFA.DAS.ToolService.Web.Configuration
     public class AdminApplicationRouteNames
     {
         public const string ManageApplications = "ManageApplications";
+
+        public const string AddNewApplication = "AddNewApplication";
     }
 
     public class AdminRoleRouteNames

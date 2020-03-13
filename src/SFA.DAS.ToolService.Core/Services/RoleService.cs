@@ -3,6 +3,7 @@ using SFA.DAS.ToolService.Core.Entities;
 using SFA.DAS.ToolService.Core.IRepositories;
 using SFA.DAS.ToolService.Core.IServices;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SFA.DAS.ToolService.Core.Services
@@ -20,7 +21,18 @@ namespace SFA.DAS.ToolService.Core.Services
             _localRoleRepository = localRoleRepository;
         }
 
-        public async Task<List<ExternalRole>> GetRoles()
+        public async Task<List<Role>> GetRoles()
+        {
+            var roles = await _localRoleRepository.GetRoles();
+            return roles.OrderBy(c => c.Name).ToList();
+        }
+
+        public async Task<Role> GetRole(int roleId)
+        {
+            return await _localRoleRepository.GetRole(roleId);
+        }
+
+        public async Task<List<ExternalRole>> GetExternalRoles()
         {
             return await _identityProviderRoleRepository.GetExternalRoles();
         }

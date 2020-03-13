@@ -10,6 +10,8 @@ namespace SFA.DAS.ToolService.Core.IRepositories
 
         Task<Role> GetRole(string name);
 
+        Task<Role> GetRole(int id);
+
         void UpdateRole(Role role);
 
         Task AddRole(Role role);

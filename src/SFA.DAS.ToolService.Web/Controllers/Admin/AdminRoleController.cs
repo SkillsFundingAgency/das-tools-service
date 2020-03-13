@@ -22,20 +22,15 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
         [HttpGet("", Name = AdminRoleRouteNames.ManageRoles)]
         public async Task<IActionResult> Index()
         {
-            var identiyProviderRoles = await roleService.GetRoles();
+            var identiyProviderRoles = await roleService.GetExternalRoles();
+            var localRoles = await roleService.GetRoles();
             var model = new ManageRolesViewModel
             {
-                IdentiyProviderRoles = identiyProviderRoles
+                IdentiyProviderRoles = identiyProviderRoles,
+                LocalRoles = localRoles
             };
             return View(model);
         }
 
-        [HttpPost("", Name = AdminRoleRouteNames.SyncRoles)]
-        public async Task<IActionResult> SyncRoles(ManageRolesViewModel model)
-        {
-            await roleService.SyncIdentityProviderRoles();
-            TempData.Put("model", new { Message = "Role sync has been started." });
-            return RedirectToAction(nameof(AdminController.AdminActionComplete), typeof(AdminController));
-        }
     }
 }

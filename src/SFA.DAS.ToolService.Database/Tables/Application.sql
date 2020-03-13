@@ -5,5 +5,6 @@ CREATE TABLE [dbo].[Application]
     [Description] VARCHAR(100) NOT NULL, 
     [Path] VARCHAR(50) NOT NULL, 
     [IsExternal] INT NOT NULL DEFAULT 0,
-    [Public] INT NOT NULL DEFAULT 0
+    [Public] INT NOT NULL DEFAULT 0, 
+    [Admin] INT NOT NULL DEFAULT 0
 )

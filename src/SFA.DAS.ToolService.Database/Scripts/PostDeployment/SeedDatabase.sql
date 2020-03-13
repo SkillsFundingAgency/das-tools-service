@@ -21,13 +21,35 @@ BEGIN
         END
 
 	IF NOT EXISTS (SELECT NAME FROM dbo.Application
-					WHERE NAME IN ('Message Service', 'Admin Services'))
+					WHERE NAME = 'Message Service')
 		BEGIN
-			INSERT INTO dbo.Application (Name, Description, Path, IsExternal, [Public])
+			INSERT INTO dbo.Application (Name, Description, Path, IsExternal, [Public], Admin)
 			VALUES 
-			('Message Service', 'A secure way to send contextless one time messages.', '~/messages', 0, 1),
-			('Admin Services', 'Perform basic administrative tasks on tools service', '~/admin', 0, 0)
+			('Message Service', 'A secure way to send contextless one time messages.', '~/messages', 0, 1, 0)
 
-			PRINT 'Database applications seeded'
+			PRINT 'Database application seeded'
 		END
+
+	IF NOT EXISTS (SELECT NAME FROM dbo.Application
+					WHERE NAME = 'Admin Services')
+        BEGIN
+			INSERT INTO dbo.Application (Name, Description, Path, IsExternal, [Public], Admin)
+			VALUES 
+			('Admin Services', 'Perform basic administrative tasks on tools service', '~/admin', 0, 0, 1)
+
+			PRINT 'Database application seeded'
+		END
+
+        IF NOT EXISTS (
+
+        SELECT Id FROM dbo.ApplicationRole
+            WHERE ApplicationId = (SELECT Id FROM dbo.Application WHERE Name = 'Admin Services')
+            AND RoleId = (SELECT Id FROM dbo.Role WHERE Name = 'Admin')
+        )
+        BEGIN
+            INSERT INTO dbo.ApplicationRole(ApplicationId, RoleId) VALUES
+            ( (SELECT Id FROM dbo.Application WHERE Name = 'Admin Services'), (SELECT Id FROM dbo.Role WHERE Name = 'Admin') )
+
+            PRINT 'Database role mapping seeded'
+        END
 END

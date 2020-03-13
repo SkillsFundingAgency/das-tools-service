@@ -6,7 +6,7 @@
 }
 
 <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column-full">
 
         <div class="govuk-warning-text">
             <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
@@ -19,32 +19,31 @@
         @if (Model.ExistingApplications.Count > 0)
         {
             <form asp-controller="@typeof(AdminApplicationController).GetControllerName()" asp-action="@nameof(AdminApplicationController.RemoveApplication)" method="post">
+                <h1 class="govuk-heading-xl">Remove an application</h1>
                 <div class="govuk-form-group">
                     <fieldset class="govuk-fieldset">
-                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
-                            <h1 class="govuk-fieldset__heading">
-                                Pick an Application to remove
-                            </h1>
-                        </legend>
-
-                        <div class="govuk-radios">
+                        <dl class="govuk-summary-list">
 
                             @foreach (var app in @Model.ExistingApplications)
                             {
-                                <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" id="app-choice" name="SelectedApplication" type="radio" value="@app.Id">
-                                    <label class="govuk-label govuk-radios__label" for="app-choice">
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">
                                         @app.Name
-                                    </label>
+                                    </dt>
+                                    <dd class="govuk-summary-list__value">
+                                        @app.Description
+                                    </dd>
+                                    <dd class="govuk-summary-list__actions">
+                                        <input id="app-choice" asp-for="SelectedApplication" value="@app.Id" type="hidden">
+                                        <button class="govuk-button govuk-button--warning" data-module="govuk-button">
+                                            Remove
+                                        </button>
+                                    </dd>
                                 </div>
                             }
-                        </div>
+                        </dl>
                     </fieldset>
                 </div>
-
-                <button class="govuk-button" data-module="govuk-button">
-                    Continue
-                </button>
             </form>
         }
         else
