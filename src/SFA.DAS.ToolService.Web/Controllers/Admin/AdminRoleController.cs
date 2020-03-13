@@ -32,5 +32,11 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
             return View(model);
         }
 
+        [HttpGet("sync", Name = AdminRoleRouteNames.SyncRoles)]
+        public async Task<IActionResult> SyncRolesFromExternalProvider()
+        {
+            await roleService.SyncIdentityProviderRoles();
+            return RedirectToAction(AdminRoleRouteNames.ManageRoles);
+        }
     }
 }
