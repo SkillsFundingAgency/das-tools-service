@@ -3,7 +3,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: TLSOption
 metadata:
   name: das-tool-service-tlsoption
-  namespace: default
+  namespace: {{Namespace}}
 spec:
   minVersion: VersionTLS12
 
