@@ -8,19 +8,9 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-        <div class="govuk-warning-text">
-            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-            <strong class="govuk-warning-text__text">
-                <span class="govuk-warning-text__assistive">Warning</span>
-                This area is for admin users only.
-            </strong>
-        </div>
+        <h1 class="govuk-heading-xl"> What do you want to do?</h1>
 
         <form asp-controller="@typeof(AdminController).GetControllerName()" asp-action="@nameof(AdminController.IndexHandleChoice)" method="post">
-
-            <h1 class="govuk-heading-xl">
-                What do you want to do?
-            </h1>
             <div class="govuk-form-group">
                 <fieldset class="govuk-fieldset">
                     <div class="govuk-radios">
