@@ -1,5 +1,14 @@
 ---
 apiVersion: traefik.containo.us/v1alpha1
+kind: TLSOption
+metadata:
+  name: das-tool-service-tlsoption
+  namespace: {{Namespace}}
+spec:
+  minVersion: VersionTLS12
+
+---
+apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
   name: das-tool-service-redirectscheme
@@ -72,3 +81,6 @@ spec:
         - name: das-tool-service-redirectscheme
   tls:
     secretName: {{TlsSecretName}}
+    options:
+      name: das-tool-service-tlsoption
+      namespace: {{Namespace}}
