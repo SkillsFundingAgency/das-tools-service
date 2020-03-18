@@ -80,7 +80,7 @@ spec:
       middlewares:
         - name: das-tool-service-redirectscheme
   tls:
-    secretName: '{{TlsSecretName}}-2'
+    secretName: '{{TlsSecretName}}-correct-chain'
     options:
       name: das-tool-service-tlsoption
       namespace: {{Namespace}}
