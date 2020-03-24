@@ -44,7 +44,6 @@ stages:
           repository: apprenticeshipsdevops/das-tools-service
           tags: |
             $(build.buildnumber)
-            $(build.buildnumber)-production
 
       - task: Docker@2
         displayName: Push Image
@@ -52,14 +51,6 @@ stages:
           command: push
           repository: apprenticeshipsdevops/das-tools-service
           tags: $(build.buildnumber)
-
-      - task: Docker@2
-        displayName: Push Image Production if master
-        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-        inputs:
-          command: push
-          repository: apprenticeshipsdevops/das-tools-service
-          tags: $(build.buildnumber)-production
 
       - task: CopyFiles@2
         displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
