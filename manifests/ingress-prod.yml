@@ -40,6 +40,8 @@ spec:
             host: {{IngressHost}}
             intervalSeconds: 7
             timeoutSeconds: 60
+      middlewares:
+        - name: das-tool-service-redirectscheme
     - match: Host(`{{IngressHost}}`) && PathPrefix(`/messages`)
       kind: Rule
       priority: 2
@@ -51,8 +53,6 @@ spec:
             host: {{IngressHost}}
             intervalSeconds: 7
             timeoutSeconds: 60
-      middlewares:
-        - name: das-tool-service-redirectscheme
     - match: Host(`{{IngressHost}}`) && PathPrefix(`/api/messages`)
       kind: Rule
       priority: 3
@@ -64,8 +64,6 @@ spec:
             host: {{IngressHost}}
             intervalSeconds: 7
             timeoutSeconds: 60
-      middlewares:
-        - name: das-tool-service-redirectscheme
     - match: Host(`{{IngressHost}}`) && PathPrefix(`/grafana`)
       kind: Rule
       priority: 4
@@ -77,8 +75,6 @@ spec:
             host: {{IngressHost}}
             intervalSeconds: 7
             timeoutSeconds: 60
-      middlewares:
-        - name: das-tool-service-redirectscheme
   tls:
     secretName: {{TlsSecretName}}
     options:
