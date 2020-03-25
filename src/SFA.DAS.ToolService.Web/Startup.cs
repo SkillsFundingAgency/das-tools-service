@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -108,19 +108,33 @@ namespace SFA.DAS.ToolService.Web
             {
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                app.UseHsts(options => options.MaxAge(days: 30));
             }
+
+            app.UseXContentTypeOptions();
+            app.UseXXssProtection(options => options.EnabledWithBlockMode());
+            app.UseXfo(options => options.SameOrigin());
+            app.UseReferrerPolicy(opts => opts.NoReferrerWhenDowngrade());
+
+            var cdnHost = new UriBuilder(_configuration["Cdn:Url"]).Host;
+            app.UseCsp(options => options
+                .DefaultSources(s => s.Self()
+                    .CustomSources("data:")
+                    .CustomSources("https:"))
+                .StyleSources(s => s.Self()
+                    .CustomSources(cdnHost)
+                    .UnsafeInline()
+                )
+                .ScriptSources(s => s.Self()
+                       .CustomSources("ajax.googleapis.com", cdnHost)
+                    .UnsafeInline()
+                    .UnsafeEval()
+                )
+            );
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedProto
-            });
-
-            app.Use(async (context, next) =>
-            {
-                context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
-                context.Response.Headers.Add("X-Xss-Protection", "1");
-                await next();
             });
 
             app.UseHttpsRedirection();
@@ -128,15 +142,6 @@ namespace SFA.DAS.ToolService.Web
 
             app.Use(async (context, next) =>
             {
-                if (context.Response.Headers.ContainsKey("X-Frame-Options"))
-                {
-                    context.Response.Headers.Remove("X-Frame-Options");
-                }
-
-                context.Response.Headers.Add("X-Frame-Options", "SAMEORIGIN");
-
-                await next();
-
                 if (context.Response.StatusCode == 404 && !context.Response.HasStarted)
                 {
                     //Re-execute the request so the user gets the error page
