@@ -121,9 +121,9 @@ namespace SFA.DAS.ToolService.Web
             app.UseReferrerPolicy(opts => opts.NoReferrerWhenDowngrade());
 
             var cdnHost = new UriBuilder(_configuration["Cdn:Url"]).Host;
-            app.UseCsp(options => options
-                .DefaultSources(s => s.Self())
-                .ScriptSources(s => s.Self().CustomSources("ajax.googleapis.com", cdnHost)));
+            //app.UseCsp(options => options
+            //    .DefaultSources(s => s.Self())
+            //    .ScriptSources(s => s.Self().CustomSources("ajax.googleapis.com", cdnHost)));
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
