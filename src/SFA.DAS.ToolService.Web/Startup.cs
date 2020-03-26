@@ -116,25 +116,14 @@ namespace SFA.DAS.ToolService.Web
             }
 
             app.UseXContentTypeOptions();
-            //app.UseXXssProtection(options => options.EnabledWithBlockMode());
+            app.UseXXssProtection(options => options.EnabledWithBlockMode());
             app.UseXfo(options => options.SameOrigin());
             app.UseReferrerPolicy(opts => opts.NoReferrerWhenDowngrade());
 
             var cdnHost = new UriBuilder(_configuration["Cdn:Url"]).Host;
             app.UseCsp(options => options
-                .DefaultSources(s => s.Self()
-                    .CustomSources("data:")
-                    .CustomSources("https:"))
-                .StyleSources(s => s.Self()
-                    .CustomSources(cdnHost)
-                    .UnsafeInline()
-                )
-                .ScriptSources(s => s.Self()
-                       .CustomSources("ajax.googleapis.com", cdnHost)
-                    .UnsafeInline()
-                    .UnsafeEval()
-                )
-            );
+                .DefaultSources(s => s.Self())
+                .ScriptSources(s => s.Self().CustomSources("ajax.googleapis.com", cdnHost)));
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
