@@ -116,7 +116,7 @@ namespace SFA.DAS.ToolService.Web
             }
 
             app.UseXContentTypeOptions();
-            app.UseXXssProtection(options => options.EnabledWithBlockMode());
+            //app.UseXXssProtection(options => options.EnabledWithBlockMode());
             app.UseXfo(options => options.SameOrigin());
             app.UseReferrerPolicy(opts => opts.NoReferrerWhenDowngrade());
 
@@ -126,10 +126,11 @@ namespace SFA.DAS.ToolService.Web
                     .CustomSources("data:")
                     .CustomSources("https:"))
                 .StyleSources(s => s.Self()
+                    .CustomSources(cdnHost)
                     .UnsafeInline()
                 )
                 .ScriptSources(s => s.Self()
-                       .CustomSources("ajax.googleapis.com")
+                       .CustomSources("ajax.googleapis.com", cdnHost)
                     .UnsafeInline()
                     .UnsafeEval()
                 )
