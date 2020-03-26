@@ -115,12 +115,12 @@ namespace SFA.DAS.ToolService.Web
                 });
             }
 
-            app.UseXContentTypeOptions();
-            app.UseXXssProtection(options => options.EnabledWithBlockMode());
-            app.UseXfo(options => options.SameOrigin());
-            app.UseReferrerPolicy(opts => opts.NoReferrerWhenDowngrade());
+            //app.UseXContentTypeOptions();
+            //app.UseXXssProtection(options => options.EnabledWithBlockMode());
+            //app.UseXfo(options => options.SameOrigin());
+            //app.UseReferrerPolicy(opts => opts.NoReferrerWhenDowngrade());
 
-            var cdnHost = new UriBuilder(_configuration["Cdn:Url"]).Host;
+            //var cdnHost = new UriBuilder(_configuration["Cdn:Url"]).Host;
             //app.UseCsp(options => options
             //    .DefaultSources(s => s.Self())
             //    .ScriptSources(s => s.Self().CustomSources("ajax.googleapis.com", cdnHost)));
