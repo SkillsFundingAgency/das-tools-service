@@ -34,11 +34,9 @@
 
                         @if (@Model.UnassignedApplications.Count > 0)
                         {
-                            <form asp-route="@AdminRoleAssignmentRouteNames.AddApplication" method="post">
-
-                                @foreach (var app in @Model.UnassignedApplications)
-                                {
-
+                            @foreach (var app in @Model.UnassignedApplications)
+                            {
+                                <form asp-route="@AdminRoleAssignmentRouteNames.AddApplication" method="post">
                                     <tr class="govuk-table__row">
                                         <td class="govuk-table__cell">@app.Name</td>
                                         <td class="govuk-table__cell">@app.Description</td>
@@ -49,8 +47,8 @@
                                             </button>
                                         </td>
                                     </tr>
-                                }
-                            </form>
+                                </form>
+                            }
                         }
                         else
                         {
@@ -65,11 +63,9 @@
 
                         @if (@Model.AssignedApplications.Count > 0)
                         {
-                            <form asp-route="@AdminRoleAssignmentRouteNames.RemoveApplication" method="post">
-
-                                @foreach (var app in @Model.AssignedApplications)
-                                {
-
+                            @foreach (var app in @Model.AssignedApplications)
+                            {
+                                <form asp-route="@AdminRoleAssignmentRouteNames.RemoveApplication" method="post">
                                     <tr class="govuk-table__row">
                                         <td class="govuk-table__cell">@app.Name</td>
                                         <td class="govuk-table__cell">@app.Description</td>
@@ -80,8 +76,8 @@
                                             </button>
                                         </td>
                                     </tr>
-                                }
-                            </form>
+                                </form>
+                            }
                         }
                         else
                         {
