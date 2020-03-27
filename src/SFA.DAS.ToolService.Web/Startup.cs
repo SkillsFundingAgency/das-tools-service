@@ -100,6 +100,11 @@ namespace SFA.DAS.ToolService.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedProto
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -111,23 +116,14 @@ namespace SFA.DAS.ToolService.Web
                 app.UseHsts();
             }
 
-            //app.UseXContentTypeOptions();
-            //app.UseXXssProtection(options => options.EnabledWithBlockMode());
-            //app.UseXfo(options => options.SameOrigin());
-            //app.UseReferrerPolicy(opts => opts.NoReferrerWhenDowngrade());
-
-            //var cdnHost = new UriBuilder(_configuration["Cdn:Url"]).Host;
-            //app.UseCsp(options => options
-            //    .DefaultSources(s => s.Self())
-            //    .ScriptSources(s => s.Self().CustomSources("ajax.googleapis.com", cdnHost)));
-
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
-            {
-                ForwardedHeaders = ForwardedHeaders.XForwardedProto
-            });
+            app.UseXContentTypeOptions();
+            app.UseReferrerPolicy(opts => opts.NoReferrerWhenDowngrade());
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseXfo(options => options.SameOrigin());
+            app.UseRedirectValidation();
 
             app.Use(async (context, next) =>
             {
