@@ -40,7 +40,7 @@ namespace SFA.DAS.ToolService.Web
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services, IHostingEnvironment env)
         {
             IdentityModelEventSource.ShowPII = false;
             services.Configure<CookiePolicyOptions>(options =>
@@ -74,6 +74,15 @@ namespace SFA.DAS.ToolService.Web
             services.AddHealthChecks();
 
             services.AddRouting(options => options.LowercaseUrls = true);
+
+            if (!env.IsDevelopment())
+            {
+                services.AddHsts(options =>
+                {
+                    options.IncludeSubDomains = true;
+                    options.MaxAge = TimeSpan.FromDays(365);
+                });
+            }
 
             services.AddMvc(options =>
             {
