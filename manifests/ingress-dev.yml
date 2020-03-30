@@ -40,11 +40,28 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: das-tool-service-web
+  name: das-tool-service-web-http
   namespace: {{Namespace}}
 spec:
   entryPoints:
     - web
+  routes:
+    - match: Host(`{{IngressHost}}`)
+      kind: Rule
+      middlewares:
+        - name: das-tool-service-httpsredirect
+      services:
+        - name: das-tool-service-web
+          port: 80
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: das-tool-service-web
+  namespace: {{Namespace}}
+spec:
+  entryPoints:
     - websecure
   routes:
     - match: Host(`{{IngressHost}}`)
@@ -60,7 +77,6 @@ spec:
             timeoutSeconds: 60
       middlewares:
         - name: das-tool-service-middleware
-        - name: das-tool-service-httpsredirect
     - match: Host(`{{IngressHost}}`) && PathPrefix(`/messages`)
       kind: Rule
       priority: 2
