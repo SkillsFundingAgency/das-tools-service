@@ -114,7 +114,7 @@ spec:
       kind: Rule
       priority: 5
       services:
-        - name: grafana-dev
+        - name: grafana
           port: 80
           healthCheck:
             path: /grafana/api/health
