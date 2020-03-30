@@ -2,6 +2,8 @@
     ViewData["Title"] = "Home";
     @using SFA.DAS.ToolService.Web.Controllers
     @using SFA.DAS.ToolService.Web.Extensions
+    @model HomeViewModel;
+
 }
 
 <div class="govuk-grid-row">
@@ -10,10 +12,13 @@
 
         <p class="govuk-body">Use this service to access platform tooling</p>
 
-        <h2 class="govuk-heading-m">Before you start you will need:</h2>
+        <h2 class="govuk-heading-m">Before you start</h2>
+
+        <p class="govuk-body">You will need one of the following:</p>
+
         <ul class="govuk-list govuk-list--bullet">
-            <li>to be a member of the <strong>SkillsFundingAgency</strong> GitHub organisation</li>
-            <li>or have a <strong>digital.education.gov.uk</strong> or <strong>education.gov.uk</strong> email address</li>
+            <li>a GitHub account that is member of the <a class="govuk-link" href="https://github.com/SkillsFundingAgency/" target="_blank">SkillsFundingAgency</a> organisation.</li>
+            <li>a DfE <a class="govuk-link" href="@Model.DfeSignInAddress" target="_blank">Sign-In account</a>.</li>
         </ul>
         <a asp-action="@nameof(AccountController.Login)" asp-controller="@typeof(AccountController).GetControllerName()" role="button" draggable="false" class="govuk-button govuk-button--start govuk-!-margin-top-2 govuk-!-margin-bottom-8">
             Sign in
