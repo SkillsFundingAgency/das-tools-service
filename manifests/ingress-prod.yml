@@ -1,13 +1,58 @@
 ---
 apiVersion: traefik.containo.us/v1alpha1
+kind: TLSOption
+metadata:
+  name: das-tool-service-tlsoption
+  namespace: {{Namespace}}
+spec:
+  minVersion: VersionTLS12
+
+---
+apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  name: das-tool-service-redirectscheme
+  name: das-tool-service-httpsredirect
   namespace: {{Namespace}}
 spec:
   redirectScheme:
     scheme: https
     permanent: true
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: das-tool-service-middleware
+  namespace: {{Namespace}}
+spec:
+  headers:
+    frameDeny: "true"
+    sslRedirect: "true"
+    contentTypeNosniff: "true"
+    browserXssFilter: "true"
+    referrerPolicy: "true"
+    featurePolicy: "true"
+    forceSTSHeader: "true"
+    stsIncludeSubdomains: "true"
+    stsSeconds: 31536000
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: das-tool-service-web-http
+  namespace: {{Namespace}}
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`{{IngressHost}}`)
+      kind: Rule
+      middlewares:
+        - name: das-tool-service-httpsredirect
+      services:
+        - name: das-tool-service-web
+          port: 80
 
 ---
 apiVersion: traefik.containo.us/v1alpha1
@@ -17,7 +62,6 @@ metadata:
   namespace: {{Namespace}}
 spec:
   entryPoints:
-    - web
     - websecure
   routes:
     - match: Host(`{{IngressHost}}`)
@@ -31,6 +75,8 @@ spec:
             host: {{IngressHost}}
             intervalSeconds: 7
             timeoutSeconds: 60
+      middlewares:
+        - name: das-tool-service-middleware
     - match: Host(`{{IngressHost}}`) && PathPrefix(`/messages`)
       kind: Rule
       priority: 2
@@ -42,8 +88,6 @@ spec:
             host: {{IngressHost}}
             intervalSeconds: 7
             timeoutSeconds: 60
-      middlewares:
-        - name: das-tool-service-redirectscheme
     - match: Host(`{{IngressHost}}`) && PathPrefix(`/api/messages`)
       kind: Rule
       priority: 3
@@ -55,20 +99,30 @@ spec:
             host: {{IngressHost}}
             intervalSeconds: 7
             timeoutSeconds: 60
-      middlewares:
-        - name: das-tool-service-redirectscheme
-    - match: Host(`{{IngressHost}}`) && PathPrefix(`/grafana`)
+    - match: Host(`{{IngressHost}}`) && PathPrefix(`/whitelist`)
       kind: Rule
       priority: 4
       services:
-        - name: grafana
+        - name: das-self-service
+          port: 80
+          healthCheck:
+            path: /whitelist/health
+            host: {{IngressHost}}
+            intervalSeconds: 7
+            timeoutSeconds: 60
+    - match: Host(`{{IngressHost}}`) && PathPrefix(`/grafana`)
+      kind: Rule
+      priority: 5
+      services:
+        - name: grafana-dev
           port: 80
           healthCheck:
             path: /grafana/api/health
             host: {{IngressHost}}
             intervalSeconds: 7
             timeoutSeconds: 60
-      middlewares:
-        - name: das-tool-service-redirectscheme
   tls:
-    secretName: {{TlsSecretName}}
+    secretName: '{{TlsSecretName}}-correct-chain'
+    options:
+      name: das-tool-service-tlsoption
+      namespace: {{Namespace}}
