@@ -11,12 +11,21 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  name: das-tool-service-redirectscheme
+  name: das-tool-service-middleware
   namespace: {{Namespace}}
 spec:
   redirectScheme:
     scheme: https
     permanent: true
+  headers:
+    frameDeny: true
+    sslRedirect: true
+    contentTypeNosniff: true
+    browserXssFilter: true
+    referrerPolicy: true
+    featurePolicy: true
+    forceSTSHeader: true
+    stsIncludeSubdomains: true
 
 ---
 apiVersion: traefik.containo.us/v1alpha1
@@ -41,7 +50,7 @@ spec:
             intervalSeconds: 7
             timeoutSeconds: 60
       middlewares:
-        - name: das-tool-service-redirectscheme
+        - name: das-tool-service-middleware
     - match: Host(`{{IngressHost}}`) && PathPrefix(`/messages`)
       kind: Rule
       priority: 2
