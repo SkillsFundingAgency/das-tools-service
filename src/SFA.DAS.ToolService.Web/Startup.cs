@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -63,6 +63,7 @@ namespace SFA.DAS.ToolService.Web
             services.AddAntiforgery(options =>
             {
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                options.SuppressXFrameOptionsHeader = true;
             });
 
             var serviceProvider = services.BuildServiceProvider();
@@ -120,6 +121,8 @@ namespace SFA.DAS.ToolService.Web
             {
                 context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
                 context.Response.Headers.Add("X-Xss-Protection", "1");
+                context.Response.Headers.Add("Referrer-Policy", "no-referrer");
+                context.Response.Headers.Add("Feature-Policy", "accelerometer 'none'; camera 'none'; geolocation 'none'; gyroscope 'none'; magnetometer 'none'; microphone 'none'; payment 'none'; usb 'none'");
                 await next();
             });
 
@@ -133,7 +136,7 @@ namespace SFA.DAS.ToolService.Web
                     context.Response.Headers.Remove("X-Frame-Options");
                 }
 
-                context.Response.Headers.Add("X-Frame-Options", "SAMEORIGIN");
+                context.Response.Headers.Add("X-Frame-Options", "DENY");
 
                 await next();
 
