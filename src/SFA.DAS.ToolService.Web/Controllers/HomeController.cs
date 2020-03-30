@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using SFA.DAS.ToolService.Core.Configuration;
 using SFA.DAS.ToolService.Web.Models;
 
 namespace SFA.DAS.ToolService.Web.Controllers
@@ -8,18 +10,19 @@ namespace SFA.DAS.ToolService.Web.Controllers
     [AllowAnonymous]
     public class HomeController : BaseController<HomeController>
     {
-        private readonly IConfiguration configuration;
+        private readonly IOptions<HomePageLinksConfiguration> links;
 
-        public HomeController(IConfiguration _configuration)
+        public HomeController(IOptions<HomePageLinksConfiguration> _links)
         {
-            configuration = _configuration;
+            links = _links;
         }
 
         public IActionResult Index()
         {
             var model = new HomeViewModel
             {
-                DfeSignInAddress = configuration["DfeSignInAddress"]
+                DfeSignInAddress = links.Value.DfESignInAddress,
+                GitHubOrgAddress = links.Value.GitHubOrgAddress
             };
 
             return View(model);
