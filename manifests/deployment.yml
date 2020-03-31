@@ -70,6 +70,8 @@ spec:
           value: {{RedisConnectionString}}
         - name: DatabaseConnectionString
           value: {{DatabaseConnectionString}}
+        - name: DfESigninAddress
+          value: {{DfeSignInAddress}}
         image: apprenticeshipsdevops/das-tools-service:{{buildNumber}}
         imagePullPolicy: IfNotPresent
         name: das-tool-service
