@@ -57,7 +57,7 @@ spec:
         - name: Cdn__Url
           value: {{CdnUrl}}
         - name: Authentication__Domain
-          value: dfe-apprenticeships.eu.auth0.com
+          value: {{Auth0Domain}}
         - name: Authentication__ClientId
           value: {{Auth0ClientId}}
         - name: Authentication__ClientSecret
