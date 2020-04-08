@@ -8,17 +8,15 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Logging;
 using SFA.DAS.ToolService.Core;
 using SFA.DAS.ToolService.Core.Configuration;
 using SFA.DAS.ToolService.Core.IRepositories;
-using SFA.DAS.ToolsNotifications.Client;
 using SFA.DAS.ToolService.Web.AppStart;
-using System;
-using System.IO;
+using SFA.DAS.ToolsNotifications.Client;
 using SFA.DAS.ToolsNotifications.Client.Configuration;
+using System;
 
 namespace SFA.DAS.ToolService.Web
 {

@@ -30,9 +30,9 @@
 
                 @if (User.Identity.IsAuthenticated & (Context.Request.Path != "/"))
                 {
-                <a class="govuk-header__link" asp-controller="@typeof(AccountController).GetControllerName()" asp-action="@nameof(AccountController.Logout)">
-                    Logout
-                </a>
+                    <a class="govuk-header__link" asp-controller="@typeof(AccountController).GetControllerName()" asp-action="@nameof(AccountController.Logout)">
+                        Logout
+                    </a>
                 }
             </span>
         </div>
@@ -50,7 +50,6 @@
         </div>
 
         <main class="govuk-main-wrapper " id="main-content" role="main">
-
             @await Html.PartialAsync("_Banner")
 
             @RenderBody()

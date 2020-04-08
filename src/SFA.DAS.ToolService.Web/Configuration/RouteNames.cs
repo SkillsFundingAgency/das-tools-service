@@ -23,4 +23,9 @@ namespace SFA.DAS.ToolService.Web.Configuration
         public const string ManageRoles = "ManageRoles";
         public const string SyncRoles = "SyncRoles";
     }
+
+    public class AdminNotificationRouteNames
+    {
+        public const string ManageNotifications = "ManageNotifications";
+    }
 }
