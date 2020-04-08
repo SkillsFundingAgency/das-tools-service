@@ -115,7 +115,7 @@ spec:
       priority: 5
       services:
         - name: das-tools-notifications
-          port: 80        
+          port: 80
     - match: Host(`{{IngressHost}}`) && PathPrefix(`/grafana`)
       kind: Rule
       priority: 6
