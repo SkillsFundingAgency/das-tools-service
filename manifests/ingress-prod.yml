@@ -110,9 +110,15 @@ spec:
             host: {{IngressHost}}
             intervalSeconds: 7
             timeoutSeconds: 60
-    - match: Host(`{{IngressHost}}`) && PathPrefix(`/grafana`)
+    - match: Host(`{{IngressHost}}`) && PathPrefix(`/api/notifications`)
       kind: Rule
       priority: 5
+      services:
+        - name: das-tools-notifications
+          port: 80
+    - match: Host(`{{IngressHost}}`) && PathPrefix(`/grafana`)
+      kind: Rule
+      priority: 6
       services:
         - name: grafana
           port: 80
