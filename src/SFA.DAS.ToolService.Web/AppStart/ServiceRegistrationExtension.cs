@@ -10,6 +10,7 @@ using SFA.DAS.ToolService.Core.Services;
 using SFA.DAS.ToolService.Infrastructure.Auth0;
 using SFA.DAS.ToolService.Infrastructure.Repositories;
 using SFA.DAS.ToolService.Web.Infrastructure;
+using SFA.DAS.ToolsNotifications.Client.Configuration;
 
 namespace SFA.DAS.ToolService.Web.AppStart
 {

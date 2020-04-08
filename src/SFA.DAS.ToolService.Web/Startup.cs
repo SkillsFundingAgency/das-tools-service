@@ -14,9 +14,11 @@ using Microsoft.IdentityModel.Logging;
 using SFA.DAS.ToolService.Core;
 using SFA.DAS.ToolService.Core.Configuration;
 using SFA.DAS.ToolService.Core.IRepositories;
+using SFA.DAS.ToolsNotifications.Client;
 using SFA.DAS.ToolService.Web.AppStart;
 using System;
 using System.IO;
+using SFA.DAS.ToolsNotifications.Client.Configuration;
 
 namespace SFA.DAS.ToolService.Web
 {
@@ -28,15 +30,7 @@ namespace SFA.DAS.ToolService.Web
         public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
             _environment = environment;
-            var config = new ConfigurationBuilder()
-                .AddConfiguration(configuration)
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", true)
-                .AddJsonFile("appsettings.Development.json", true)
-                .AddEnvironmentVariables()
-                .Build();
-
-            _configuration = config;
+            _configuration = configuration;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -70,6 +64,7 @@ namespace SFA.DAS.ToolService.Web
             services.AddAuthorizationService();
 
             services.AddAuth0Authentication(serviceProvider.GetService<IOptions<AuthenticationConfiguration>>());
+            services.AddNotificationClient(_configuration.Get<NotificationClientConfiguration>());
 
             services.AddHealthChecks();
 
