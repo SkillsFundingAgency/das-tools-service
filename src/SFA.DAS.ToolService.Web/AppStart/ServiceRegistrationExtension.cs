@@ -10,7 +10,6 @@ using SFA.DAS.ToolService.Core.Services;
 using SFA.DAS.ToolService.Infrastructure.Auth0;
 using SFA.DAS.ToolService.Infrastructure.Repositories;
 using SFA.DAS.ToolService.Web.Infrastructure;
-using SFA.DAS.ToolsNotifications.Client.Configuration;
 
 namespace SFA.DAS.ToolService.Web.AppStart
 {
@@ -32,6 +31,8 @@ namespace SFA.DAS.ToolService.Web.AppStart
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IExternalRoleRepository, Auth0RoleRepository>();
             services.AddSingleton<IAuthorizationHandler, AdminUserAuthorizationHandler>();
+            services.AddSingleton<INotificationService, NotificationService>();
+            services.AddSingleton<INotificationRepository, NotificationRepository>();
         }
     }
 }

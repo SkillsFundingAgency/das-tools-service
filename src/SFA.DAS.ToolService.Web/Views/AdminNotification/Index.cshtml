@@ -1,0 +1,55 @@
+@{
+    ViewData["Title"] = "Admin Services";
+    @model ManageNotificationsViewModel;
+    @using SFA.DAS.ToolService.Web.Configuration
+    @using SFA.DAS.ToolService.Web.Controllers.Admin
+    @using SFA.DAS.ToolService.Web.Extensions
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <form asp-route="@AdminNotificationRouteNames.ManageNotifications" method="post">
+
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
+                        <h1 class="govuk-fieldset__heading">
+                            Notification banner settings
+                        </h1>
+                    </legend>
+
+                    <label class="govuk-label" for="title">
+                        Title
+                    </label>
+                    <input class="govuk-input" id="title" asp-for="Title" type="text" value="@Model.Title" required>
+
+                    <label class="govuk-label" for="description">
+                        Description
+                    </label>
+                    <textarea class="govuk-textarea" id="description" asp-for="Description" rows="5" type="text" required>@Model.Description</textarea>
+
+                    <div class="govuk-radios govuk-radios--inline">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="control-enable" asp-for="Enabled" value=true type="radio">
+                            <label class="govuk-label govuk-radios__label" for="control-enable">
+                                Enabled
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="control-disable" asp-for="Enabled" value=false type="radio">
+                            <label class="govuk-label govuk-radios__label" for="control-disable">
+                                Disabled
+                            </label>
+                        </div>
+                    </div>
+            </div>
+
+            <div class="govuk-form-group">
+                <button class="govuk-button" data-module="govuk-button">
+                    Save and continue
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
