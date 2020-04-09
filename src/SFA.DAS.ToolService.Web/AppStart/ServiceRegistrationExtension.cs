@@ -31,6 +31,8 @@ namespace SFA.DAS.ToolService.Web.AppStart
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IExternalRoleRepository, Auth0RoleRepository>();
             services.AddSingleton<IAuthorizationHandler, AdminUserAuthorizationHandler>();
+            services.AddSingleton<INotificationService, NotificationService>();
+            services.AddSingleton<INotificationRepository, NotificationRepository>();
         }
     }
 }

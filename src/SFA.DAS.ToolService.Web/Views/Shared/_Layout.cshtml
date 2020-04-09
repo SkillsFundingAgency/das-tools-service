@@ -1,5 +1,4 @@
 @using SFA.DAS.ToolService.Web.Controllers;
-@using SFA.DAS.ToolService.Web.Controllers.Admin;
 @using SFA.DAS.ToolService.Web.Extensions;
 
 <!DOCTYPE html>
@@ -51,6 +50,7 @@
         </div>
 
         <main class="govuk-main-wrapper " id="main-content" role="main">
+            @await Html.PartialAsync("_Banner")
 
             @RenderBody()
         </main>

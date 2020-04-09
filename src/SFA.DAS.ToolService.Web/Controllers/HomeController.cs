@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using SFA.DAS.ToolService.Core.Configuration;
 using SFA.DAS.ToolService.Web.Models;
