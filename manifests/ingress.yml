@@ -2,7 +2,7 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: das-tool-service-https-redirect
+  name: das-tool-service-web-https-redirect
   namespace: {{Namespace}}
 spec:
   entryPoints:
@@ -21,7 +21,7 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: das-tool-service-web-https
+  name: das-tool-service-web
   namespace: {{Namespace}}
 spec:
   entryPoints:
