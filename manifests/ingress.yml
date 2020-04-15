@@ -8,7 +8,7 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`dev-tools.apprenticeships.education.gov.uk`)
+    - match: Host(`{{IngressHost}}`)
       kind: Rule
       middlewares:
         - name: das-tool-service-middleware
