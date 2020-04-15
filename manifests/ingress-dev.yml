@@ -49,6 +49,7 @@ spec:
     - match: Host(`{{IngressHost}}`)
       kind: Rule
       middlewares:
+        - name: das-tool-service-middleware
         - name: das-tool-service-httpsredirect
       services:
         - name: das-tool-service-web
@@ -116,17 +117,6 @@ spec:
       services:
         - name: das-tools-notifications
           port: 80
-    - match: Host(`{{IngressHost}}`) && PathPrefix(`/grafana`)
-      kind: Rule
-      priority: 6
-      services:
-        - name: grafana-dev
-          port: 80
-          healthCheck:
-            path: /grafana/api/health
-            host: {{IngressHost}}
-            intervalSeconds: 7
-            timeoutSeconds: 60
   tls:
     secretName: '{{TlsSecretName}}-correct-chain'
     options:

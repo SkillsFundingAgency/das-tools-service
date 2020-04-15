@@ -1,0 +1,22 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: das-tools-notifications-api
+  namespace: {{Namespace}}
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`{{IngressHost}}`) && PathPrefix(`/api/notifications`)
+      kind: Rule
+      middlewares:
+        - name: secured
+      services:
+        - name: das-tools-notifications
+          port: 80
+  tls:
+    secretName: '{{TlsSecretName}}-correct-chain'
+    options:
+      name: enforce-tls-12
+      namespace: {{Namespace}}
