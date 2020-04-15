@@ -11,8 +11,7 @@ spec:
     - match: Host(`{{IngressHost}}`)
       kind: Rule
       middlewares:
-        - name: das-tool-service-middleware
-        - name: das-tool-service-httpsredirect
+        - name: secured
       services:
         - name: das-tool-service-web
           port: 80
