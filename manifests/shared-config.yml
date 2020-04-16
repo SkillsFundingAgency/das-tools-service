@@ -18,6 +18,7 @@ data:
       "Cdn": {
         "Url": "{{CdnUrl}}"
       },
+      "BaseUrl: "{{IngressHost}}",
       "ConfigurationStorageConnectionString": "{{ConfigurationStorageConnectionString}}",
       "APPINSIGHTS_INSTRUMENTATIONKEY": "{{appInsightsInstrumentationkey}}",
       "EnvironmentName": "{{EnvironmentName}}",
