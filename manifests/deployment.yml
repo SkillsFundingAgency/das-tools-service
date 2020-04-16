@@ -44,18 +44,6 @@ spec:
     spec:
       containers:
       - env:
-        - name: ConfigurationStorageConnectionString
-          value: {{ConfigurationStorageConnectionString}}
-        - name: LoggingRedisConnectionString
-          value: {{LoggingRedisConnectionString}}
-        - name: LoggingRedisKey
-          value: logstash
-        - name: EnvironmentName
-          value: {{EnvironmentName}}
-        - name: APPINSIGHTS_INSTRUMENTATIONKEY
-          value: {{appInsightsInstrumentationkey}}
-        - name: Cdn__Url
-          value: {{CdnUrl}}
         - name: Authentication__Domain
           value: {{Auth0Domain}}
         - name: Authentication__ClientId
@@ -66,8 +54,6 @@ spec:
           value: {{ManagementApiClientId}}
         - name: Authentication__ManagementApiClientSecret
           value: {{ManagementApiClientSecret}}
-        - name: RedisConnectionString
-          value: {{RedisConnectionString}}
         - name: DatabaseConnectionString
           value: {{DatabaseConnectionString}}
         - name: DfESigninAddress
@@ -82,3 +68,11 @@ spec:
             requests:
               cpu: 25m
               memory: 512Mi
+        volumeMounts:
+          - mountPath: /app/appsettings.json
+            name: shared-app-settings
+            subPath: appsettings.json
+      volumes:
+        - name: shared-app-settings
+          configMap:
+            name: das-tool-service-shared-config
