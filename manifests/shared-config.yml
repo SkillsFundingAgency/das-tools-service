@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    service: das-tool-service
+  name: das-tool-service-shared-config
+  namespace: {{Namespace}}
+data:
+  appsettings.json: |-
+    {
+      "Logging": {
+        "LogLevel": {
+          "Default": "Information",
+          "System": "Information",
+          "Microsoft": "Information"
+        }
+      },
+      "Cdn": {
+        "Url": "{{CdnUrl}}"
+      },
+      "ConfigurationStorageConnectionString": "{{ConfigurationStorageConnectionString}}"
+      "APPINSIGHTS_INSTRUMENTATIONKEY": "{{appInsightsInstrumentationkey}}",
+      "EnvironmentName": "{{EnvironmentName}}",
+      "LoggingRedisConnectionString": "{{LoggingRedisConnectionString}}",
+      "LoggingRedisKey": "logstash"
+      "RedisConnectionString": "{{RedisConnectionString}}",
+      "RedisKey": "das-tools-notification"
+    }
