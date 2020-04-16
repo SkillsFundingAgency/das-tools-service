@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Microsoft.ApplicationInsights.Extensibility;
 using SFA.DAS.ToolService.Core.Configuration;
 using SFA.DAS.ToolService.Core.IRepositories;
 using SFA.DAS.ToolService.Core.IServices;
@@ -33,6 +34,7 @@ namespace SFA.DAS.ToolService.Web.AppStart
             services.AddSingleton<IAuthorizationHandler, AdminUserAuthorizationHandler>();
             services.AddSingleton<INotificationService, NotificationService>();
             services.AddSingleton<INotificationRepository, NotificationRepository>();
+            services.AddSingleton<ITelemetryInitializer, ToolsTelemetryInitializer>();
         }
     }
 }
