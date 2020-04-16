@@ -18,11 +18,11 @@ data:
       "Cdn": {
         "Url": "{{CdnUrl}}"
       },
-      "ConfigurationStorageConnectionString": "{{ConfigurationStorageConnectionString}}"
+      "ConfigurationStorageConnectionString": "{{ConfigurationStorageConnectionString}}",
       "APPINSIGHTS_INSTRUMENTATIONKEY": "{{appInsightsInstrumentationkey}}",
       "EnvironmentName": "{{EnvironmentName}}",
       "LoggingRedisConnectionString": "{{LoggingRedisConnectionString}}",
-      "LoggingRedisKey": "logstash"
+      "LoggingRedisKey": "logstash",
       "RedisConnectionString": "{{RedisConnectionString}}",
       "RedisKey": "das-tools-notification"
     }
