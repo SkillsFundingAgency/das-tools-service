@@ -22,7 +22,7 @@ data:
       "ConfigurationStorageConnectionString": "{{ConfigurationStorageConnectionString}}",
       "APPINSIGHTS_INSTRUMENTATIONKEY": "{{appInsightsInstrumentationkey}}",
       "EnvironmentName": "{{EnvironmentName}}",
-      "LoggingRedisConnectionString": "{{LoggingRedisConnectionString}}"
+      "LoggingRedisConnectionString": "{{LoggingRedisConnectionString}}",
       "LoggingRedisKey": "logstash",
       "RedisConnectionString": "{{RedisConnectionString}}",
       "RedisKey": "das-tools-notification",
