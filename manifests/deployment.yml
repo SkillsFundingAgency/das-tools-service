@@ -63,7 +63,7 @@ spec:
         name: das-tool-service
         envFrom:
           - configMapRef:
-              name: das-tool-service-shared-config
+              name: shared-app-settings
         ports:
         - containerPort: 80
           protocol: TCP
@@ -71,3 +71,7 @@ spec:
             requests:
               cpu: 25m
               memory: 512Mi
+      volumes:
+        - name: shared-app-settings
+          configMap:
+            name: das-tool-service-shared-config
