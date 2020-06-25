@@ -25,5 +25,5 @@ data:
       "LoggingRedisConnectionString": "{{LoggingRedisConnectionString}}",
       "LoggingRedisKey": "logstash",
       "RedisConnectionString": "{{RedisConnectionString}}",
-      "RedisKey": "das-tools-notification",
+      "RedisKey": "das-tools-notification"
     }
