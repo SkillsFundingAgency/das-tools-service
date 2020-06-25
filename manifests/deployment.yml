@@ -61,6 +61,9 @@ spec:
         image: apprenticeshipsdevops/das-tools-service:{{buildNumber}}
         imagePullPolicy: IfNotPresent
         name: das-tool-service
+        envFrom:
+          - configMapRef:
+              name: das-tool-service-shared-config
         ports:
         - containerPort: 80
           protocol: TCP
