@@ -62,8 +62,9 @@ spec:
         imagePullPolicy: IfNotPresent
         name: das-tool-service
         volumeMounts:
-        - name: shared-app-settings
-          mountPath: /etc/config
+          - mountPath: /app/appsettings.json
+            name: shared-app-settings
+            subPath: appsettings.json
         envFrom:
           - configMapRef:
               name: das-tool-service-shared-config
