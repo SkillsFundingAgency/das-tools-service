@@ -61,9 +61,6 @@ spec:
         image: apprenticeshipsdevops/das-tools-service:{{buildNumber}}
         imagePullPolicy: IfNotPresent
         name: das-tool-service
-        envFrom:
-          - configMapRef:
-              name: shared-app-settings
         ports:
         - containerPort: 80
           protocol: TCP
@@ -71,6 +68,9 @@ spec:
             requests:
               cpu: 25m
               memory: 512Mi
+        volumeMounts:
+          - mountPath: /etc/config
+            name: shared-app-settings
       volumes:
         - name: shared-app-settings
           configMap:
