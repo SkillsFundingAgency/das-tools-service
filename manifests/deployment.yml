@@ -44,8 +44,8 @@ spec:
     spec:
       volumes:
         - name: shared-app-settings
-        configMap:
-          name: das-tool-service-shared-config
+          configMap:
+            name: das-tool-service-shared-config
       containers:
       - env:
         - name: Authentication__Domain
@@ -65,6 +65,9 @@ spec:
         image: apprenticeshipsdevops/das-tools-service:{{buildNumber}}
         imagePullPolicy: IfNotPresent
         name: das-tool-service
+        volumeMounts:
+        - name: shared-app-settings
+          mountPath: /etc/config
         envFrom:
           - configMapRef:
               name: shared-app-settings
