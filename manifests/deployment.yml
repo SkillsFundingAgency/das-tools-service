@@ -42,10 +42,6 @@ spec:
         app: das-tool-service-web
         service: das-tool-service
     spec:
-      volumes:
-        - name: shared-app-settings
-          configMap:
-            name: das-tool-service-shared-config
       containers:
       - env:
         - name: Authentication__Domain
@@ -78,3 +74,7 @@ spec:
             requests:
               cpu: 25m
               memory: 512Mi
+      volumes:
+        - name: shared-app-settings
+          configMap:
+            name: das-tool-service-shared-config
