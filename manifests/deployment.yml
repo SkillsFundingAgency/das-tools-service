@@ -41,11 +41,11 @@ spec:
       labels:
         app: das-tool-service-web
         service: das-tool-service
-  volumes:
-    - name: shared-app-settings
-      configMap:
-        name: das-tool-service-shared-config
     spec:
+      volumes:
+        - name: shared-app-settings
+        configMap:
+          name: das-tool-service-shared-config
       containers:
       - env:
         - name: Authentication__Domain
@@ -67,7 +67,7 @@ spec:
         name: das-tool-service
         envFrom:
           - configMapRef:
-              name: das-tool-service-shared-config
+              name: shared-app-settings
         ports:
         - containerPort: 80
           protocol: TCP
