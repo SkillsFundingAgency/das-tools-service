@@ -41,6 +41,10 @@ spec:
       labels:
         app: das-tool-service-web
         service: das-tool-service
+  volumes:
+    - name: shared-app-settings
+      configMap:
+        name: das-tool-service-shared-config
     spec:
       containers:
       - env:
@@ -71,10 +75,3 @@ spec:
             requests:
               cpu: 25m
               memory: 512Mi
-        volumeMounts:
-          - mountPath: /etc/config
-            name: shared-app-settings
-      volumes:
-        - name: shared-app-settings
-          configMap:
-            name: das-tool-service-shared-config
