@@ -8,7 +8,7 @@ metadata:
 data:
   Logging__LogLevel__Default: Information
   Logging__LogLevel__System: Information
-  Logging_LogLevel__Microsoft: Information
+  Logging__LogLevel__Microsoft: Information
   Cdn__Url: {{CdnUrl}}
   BaseUrl: {{IngressHost}}
   ConfigurationStorageConnectionString: {{ConfigurationStorageConnectionString}}
