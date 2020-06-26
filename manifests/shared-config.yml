@@ -6,24 +6,15 @@ metadata:
   name: das-tool-service-shared-config
   namespace: {{Namespace}}
 data:
-  appsettings.json: |-
-    {
-      "Logging": {
-        "LogLevel": {
-          "Default": "Information",
-          "System": "Information",
-          "Microsoft": "Information"
-        }
-      },
-      "Cdn": {
-        "Url": "{{CdnUrl}}"
-      },
-      "BaseUrl": "{{IngressHost}}",
-      "ConfigurationStorageConnectionString": "{{ConfigurationStorageConnectionString}}",
-      "APPINSIGHTS_INSTRUMENTATIONKEY": "{{appInsightsInstrumentationkey}}",
-      "EnvironmentName": "{{EnvironmentName}}",
-      "LoggingRedisConnectionString": "{{LoggingRedisConnectionString}}",
-      "LoggingRedisKey": "logstash",
-      "RedisConnectionString": "{{RedisConnectionString}}",
-      "RedisKey": "das-tools-notification"
-    }
+  Logging__LogLevel__Default: Information
+  Logging__LogLevel__System: Information
+  Logging_LogLevel__Microsoft: Information
+  Cdn__Url: {{CdnUrl}}
+  BaseUrl: {{IngressHost}}
+  ConfigurationStorageConnectionString: {{ConfigurationStorageConnectionString}}
+  APPINSIGHTS_INSTRUMENTATIONKEY: {{appInsightsInstrumentationkey}}
+  EnvironmentName: {{EnvironmentName}}
+  LoggingRedisConnectionString: {{LoggingRedisConnectionString}}
+  LoggingRedisKey: logstash
+  RedisConnectionString: {{RedisConnectionString}}
+  RedisKey: das-tools-notification
