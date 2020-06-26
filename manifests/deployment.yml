@@ -61,10 +61,6 @@ spec:
         image: apprenticeshipsdevops/das-tools-service:{{buildNumber}}
         imagePullPolicy: IfNotPresent
         name: das-tool-service
-        volumeMounts:
-          - mountPath: /app/appsettings.json
-            name: shared-app-settings
-            subPath: appsettings.json
         envFrom:
           - configMapRef:
               name: das-tool-service-shared-config
