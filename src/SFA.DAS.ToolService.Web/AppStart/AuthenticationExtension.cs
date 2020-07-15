@@ -27,9 +27,9 @@ namespace SFA.DAS.ToolService.Web.AppStart
             })
             .AddOpenIdConnect("Keycloak", options =>
             {
-                options.Authority = $"https://dev-tools.apprenticeships.education.gov.uk/auth/realms/PoC";
-                options.ClientId = "poc";
-                options.ClientSecret = "d517e806-a205-4246-b425-ed68cf38381c";
+                options.Authority = $"https://{configuration.Value.Domain}";
+                options.ClientId = configuration.Value.ClientId;
+                options.ClientSecret = configuration.Value.ClientSecret;
                 options.ClaimsIssuer = "Keycloak";
                 options.ResponseType = "code";
             })
