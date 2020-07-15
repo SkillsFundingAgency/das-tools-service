@@ -13,12 +13,12 @@ namespace SFA.DAS.ToolService.Web.Controllers
 
         public async Task Login(string returnUrl = "/home")
         {
-            await HttpContext.ChallengeAsync("Auth0", new AuthenticationProperties() { RedirectUri = returnUrl });
+            await HttpContext.ChallengeAsync("Keycloak", new AuthenticationProperties() { RedirectUri = returnUrl });
         }
 
         public async Task Logout()
         {
-            await HttpContext.SignOutAsync("Auth0", new AuthenticationProperties
+            await HttpContext.SignOutAsync("Keycloak", new AuthenticationProperties
             {
                 RedirectUri = Url.Action("Index", "Home")
             });

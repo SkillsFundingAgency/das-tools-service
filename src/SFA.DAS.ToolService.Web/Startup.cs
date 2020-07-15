@@ -61,7 +61,8 @@ namespace SFA.DAS.ToolService.Web
             var serviceProvider = services.BuildServiceProvider();
             services.AddAuthorizationService();
 
-            services.AddAuth0Authentication(serviceProvider.GetService<IOptions<AuthenticationConfiguration>>());
+            services.AddKeycloakAuthentication(serviceProvider.GetService<IOptions<AuthenticationConfiguration>>());
+
             services.AddNotificationClient(_configuration.Get<NotificationClientConfiguration>());
 
             services.AddHealthChecks();
