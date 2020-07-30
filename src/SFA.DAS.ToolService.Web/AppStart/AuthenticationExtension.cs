@@ -27,7 +27,7 @@ namespace SFA.DAS.ToolService.Web.AppStart
             })
             .AddOpenIdConnect("Keycloak", options =>
             {
-                options.Authority = $"https://{configuration.Value.Domain}";
+                options.Authority = $"https://{configuration.Value.Domain}/realms/PoC";
                 options.ClientId = configuration.Value.ClientId;
                 options.ClientSecret = configuration.Value.ClientSecret;
                 options.ClaimsIssuer = "Keycloak";

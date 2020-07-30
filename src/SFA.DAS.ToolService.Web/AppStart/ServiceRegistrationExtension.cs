@@ -8,7 +8,7 @@ using SFA.DAS.ToolService.Core.Configuration;
 using SFA.DAS.ToolService.Core.IRepositories;
 using SFA.DAS.ToolService.Core.IServices;
 using SFA.DAS.ToolService.Core.Services;
-using SFA.DAS.ToolService.Infrastructure.Auth0;
+using SFA.DAS.ToolService.Infrastructure.Keycloak;
 using SFA.DAS.ToolService.Infrastructure.Repositories;
 using SFA.DAS.ToolService.Web.Infrastructure;
 
@@ -27,10 +27,10 @@ namespace SFA.DAS.ToolService.Web.AppStart
             services.AddScoped<IApplicationService, ApplicationService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddSingleton<IManagementConnection, HttpClientManagementConnection>();
-            services.AddScoped<IAuth0ApiClient, Auth0ApiClient>();
+            services.AddScoped<IKeycloakApiClient, KeycloakApiClient>();
             services.AddScoped<IApplicationRepository, ApplicationRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
-            services.AddScoped<IExternalRoleRepository, Auth0RoleRepository>();
+            services.AddScoped<IExternalRoleRepository, KeycloakRoleRepository>();
             services.AddSingleton<IAuthorizationHandler, AdminUserAuthorizationHandler>();
             services.AddSingleton<INotificationService, NotificationService>();
             services.AddSingleton<INotificationRepository, NotificationRepository>();

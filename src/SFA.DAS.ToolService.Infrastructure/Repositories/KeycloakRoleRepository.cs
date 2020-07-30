@@ -1,19 +1,19 @@
 using Microsoft.Extensions.Logging;
 using SFA.DAS.ToolService.Core.Entities;
 using SFA.DAS.ToolService.Core.IRepositories;
-using SFA.DAS.ToolService.Infrastructure.Auth0;
+using SFA.DAS.ToolService.Infrastructure.Keycloak;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace SFA.DAS.ToolService.Infrastructure.Repositories
 {
-    public class Auth0RoleRepository : IExternalRoleRepository
+    public class KeycloakRoleRepository : IExternalRoleRepository
     {
-        private readonly ILogger<Auth0RoleRepository> _logger;
-        private readonly IAuth0ApiClient _client;
+        private readonly ILogger<KeycloakRoleRepository> _logger;
+        private readonly IKeycloakApiClient _client;
 
-        public Auth0RoleRepository(ILogger<Auth0RoleRepository> logger, IAuth0ApiClient client)
+        public KeycloakRoleRepository(ILogger<KeycloakRoleRepository> logger, IKeycloakApiClient client)
         {
             _logger = logger;
             _client = client;
@@ -21,7 +21,7 @@ namespace SFA.DAS.ToolService.Infrastructure.Repositories
 
         public async Task<List<ExternalRole>> GetExternalRoles()
         {
-            var roles = await _client.GetAuth0Roles();
+            var roles = await _client.GetKeycloakRoles();
             return roles.Select(c => new ExternalRole { Id = c.Id, Name = c.Name, Description = c.Description }).ToList();
         }
     }
