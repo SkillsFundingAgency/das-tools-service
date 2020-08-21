@@ -1,21 +1,38 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using SFA.DAS.ToolService.Core.Configuration;
+using SFA.DAS.ToolService.Web.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SFA.DAS.ToolService.Web.AppStart
 {
     public static class AuthenticationExtension
     {
-        public static IServiceCollection AddKeycloakAuthentication(this IServiceCollection services, IOptions<AuthenticationConfiguration> configuration)
+        public static IServiceCollection AddKeycloakAuthentication(this IServiceCollection services, IOptions<AuthenticationConfiguration> configuration, IOptions<GitHub> githubconfiguration)
         {
+            services.AddSingleton<IAuthorizationHandler, ValidGitHubRequirementsHandler>();
+
+            // Add an authorization policy to check whether our username is part of defined GitHub orgs and teams
+            // need to pass in GitHub array from config incase there are multiple GitHub organisations
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("ValidGitHubOrgsAndTeamsOnly", policy => policy.Requirements.Add(
+            //        new ValidGitHubRequirement(githubconfiguration.Value.Organisation)
+            //        )
+            //    );
+            //});
+
             // Add authentication services
             services.AddAuthentication(options =>
             {
