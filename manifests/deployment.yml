@@ -57,7 +57,7 @@ spec:
         - name: Authentication__AdminApiClientSecret
           value: {{KeycloakAdminApiClientSecret}}
         - name: Authentication__GitHub__Organisation
-          value: {{ValidGitHubOrgs}}
+          value: "{{ValidGitHubOrgs}}"
         - name: Authentication__GitHub__Teams
           value: {{ValidGitHubTeams}}
         - name: DatabaseConnectionString
