@@ -56,6 +56,10 @@ spec:
           value: {{KeycloakAdminApiClientId}}
         - name: Authentication__AdminApiClientSecret
           value: {{KeycloakAdminApiClientSecret}}
+        - name: Authentication__GitHub__Organisation
+          value: {{ValidGitHubOrgs}}
+        - name: Authentication__GitHub__Teams
+          value: {{ValidGitHubTeams}}
         - name: DatabaseConnectionString
           value: {{DatabaseConnectionString}}
         - name: DfESigninAddress
