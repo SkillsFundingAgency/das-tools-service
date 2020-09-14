@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.ToolService.Web.Controllers.Admin
 {
+    [Authorize(Policy = "ValidGitHubOrgsAndTeams")]
     [Authorize(Policy = "admin")]
     [Route("admin/manage-roles")]
     public class AdminRoleController : BaseController<AdminRoleController>

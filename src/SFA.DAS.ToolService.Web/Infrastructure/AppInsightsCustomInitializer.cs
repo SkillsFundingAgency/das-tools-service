@@ -10,7 +10,6 @@ namespace SFA.DAS.ToolService.Web.Infrastructure
             if (string.IsNullOrEmpty(telemetry.Context.Cloud.RoleName))
             {
                 telemetry.Context.Cloud.RoleName = "das-tool-service-web";
-                //telemetry.Context.Cloud.RoleInstance = "Custom RoleInstance";
             }
         }
     }

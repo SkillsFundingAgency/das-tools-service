@@ -4,7 +4,7 @@ namespace SFA.DAS.ToolService.Core.Configuration
 {
     public class AuthenticationConfiguration
     {
-        public GitHub[] GitHub { get; set; }
+        public GitHub GitHub { get; set; }
         public string Domain { get; set; }
         public string Realm { get; set; }
         public string ClientId { get; set; }
@@ -16,12 +16,6 @@ namespace SFA.DAS.ToolService.Core.Configuration
     public class GitHub
     {
         public string Organisation { get; set; }
-        public ValidTeam[] ValidTeams { get; set; }
-    }
-
-    public class ValidTeam
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public string Teams { get; set; }
     }
 }

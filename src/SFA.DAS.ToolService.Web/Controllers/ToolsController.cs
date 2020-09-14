@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ToolService.Core.IServices;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.ToolService.Web.Controllers
 {
+    [Authorize(Policy = "ValidGitHubOrgsAndTeams")]
     [Route("home")]
     public class ToolsController : BaseController<ToolsController>
     {

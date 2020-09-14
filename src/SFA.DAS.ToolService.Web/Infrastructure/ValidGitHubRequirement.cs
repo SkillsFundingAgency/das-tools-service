@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
+using SFA.DAS.ToolService.Core.Configuration;
 
 namespace SFA.DAS.ToolService.Web.Infrastructure
 {
@@ -6,10 +7,12 @@ namespace SFA.DAS.ToolService.Web.Infrastructure
     {
         public string[] Organizations { get; private set; }
 
-        // Need to add some elements in for the teams array
-        public ValidGitHubRequirement(string organizations)
+        public string[] Teams { get; private set; }
+
+        public ValidGitHubRequirement(GitHub gitHub)
         {
-            Organizations = organizations.Split(",");
+            Organizations = gitHub.Organisation.Split(",");
+            Teams = gitHub.Teams.Split(",");
         }
     }
 }

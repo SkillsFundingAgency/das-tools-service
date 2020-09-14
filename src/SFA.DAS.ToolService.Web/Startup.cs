@@ -62,7 +62,7 @@ namespace SFA.DAS.ToolService.Web
             services.AddAuthorizationService();
 
             // Add GitHub options
-            services.AddKeycloakAuthentication(serviceProvider.GetService<IOptions<AuthenticationConfiguration>>(), serviceProvider.GetService<IOptions<GitHub>>());
+            services.AddKeycloakAuthentication(serviceProvider.GetService<IOptions<AuthenticationConfiguration>>());
 
             services.AddNotificationClient(_configuration.Get<NotificationClientConfiguration>());
 

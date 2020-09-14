@@ -5,6 +5,7 @@ using SFA.DAS.ToolService.Web.Models.Admin;
 
 namespace SFA.DAS.ToolService.Web.Controllers.Admin
 {
+    [Authorize(Policy = "ValidGitHubOrgsAndTeams")]
     [Authorize(Policy = "admin")]
     [Route("admin")]
     public class AdminController : BaseController<AdminController>
