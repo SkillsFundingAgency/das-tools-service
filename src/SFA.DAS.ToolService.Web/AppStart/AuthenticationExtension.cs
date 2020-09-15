@@ -58,7 +58,7 @@ namespace SFA.DAS.ToolService.Web.AppStart
                     {
                         var claims = ctx.Principal.Claims;
                         var provider = ctx.Principal.Claims.FirstOrDefault(x => x.Type == "provider");
-                        if (provider.Value == "github")
+                        if (provider != null && provider.Value == "github")
                         {
                             var gitToken = await GetGithubTokenFromKeyCloakAsync(ctx, configuration);
 

@@ -12,6 +12,10 @@ namespace SFA.DAS.ToolService.Web.Infrastructure
             if (!context.User.HasClaim(c => c.Type == "provider" &&
                                             c.Value == "github"))
             {
+                if(context.User.HasClaim(c => c.Type == "provider" && c.Value == "aad"))
+                {
+                    context.Succeed(requirement);
+                }
                 return Task.CompletedTask;
             }
 
