@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Logging;
 using SFA.DAS.ToolService.Core;
@@ -24,6 +25,7 @@ namespace SFA.DAS.ToolService.Web
     {
         private readonly IConfiguration _configuration;
         private readonly IHostingEnvironment _environment;
+        private readonly ILogger _logger;
 
         public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
@@ -62,7 +64,7 @@ namespace SFA.DAS.ToolService.Web
             services.AddAuthorizationService();
 
             // Add GitHub options
-            services.AddKeycloakAuthentication(serviceProvider.GetService<IOptions<AuthenticationConfiguration>>());
+            services.AddKeycloakAuthentication(serviceProvider.GetService<IOptions<AuthenticationConfiguration>>(),serviceProvider.GetService<ILogger<Startup>>());
 
             services.AddNotificationClient(_configuration.Get<NotificationClientConfiguration>());
 

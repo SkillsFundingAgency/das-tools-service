@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Octokit;
 using RestSharp;
@@ -19,8 +20,12 @@ namespace SFA.DAS.ToolService.Web.AppStart
 {
     public static class AuthenticationExtension
     {
-        public static IServiceCollection AddKeycloakAuthentication(this IServiceCollection services, IOptions<AuthenticationConfiguration> configuration)
+        private static ILogger<Startup> _logger;
+
+        public static IServiceCollection AddKeycloakAuthentication(this IServiceCollection services, IOptions<AuthenticationConfiguration> configuration, ILogger<Startup> logger)
         {
+            _logger = logger;
+
             services.AddSingleton<IAuthorizationHandler, ValidGitHubRequirementsHandler>();
 
             // Add an authorization policy to check whether our username is part of defined GitHub orgs and teams
@@ -45,7 +50,7 @@ namespace SFA.DAS.ToolService.Web.AppStart
             .AddOpenIdConnect("Keycloak", options =>
             {
                 options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.Authority = $"http://{configuration.Value.Domain}/realms/{configuration.Value.Realm}";
+                options.Authority = $"https://{configuration.Value.Domain}/realms/{configuration.Value.Realm}";
                 options.ClientId = configuration.Value.ClientId;
                 options.ClientSecret = configuration.Value.ClientSecret;
                 options.ClaimsIssuer = "Keycloak";
@@ -56,7 +61,6 @@ namespace SFA.DAS.ToolService.Web.AppStart
                 {
                     OnTokenValidated = async ctx =>
                     {
-                        var claims = ctx.Principal.Claims;
                         var provider = ctx.Principal.Claims.FirstOrDefault(x => x.Type == "provider");
                         if (provider != null && provider.Value == "github")
                         {
@@ -69,6 +73,10 @@ namespace SFA.DAS.ToolService.Web.AppStart
                                 var newClaims = new ClaimsIdentity(githubMetaData);
 
                                 ctx.Principal.AddIdentity(newClaims);
+                            }
+                            else
+                            {
+                                logger.LogInformation("Unable to obtain github token");
                             }
                         }
                     }
@@ -94,11 +102,12 @@ namespace SFA.DAS.ToolService.Web.AppStart
 
             if (string.IsNullOrEmpty(keycloakToken))
             {
+                _logger.LogInformation("Unable to option keycloak token");
                 return null;
             }
             else
             {
-                var client = new RestClient($"http://{configuration.Value.Domain}/realms/{configuration.Value.Realm}/broker/github/token");
+                var client = new RestClient($"https://{configuration.Value.Domain}/realms/{configuration.Value.Realm}/broker/github/token");
 
                 var request = new RestRequest(Method.GET);
 
