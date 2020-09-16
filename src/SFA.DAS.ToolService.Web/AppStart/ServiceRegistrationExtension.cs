@@ -1,4 +1,3 @@
-using Auth0.ManagementApi;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,7 +25,6 @@ namespace SFA.DAS.ToolService.Web.AppStart
 
             services.AddScoped<IApplicationService, ApplicationService>();
             services.AddScoped<IRoleService, RoleService>();
-            services.AddSingleton<IManagementConnection, HttpClientManagementConnection>();
             services.AddScoped<IKeycloakApiClient, KeycloakApiClient>();
             services.AddScoped<IApplicationRepository, ApplicationRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
