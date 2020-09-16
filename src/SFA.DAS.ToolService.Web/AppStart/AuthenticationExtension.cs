@@ -125,11 +125,9 @@ namespace SFA.DAS.ToolService.Web.AppStart
 
         private static async Task<List<Claim>> GetGithubMetaDataClaims(string githubToken)
         {
-            var tokenAuth = new Credentials(githubToken);
-
             var github = new GitHubClient(new Octokit.ProductHeaderValue("tools-service"))
             {
-                Credentials = tokenAuth
+                Credentials = new Credentials(githubToken)
             };
 
             var orgs = await github.Organization.GetAllForCurrent();
