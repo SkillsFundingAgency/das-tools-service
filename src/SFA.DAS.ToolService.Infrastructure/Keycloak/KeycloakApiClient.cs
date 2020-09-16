@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -7,8 +6,6 @@ using SFA.DAS.ToolService.Core.Configuration;
 using SFA.DAS.ToolService.Core.Entities;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace SFA.DAS.ToolService.Infrastructure.Keycloak
@@ -41,7 +38,7 @@ namespace SFA.DAS.ToolService.Infrastructure.Keycloak
 
         private string GetToken()
         {
-            var client = new RestClient($"https://{_configuration.Value.Domain}/realms/poc/protocol/openid-connect/token");
+            var client = new RestClient($"https://{_configuration.Value.Domain}/realms/{_configuration.Value.Realm}/protocol/openid-connect/token");
 
             var request = new RestRequest(Method.POST);
 
@@ -62,7 +59,7 @@ namespace SFA.DAS.ToolService.Infrastructure.Keycloak
 
         public async Task<IList<ExternalRole>> GetKeycloakRoles()
         {
-            var client = new RestClient($"https://{_configuration.Value.Domain}/admin/realms/poc/roles");
+            var client = new RestClient($"https://{_configuration.Value.Domain}/admin/realms/{_configuration.Value.Realm}/roles");
 
             var request = new RestRequest(Method.GET);
 

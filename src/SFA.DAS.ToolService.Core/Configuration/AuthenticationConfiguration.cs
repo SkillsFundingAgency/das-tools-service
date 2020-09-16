@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace SFA.DAS.ToolService.Core.Configuration
 {
     public class AuthenticationConfiguration
