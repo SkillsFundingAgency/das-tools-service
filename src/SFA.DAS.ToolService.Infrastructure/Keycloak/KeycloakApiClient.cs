@@ -44,7 +44,7 @@ namespace SFA.DAS.ToolService.Infrastructure.Keycloak
 
             request.AddHeader("content-type", "application/x-www-form-urlencoded");
 
-            request.AddParameter("application/x-www-form-urlencoded", $"grant_type=client_credentials&client_id={_configuration.Value.Realm}&client_secret={_configuration.Value.ManagementApiClientSecret}", ParameterType.RequestBody);
+            request.AddParameter("application/x-www-form-urlencoded", $"grant_type=client_credentials&client_id={_configuration.Value.Realm}&client_secret={_configuration.Value.AdminApiClientSecret}", ParameterType.RequestBody);
 
             var response = client.Execute(request);
 

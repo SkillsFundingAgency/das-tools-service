@@ -25,7 +25,6 @@ namespace SFA.DAS.ToolService.Web
     {
         private readonly IConfiguration _configuration;
         private readonly IHostingEnvironment _environment;
-        private readonly ILogger _logger;
 
         public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
