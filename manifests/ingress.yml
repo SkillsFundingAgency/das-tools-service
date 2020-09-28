@@ -39,7 +39,7 @@ spec:
             intervalSeconds: 7
             timeoutSeconds: 60
   tls:
-    secretName: '{{TlsSecretName}}-correct-chain'
+    secretName: '{{TlsSecretName}}'
     options:
       name: enforce-tls-12
       namespace: {{Namespace}}
