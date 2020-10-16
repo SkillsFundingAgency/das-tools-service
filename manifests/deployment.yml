@@ -45,19 +45,23 @@ spec:
       containers:
       - env:
         - name: Authentication__Domain
-          value: {{Auth0Domain}}
+          value: {{KeycloakDomain}}
+        - name: Authentication__Realm
+          value: {{KeycloakRealm}}
         - name: Authentication__ClientId
-          value: {{Auth0ClientId}}
+          value: {{KeycloakClientId}}
         - name: Authentication__ClientSecret
-          value: {{AUth0ClientSecret}}
-        - name: Authentication__ManagementApiClientId
-          value: {{ManagementApiClientId}}
-        - name: Authentication__ManagementApiClientSecret
-          value: {{ManagementApiClientSecret}}
+          value: {{KeycloakClientSecret}}
+        - name: Authentication__AdminApiClientId
+          value: {{KeycloakAdminApiClientId}}
+        - name: Authentication__AdminApiClientSecret
+          value: {{KeycloakAdminApiClientSecret}}
+        - name: Authentication__GitHub__Organisation
+          value: "{{ValidGitHubOrgs}}"
+        - name: Authentication__GitHub__Teams
+          value: {{ValidGitHubTeams}}
         - name: DatabaseConnectionString
           value: {{DatabaseConnectionString}}
-        - name: DfESigninAddress
-          value: {{DfeSignInAddress}}
         image: apprenticeshipsdevops/das-tools-service:{{buildNumber}}
         imagePullPolicy: IfNotPresent
         name: das-tool-service

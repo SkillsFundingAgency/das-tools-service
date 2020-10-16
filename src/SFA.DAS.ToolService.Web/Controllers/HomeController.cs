@@ -20,7 +20,6 @@ namespace SFA.DAS.ToolService.Web.Controllers
         {
             var model = new HomeViewModel
             {
-                DfeSignInAddress = links.Value.DfESignInAddress,
                 GitHubOrgAddress = links.Value.GitHubOrgAddress
             };
 

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.ToolService.Web.Controllers.Admin
 {
+    [Authorize(Policy = "ValidGitHubOrgsAndTeams")]
     [Authorize(Policy = "admin")]
     [Route("admin/manage-notifications")]
     public class AdminNotificationController : BaseController<AdminNotificationController>

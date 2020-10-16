@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.ToolService.Web.Controllers.Admin
 {
+    [Authorize(Policy = "ValidGitHubOrgsAndTeams")]
     [Authorize(Policy = "admin")]
     [Route("admin/manage-roles")]
     public class AdminRoleController : BaseController<AdminRoleController>
@@ -35,7 +36,7 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
         public async Task<IActionResult> SyncRolesFromExternalProvider()
         {
             await roleService.SyncIdentityProviderRoles();
-            return RedirectToAction(AdminRoleRouteNames.ManageRoles);
+            return RedirectToAction(nameof(AdminRoleController.Index),typeof(AdminRoleController));
         }
     }
 }

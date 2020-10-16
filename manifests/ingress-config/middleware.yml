@@ -29,7 +29,7 @@ metadata:
   namespace: {{Namespace}}
 spec:
   headers:
-    frameDeny: true
+    customFrameOptionsValue: "SAMEORIGIN"
     sslRedirect: true
     contentTypeNosniff: true
     browserXssFilter: true

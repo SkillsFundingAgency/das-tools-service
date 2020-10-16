@@ -1,22 +1,21 @@
-using Auth0.ManagementApi;
-using Auth0.ManagementApi.Models;
-using Auth0.ManagementApi.Paging;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RestSharp;
 using SFA.DAS.ToolService.Core.Configuration;
+using SFA.DAS.ToolService.Core.Entities;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace SFA.DAS.ToolService.Infrastructure.Auth0
+namespace SFA.DAS.ToolService.Infrastructure.Keycloak
 {
-    public class Auth0ApiClient : IAuth0ApiClient
+    public class KeycloakApiClient : IKeycloakApiClient
     {
-        private readonly ILogger<Auth0ApiClient> _logger;
+        private readonly ILogger<KeycloakApiClient> _logger;
         private readonly IOptions<AuthenticationConfiguration> _configuration;
 
-        public Auth0ApiClient(ILogger<Auth0ApiClient> logger, IOptions<AuthenticationConfiguration> configuration)
+        public KeycloakApiClient(ILogger<KeycloakApiClient> logger, IOptions<AuthenticationConfiguration> configuration)
         {
             _logger = logger;
             _configuration = configuration;
@@ -39,14 +38,13 @@ namespace SFA.DAS.ToolService.Infrastructure.Auth0
 
         private string GetToken()
         {
-            var client = new RestClient($"https://{_configuration.Value.Domain}/oauth/token");
+            var client = new RestClient($"https://{_configuration.Value.Domain}/realms/{_configuration.Value.Realm}/protocol/openid-connect/token");
 
             var request = new RestRequest(Method.POST);
 
             request.AddHeader("content-type", "application/x-www-form-urlencoded");
 
-            var audience = $"https://{_configuration.Value.Domain}/api/v2/";
-            request.AddParameter("application/x-www-form-urlencoded", $"grant_type=client_credentials&client_id={_configuration.Value.ManagementApiClientId}&client_secret={_configuration.Value.ManagementApiClientSecret}&audience={Uri.EscapeUriString(audience)}", ParameterType.RequestBody);
+            request.AddParameter("application/x-www-form-urlencoded", $"grant_type=client_credentials&client_id={_configuration.Value.Realm}&client_secret={_configuration.Value.AdminApiClientSecret}", ParameterType.RequestBody);
 
             var response = client.Execute(request);
 
@@ -59,19 +57,21 @@ namespace SFA.DAS.ToolService.Infrastructure.Auth0
             return tokenResponse.AccessToken;
         }
 
-        public async Task<IPagedList<Role>> GetAuth0Roles()
+        public async Task<IList<ExternalRole>> GetKeycloakRoles()
         {
-            var token = GetToken();
-            var uri = new Uri($"https://{_configuration.Value.Domain}/api/v2");
-            using (var client = new ManagementApiClient(token, uri))
-            {
-                var request = new GetRolesRequest
-                {
-                    NameFilter = ""
-                };
+            var client = new RestClient($"https://{_configuration.Value.Domain}/admin/realms/{_configuration.Value.Realm}/roles");
 
-                return await client.Roles.GetAllAsync(request);
-            }
+            var request = new RestRequest(Method.GET);
+
+            var token = GetToken();
+
+            request.AddHeader("Authorization", $"Bearer {token}");
+
+            var response = await client.ExecuteAsync(request);
+
+            var roles = JsonConvert.DeserializeObject<IList<ExternalRole>>(response.Content);
+
+            return roles;
         }
     }
 }
