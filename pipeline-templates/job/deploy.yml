@@ -40,6 +40,8 @@ jobs:
             keepToken: false
             tokenPrefix: '{{'
             tokenSuffix: '}}'
+            ## TO DO: set to normal
+            verbosity: detailed
         - task: SqlAzureDacpacDeployment@1
           displayName: 'Deploy DACPAC'
           inputs:
