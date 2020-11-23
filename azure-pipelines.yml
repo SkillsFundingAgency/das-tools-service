@@ -17,3 +17,18 @@ variables:
 
 stages:
 - template: /pipeline-templates/stage/build.yml
+
+- stage: DeployTo_DEV
+  displayName: DeployTo_DEV
+  variables:
+  - group: Release Management Resources
+  - group: Dev Management Resources
+  - name: resourceEnvironmentName
+    value: dev
+  jobs:
+  - template: /pipeline-templates/job/deploy.yml
+    parameters:
+      Environment: DEV
+      ResourceGroupLocation: $(ResourceGroupLocation)
+      ServiceConnection: SFA-DAS-DevTest-ARM
+      SubscriptionId: $(SubscriptionId)

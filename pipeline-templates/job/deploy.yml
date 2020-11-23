@@ -1,0 +1,25 @@
+﻿parameters:
+  Environment: 
+  ResourceGroupLocation: 
+  ServiceConnection: 
+  SubscriptionId: 
+
+jobs:
+- deployment: DeployTo_${{ parameters.Environment }}
+  environment: ${{ parameters.Environment }}
+  pool:
+    name: 'DAS - Continuous Integration'
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - checkout: self
+          path: 'das-tools-service/'
+        - template: azure-pipelines-templates/deploy/step/arm-deploy.yml@das-platform-building-blocks
+          parameters:
+            Location: ${{ parameters.ResourceGroupLocation }}
+            ParametersPath: $(Pipeline.Workspace)/das-tools-service/azure/template.parameters.json
+            ServiceConnection: ${{ parameters.ServiceConnection }}
+            SubscriptionId: ${{ parameters.SubscriptionId }}
+            TemplatePath: $(Pipeline.Workspace)/das-tools-service/azure/template.json
+            IsMultiRepoCheckout: true
