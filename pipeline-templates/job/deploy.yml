@@ -30,9 +30,8 @@ jobs:
             SubscriptionId: ${{ parameters.SubscriptionId }}
             TemplatePath: $(Pipeline.Workspace)/das-tools-service/azure/template.json
             IsMultiRepoCheckout: true
-        ##TO DO:remove this task
-        - pwsh: Get-ChildItem env:* | Sort-Object name
         - task: replacetokens@3
+          displayName: 'Tokenise manifests'
           inputs:
             rootDirectory: '$(Pipeline.Workspace)/das-tools-service/manifests'
             targetFiles: '**/*.yml'
@@ -42,7 +41,6 @@ jobs:
             keepToken: false
             tokenPrefix: '{{'
             tokenSuffix: '}}'
-            ## TO DO: set to normal
             verbosity: detailed
         - task: SqlAzureDacpacDeployment@1
           displayName: 'Deploy DACPAC'
