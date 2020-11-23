@@ -29,6 +29,8 @@ pr: none
 variables:
 - name: ServiceName
   value: tools
+- name: DatabaseConnectionString
+  value: Server=tcp:$(SharedSQLServerFQDN),1433;Database=$(DatabaseName);User ID=$(SQLServerServiceAccountUsername);Password=$(SQLServerServiceAccountPassword);Trusted_Connection=False;Pooling=False;Connect Timeout=200;MultipleActiveResultSets=True
 
 stages:
 - template: /pipeline-templates/stage/build.yml
