@@ -26,7 +26,7 @@
       "type": "string",
       "defaultValue": "[subscription().subscriptionId]"
     },
-    "logAnalyticsResourceGroup": {
+    "managementResourceGroupName": {
       "type": "string"
     },
     "logAnalyticsWorkspaceName": {
@@ -105,7 +105,7 @@
             "value": "[parameters('logAnalyticsSubscriptionId')]"
           },
           "logAnalyticsResourceGroup": {
-            "value": "[parameters('logAnalyticsResourceGroup')]"
+            "value": "[parameters('managementResourceGroupName')]"
           },
           "logAnalyticsWorkspaceName": {
             "value": "[parameters('logAnalyticsWorkspaceName')]"
