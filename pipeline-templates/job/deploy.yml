@@ -30,12 +30,14 @@ jobs:
             SubscriptionId: ${{ parameters.SubscriptionId }}
             TemplatePath: $(Pipeline.Workspace)/das-tools-service/azure/template.json
             IsMultiRepoCheckout: true
-        - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-          displayName: 'Tokenize Manifests'
+        - task: replacetokens@3
           inputs:
             rootDirectory: '$(Pipeline.Workspace)/das-tools-service/manifests'
             targetFiles: '**/*.yml'
-            actionOnMissing: fail
+            encoding: 'auto'
+            writeBOM: true
+            actionOnMissing: 'fail'
+            keepToken: false
             tokenPrefix: '{{'
             tokenSuffix: '}}'
         - task: SqlAzureDacpacDeployment@1
