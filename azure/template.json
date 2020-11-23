@@ -11,7 +11,7 @@
     "sharedSqlServerName": {
       "type": "string"
     },
-    "sharedResourceGroup": {
+    "sharedResourceGroupName": {
       "type": "string"
     },
     "databaseSkuName": {
@@ -80,7 +80,7 @@
     {
       "apiVersion": "2020-06-01",
       "name": "sql-database",
-      "resourceGroup": "[parameters('sharedResourceGroup')]",
+      "resourceGroup": "[parameters('sharedResourceGroupName')]",
       "type": "Microsoft.Resources/deployments",
       "properties": {
         "mode": "Incremental",
