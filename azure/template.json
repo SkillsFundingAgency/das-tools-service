@@ -1,5 +1,5 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
     "resourceEnvironmentName": {
@@ -31,18 +31,35 @@
     },
     "logAnalyticsWorkspaceName": {
       "type": "string"
+    },
+    "resourceGroupLocation": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "object"
     }
   },
   "variables": {
     "deploymentUrlBase": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/",
     "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
     "appInsightsName": "[concat(variables('resourceNamePrefix'), '-shared-ai')]",
-    "databaseName": "[concat(variables('resourceNamePrefix'), '-db')]"
+    "databaseName": "[concat(variables('resourceNamePrefix'), '-db')]",
+    "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]"
   },
   "resources": [
     {
-      "apiVersion": "2017-05-10",
+      "apiVersion": "2020-06-01",
+      "name": "[variables('resourceGroupName')]",
+      "type": "Microsoft.Resources/resourceGroups",
+      "location": "[parameters('resourceGroupLocation')]",
+      "tags": "[parameters('tags')]",
+      "properties": {
+      }
+    },
+    {
+      "apiVersion": "2020-06-01",
       "name": "application-insights",
+      "resourceGroup": "[variables('resourceGroupName')]",
       "type": "Microsoft.Resources/deployments",
       "properties": {
         "mode": "Incremental",
@@ -61,10 +78,10 @@
       }
     },
     {
-      "apiVersion": "2017-05-10",
+      "apiVersion": "2020-06-01",
       "name": "sql-database",
-      "type": "Microsoft.Resources/deployments",
       "resourceGroup": "[parameters('sharedResourceGroup')]",
+      "type": "Microsoft.Resources/deployments",
       "properties": {
         "mode": "Incremental",
         "templateLink": {
