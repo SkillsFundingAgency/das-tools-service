@@ -12,7 +12,7 @@ data:
   Cdn__Url: {{CdnUrl}}
   BaseUrl: {{IngressHost}}
   ConfigurationStorageConnectionString: {{ConfigurationStorageConnectionString}}
-  APPINSIGHTS_INSTRUMENTATIONKEY: {{appInsightsInstrumentationkey}}
+  APPINSIGHTS_INSTRUMENTATIONKEY: {{ARMOUTPUTS_APPINSIGHTSINSTRUMENTATIONKEY}}
   EnvironmentName: {{ResourceEnvironmentName}}
   LoggingRedisConnectionString: {{LoggingRedisConnectionString}}
   LoggingRedisKey: logstash
