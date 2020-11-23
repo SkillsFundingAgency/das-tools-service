@@ -26,6 +26,10 @@ trigger:
 
 pr: none
 
+variables:
+- name: ServiceName
+  value: tools
+
 stages:
 - template: /pipeline-templates/stage/build.yml
 
@@ -34,7 +38,7 @@ stages:
   variables:
   - group: Release Management Resources
   - group: Dev Management Resources
-  - name: resourceEnvironmentName
+  - name: ResourceEnvironmentName
     value: dev
   jobs:
   - template: /pipeline-templates/job/deploy.yml
