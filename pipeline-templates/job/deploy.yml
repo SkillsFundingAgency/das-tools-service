@@ -16,9 +16,6 @@ jobs:
   environment: ${{ parameters.Environment }}
   pool:
     name: 'DAS - Continuous Integration'
-  variables:
-  - name: DatabaseConnectionString
-    value: Server=tcp:$(SharedSQLServerFQDN),1433;Database=$(ARMOUTPUTS_DATABASENAME);User ID=$(SQLServerServiceAccountUsername);Password=$(SQLServerServiceAccountPassword);Trusted_Connection=False;Pooling=False;Connect Timeout=200;MultipleActiveResultSets=True
   strategy:
     runOnce:
       deploy:
