@@ -1,7 +1,14 @@
 ﻿parameters:
+  AksResourceGroup: 
+  DatabaseName: 
   Environment: 
+  KubernetesCluster: 
+  KubectlVersion: 
   ResourceGroupLocation: 
   ServiceConnection: 
+  SharedSQLServerFQDN: 
+  SharedSQLServerPassword: 
+  SharedSQLServerUsername:
   SubscriptionId: 
 
 jobs:
@@ -23,3 +30,72 @@ jobs:
             SubscriptionId: ${{ parameters.SubscriptionId }}
             TemplatePath: $(Pipeline.Workspace)/das-tools-service/azure/template.json
             IsMultiRepoCheckout: true
+        - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+          displayName: 'Tokenize Manifests'
+          inputs:
+            rootDirectory: '$(Pipeline.Workspace)/build/manifests'
+            targetFiles: '**/*.yml'
+            actionOnMissing: fail
+            tokenPrefix: '{{'
+            tokenSuffix: '}}'
+        - task: SqlAzureDacpacDeployment@1
+          displayName: 'Deploy DACPAC'
+          inputs:
+            azureSubscription: ${{ parameters.ServiceConnection }}
+            ServerName: '${{ parameters.SharedSQLServerFQDN }}'
+            DatabaseName: '${{ parameters.DatabaseName }}'
+            SqlUsername: '${{ parameters.SharedSQLServerUsername }}'
+            SqlPassword: '${{ parameters.SharedSQLServerPassword }}'
+            DacpacFile: '$(Pipeline.Workspace)/build/src/SFA.DAS.ToolService.Database/bin/Output/SFA.DAS.ToolService.Database.dacpac'
+        - task: KubectlInstaller@0
+          displayName: 'Install Kubectl ${{ parameters.KubectlVersion }}'
+          inputs:
+            kubectlVersion: ${{ parameters.KubectlVersion }}
+        - task: Kubernetes@1
+          displayName: 'Deploy Ingress Config'
+          inputs:
+            azureSubscriptionEndpoint: ${{ parameters.ServiceConnection }}
+            azureResourceGroup: ${{ parameters.AksResourceGroup }}
+            connectionType: Azure Resource Manager
+            kubernetesCluster: ${{ parameters.KubernetesCluster }}
+            namespace: engineering
+            command: apply
+            useConfigurationFile: true
+            configuration: '$(Pipeline.Workspace)/build/manifests/ingress-config'
+            useClusterAdmin: true
+        - task: Kubernetes@1
+          displayName: 'Deploy Ingress'
+          inputs:
+            azureSubscriptionEndpoint: ${{ parameters.ServiceConnection }}
+            azureResourceGroup: ${{ parameters.AksResourceGroup }}
+            connectionType: Azure Resource Manager
+            kubernetesCluster: ${{ parameters.KubernetesCluster }}
+            namespace: engineering
+            command: apply
+            useConfigurationFile: true
+            configuration: '$(Pipeline.Workspace)/build/manifests/ingress.yml'
+            useClusterAdmin: true
+        - task: Kubernetes@1
+          displayName: 'Create Shared ConfigMap'
+          inputs:
+            azureSubscriptionEndpoint: ${{ parameters.ServiceConnection }}
+            azureResourceGroup: ${{ parameters.AksResourceGroup }}
+            connectionType: Azure Resource Manager
+            kubernetesCluster: ${{ parameters.KubernetesCluster }}
+            namespace: engineering
+            command: apply
+            useConfigurationFile: true
+            configuration: '$(Pipeline.Workspace)/build/manifests/shared-config.yml'
+            useClusterAdmin: true
+        - task: Kubernetes@1
+          displayName: 'Create Deployment'
+          inputs:
+            azureSubscriptionEndpoint: ${{ parameters.ServiceConnection }}
+            azureResourceGroup: ${{ parameters.AksResourceGroup }}
+            connectionType: Azure Resource Manager
+            kubernetesCluster: ${{ parameters.KubernetesCluster }}
+            namespace: engineering
+            command: apply
+            useConfigurationFile: true
+            configuration: '$(Pipeline.Workspace)/build/manifests/deployment.yml'
+            useClusterAdmin: true

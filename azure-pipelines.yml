@@ -43,7 +43,14 @@ stages:
   jobs:
   - template: /pipeline-templates/job/deploy.yml
     parameters:
+      AksResourceGroup: $(AKSResourceGroupName)
+      DatabaseName: $(DatabaseName)
       Environment: DEV
+      KubernetesCluster: $(AKSSharedClusterName)
+      KubectlVersion: 1.18.8
       ResourceGroupLocation: $(ResourceGroupLocation)
       ServiceConnection: SFA-DAS-DevTest-ARM
+      SharedSQLServerFQDN: $(SharedSQLServerFQDN)
+      SharedSQLServerPassword: $(SharedSQLServerPassword)
+      SharedSQLServerUsername: $(SharedSQLServerUsername)
       SubscriptionId: $(SubscriptionId)

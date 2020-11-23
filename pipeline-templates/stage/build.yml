@@ -69,7 +69,8 @@
           src/**/*.dacpac
         targetFolder: '$(build.artifactstagingdirectory)/publish'
 
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish Artifact'
+    - task: PublishPipelineArtifact@0
+      displayName: 'Publish Artifact: build'
       inputs:
-        pathtoPublish: '$(build.artifactstagingdirectory)/publish'
+        targetPath: '$(build.artifactstagingdirectory)/publish'
+        artifactName: build
