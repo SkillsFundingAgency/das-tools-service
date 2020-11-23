@@ -3,7 +3,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: das-tool-service-web-https-redirect
-  namespace: {{Namespace}}
+  namespace: engineering
 spec:
   entryPoints:
     - web
@@ -21,7 +21,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: das-tool-service-web
-  namespace: {{Namespace}}
+  namespace: engineering
 spec:
   entryPoints:
     - websecure
@@ -42,4 +42,4 @@ spec:
     secretName: '{{TlsSecretName}}-correct-chain'
     options:
       name: enforce-tls-12
-      namespace: {{Namespace}}
+      namespace: engineering

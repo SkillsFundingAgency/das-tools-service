@@ -3,7 +3,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
   name: secured
-  namespace: {{Namespace}}
+  namespace: engineering
 spec:
   chain:
     middlewares:
@@ -15,7 +15,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
   name: enforce-https-redirect
-  namespace: {{Namespace}}
+  namespace: engineering
 spec:
   redirectScheme:
     scheme: https
@@ -26,7 +26,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
   name: enforce-security-headers
-  namespace: {{Namespace}}
+  namespace: engineering
 spec:
   headers:
     frameDeny: true
