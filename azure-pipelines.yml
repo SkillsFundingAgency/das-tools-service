@@ -28,10 +28,13 @@ trigger:
 pr: none
 
 variables:
-- name: ServiceName
-  value: tools
 - name: DatabaseConnectionString
   value: Server=tcp:$(SharedSQLServerFQDN),1433;Database=$(DatabaseName);User ID=$(SQLServerServiceAccountUsername);Password=$(SQLServerServiceAccountPassword);Trusted_Connection=False;Pooling=False;Connect Timeout=200;MultipleActiveResultSets=True
+- name: KubectlVersion
+  value: 1.18.8
+- name: ServiceName
+  value: tools
+
 
 stages:
 - template: /pipeline-templates/stage/build.yml
@@ -50,7 +53,7 @@ stages:
       DatabaseName: $(DatabaseName)
       Environment: DEV
       KubernetesCluster: $(AKSSharedClusterName)
-      KubectlVersion: 1.18.8
+      KubectlVersion: $(KubectlVersion)
       ResourceGroupLocation: $(ResourceGroupLocation)
       ServiceConnection: SFA-DAS-DevTest-ARM
       SharedSQLServerFQDN: $(SharedSQLServerFQDN)
