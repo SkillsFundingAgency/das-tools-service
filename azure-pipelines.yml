@@ -26,9 +26,6 @@ trigger:
 
 pr: none
 
-variables:
-  - group: 'Dev Management Resources'
-
 stages:
 - template: /pipeline-templates/stage/build.yml
 
