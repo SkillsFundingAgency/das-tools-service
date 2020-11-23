@@ -38,8 +38,8 @@ stages:
   variables:
   - group: Release Management Resources
   - group: Dev Management Resources
-  - name: ResourceEnvironmentName
-    value: dev
+  - group: TEST Shared Resources
+  - group: Tools - ENV - TEST
   jobs:
   - template: /pipeline-templates/job/deploy.yml
     parameters:
