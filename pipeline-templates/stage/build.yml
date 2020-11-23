@@ -42,12 +42,7 @@
             azure/**
             manifests/**
           targetFolder: '$(build.artifactstagingdirectory)/publish'
-
-      - task: PublishBuildArtifacts@1
-        displayName: 'Publish Artifact'
-        inputs:
-          pathtoPublish: '$(build.artifactstagingdirectory)/publish'
-          
+         
   - job: 'build_dacpac'
     pool:
       vmImage: 'windows-2019'
@@ -70,7 +65,7 @@
         targetFolder: '$(build.artifactstagingdirectory)/publish'
 
     - task: PublishPipelineArtifact@0
-      displayName: 'Publish Artifact: build'
+      displayName: 'Publish Artifact: database'
       inputs:
         targetPath: '$(build.artifactstagingdirectory)/publish'
-        artifactName: build
+        artifactName: database

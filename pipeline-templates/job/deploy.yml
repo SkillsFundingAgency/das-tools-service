@@ -33,7 +33,7 @@ jobs:
         - task: qetza.replacetokens.replacetokens-task.replacetokens@3
           displayName: 'Tokenize Manifests'
           inputs:
-            rootDirectory: '$(Pipeline.Workspace)/build/manifests'
+            rootDirectory: '$(Pipeline.Workspace)/das-tools-service/manifests'
             targetFiles: '**/*.yml'
             actionOnMissing: fail
             tokenPrefix: '{{'
@@ -46,7 +46,7 @@ jobs:
             DatabaseName: '${{ parameters.DatabaseName }}'
             SqlUsername: '${{ parameters.SharedSQLServerUsername }}'
             SqlPassword: '${{ parameters.SharedSQLServerPassword }}'
-            DacpacFile: '$(Pipeline.Workspace)/build/src/SFA.DAS.ToolService.Database/bin/Output/SFA.DAS.ToolService.Database.dacpac'
+            DacpacFile: '$(Pipeline.Workspace)/database/src/SFA.DAS.ToolService.Database/bin/Output/SFA.DAS.ToolService.Database.dacpac'
         - task: KubectlInstaller@0
           displayName: 'Install Kubectl ${{ parameters.KubectlVersion }}'
           inputs:
@@ -61,7 +61,7 @@ jobs:
             namespace: engineering
             command: apply
             useConfigurationFile: true
-            configuration: '$(Pipeline.Workspace)/build/manifests/ingress-config'
+            configuration: '$(Pipeline.Workspace)/das-tools-service/manifests/ingress-config'
             useClusterAdmin: true
         - task: Kubernetes@1
           displayName: 'Deploy Ingress'
@@ -73,7 +73,7 @@ jobs:
             namespace: engineering
             command: apply
             useConfigurationFile: true
-            configuration: '$(Pipeline.Workspace)/build/manifests/ingress.yml'
+            configuration: '$(Pipeline.Workspace)/das-tools-service/manifests/ingress.yml'
             useClusterAdmin: true
         - task: Kubernetes@1
           displayName: 'Create Shared ConfigMap'
@@ -85,7 +85,7 @@ jobs:
             namespace: engineering
             command: apply
             useConfigurationFile: true
-            configuration: '$(Pipeline.Workspace)/build/manifests/shared-config.yml'
+            configuration: '$(Pipeline.Workspace)/das-tools-service/manifests/shared-config.yml'
             useClusterAdmin: true
         - task: Kubernetes@1
           displayName: 'Create Deployment'
@@ -97,5 +97,5 @@ jobs:
             namespace: engineering
             command: apply
             useConfigurationFile: true
-            configuration: '$(Pipeline.Workspace)/build/manifests/deployment.yml'
+            configuration: '$(Pipeline.Workspace)/das-tools-service/manifests/deployment.yml'
             useClusterAdmin: true
