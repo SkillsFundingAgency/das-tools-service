@@ -46,6 +46,9 @@ stages:
   - group: Dev Management Resources
   - group: TEST Shared Resources
   - group: Tools - ENV - TEST
+  ##TO DO: update IngressHost value in 'Tools - ENV - TEST' and remove from pipeline file
+  - name: IngressHost
+    value: test-tools.apprenticeships.education.gov.uk
   jobs:
   - template: /pipeline-templates/job/deploy.yml
     parameters:
@@ -60,3 +63,5 @@ stages:
       SharedSQLServerPassword: $(SharedSQLServerPassword)
       SharedSQLServerUsername: $(SharedSQLServerUsername)
       SubscriptionId: $(SubscriptionId)
+
+##TO DO: add PROD stage
