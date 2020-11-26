@@ -4,12 +4,14 @@ resources:
   - repository: das-platform-building-blocks
     type: github
     name: SkillsFundingAgency/das-platform-building-blocks
-    ref: refs/tags/0.2.6
+    ##TO DO: revert to latest tag
+    ref: refs/heads/DASD-8236-AddCreateNamespaceStep
     endpoint: SFA
   - repository: das-platform-automation
     type: github
     name: SkillsFundingAgency/das-platform-automation
-    ref: refs/tags/4.2.3
+    ##TO DO: revert to latest tag
+    ref: refs/heads/DASD-8236-AddNamespaceScript
     endpoint: SFA
 
 trigger:

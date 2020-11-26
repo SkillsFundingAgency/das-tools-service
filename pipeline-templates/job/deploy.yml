@@ -55,6 +55,12 @@ jobs:
           displayName: 'Install Kubectl ${{ parameters.KubectlVersion }}'
           inputs:
             kubectlVersion: ${{ parameters.KubectlVersion }}
+        - template: azure-pipelines-templates/deploy/step/create-kubernetes-namespace.yml@das-platform-building-blocks
+          parameters:
+            AksResourceGroupName: ${{ parameters.AksResourceGroup }}
+            AzureSubscription: ${{ parameters.ServiceConnection }}
+            AksClusterName: ${{ parameters.KubernetesCluster }}
+            Namespace: engineering
         - task: Kubernetes@1
           displayName: 'Deploy Ingress Config'
           inputs:
