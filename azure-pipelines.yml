@@ -55,8 +55,11 @@ stages:
   - template: /pipeline-templates/job/deploy.yml
     parameters:
       AksResourceGroup: $(AKSResourceGroupName)
+      AppGatewayName: $(AKSSharedAppGatewayName)
+      AppGatewayResourceGroup: $(AKSSharedNodeResourceGroupName)
       DatabaseName: $(DatabaseName)
       Environment: DEV
+      KeyVaultName: $(SharedKeyVaultName)
       KubernetesCluster: $(AKSSharedClusterName)
       KubectlVersion: $(KubectlVersion)
       ResourceGroupLocation: $(ResourceGroupLocation)
