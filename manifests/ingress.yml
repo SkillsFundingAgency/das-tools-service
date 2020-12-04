@@ -8,7 +8,8 @@ metadata:
     appgw.ingress.kubernetes.io/appgw-ssl-certificate: {{TlsSecretName}}
 spec:
   rules:
-  - http:
+  - host: {{IngressHost}}
+    http:
       paths:
       - path: /
         backend:
