@@ -6,6 +6,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: azure/application-gateway
     appgw.ingress.kubernetes.io/appgw-ssl-certificate: {{TlsSecretName}}
+    appgw.ingress.kubernetes.io/health-probe-path: "/health"
 spec:
   rules:
   - host: {{IngressHost}}
@@ -15,8 +16,3 @@ spec:
         backend:
           serviceName: das-tool-service-web
           servicePort: 80
-          healthCheck:
-            path: /health
-            host: {{IngressHost}}
-            intervalSeconds: 7
-            timeoutSeconds: 60
