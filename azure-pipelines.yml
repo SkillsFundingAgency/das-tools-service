@@ -57,7 +57,6 @@ stages:
       AksResourceGroup: $(AKSResourceGroupName)
       AppGatewayName: $(AKSSharedAppGatewayName)
       AppGatewayResourceGroup: $(AKSSharedNodeResourceGroupName)
-      DatabaseName: $(DatabaseName)
       Environment: DEV
       KeyVaultName: $(SharedKeyVaultName)
       KubernetesCluster: $(AKSSharedClusterName)
