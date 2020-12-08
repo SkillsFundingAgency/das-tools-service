@@ -1,18 +1,17 @@
 ﻿parameters:
-  AksResourceGroup: 
+  AksResourceGroup:
   AppGatewayName:
-  AppGatewayResourceGroup: 
-  DatabaseName: 
-  Environment: 
+  AppGatewayResourceGroup:
+  Environment:
   KeyVaultName:
-  KubernetesCluster: 
-  KubectlVersion: 
-  ResourceGroupLocation: 
-  ServiceConnection: 
-  SharedSQLServerFQDN: 
-  SharedSQLServerPassword: 
+  KubernetesCluster:
+  KubectlVersion:
+  ResourceGroupLocation:
+  ServiceConnection:
+  SharedSQLServerFQDN:
+  SharedSQLServerPassword:
   SharedSQLServerUsername:
-  SubscriptionId: 
+  SubscriptionId:
 
 jobs:
 - deployment: DeployTo_${{ parameters.Environment }}
@@ -50,7 +49,7 @@ jobs:
           inputs:
             azureSubscription: ${{ parameters.ServiceConnection }}
             ServerName: '${{ parameters.SharedSQLServerFQDN }}'
-            DatabaseName: '${{ parameters.DatabaseName }}'
+            DatabaseName: '$(DatabaseName)'
             SqlUsername: '${{ parameters.SharedSQLServerUsername }}'
             SqlPassword: '${{ parameters.SharedSQLServerPassword }}'
             DacpacFile: '$(Pipeline.Workspace)/database/src/SFA.DAS.ToolService.Database/bin/Output/SFA.DAS.ToolService.Database.dacpac'
