@@ -18,8 +18,6 @@ jobs:
   environment: ${{ parameters.Environment }}
   pool:
     name: 'DAS - Continuous Integration'
-    ##TO DO: remove demand, using for troubleshooting
-    demands: Agent.OS -equals Windows_NT
   strategy:
     runOnce:
       deploy:
