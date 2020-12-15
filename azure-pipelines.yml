@@ -4,14 +4,12 @@ resources:
   - repository: das-platform-building-blocks
     type: github
     name: SkillsFundingAgency/das-platform-building-blocks
-    ##TO DO: revert to latest tag
-    ref: refs/heads/DASD-8310-K8sIngressConfiguration
+    ref: refs/tags/0.2.19
     endpoint: SFA
   - repository: das-platform-automation
     type: github
     name: SkillsFundingAgency/das-platform-automation
-    ##TO DO: revert to latest tag
-    ref: refs/heads/DASD-8310-K8sIngressConfiguration
+    ref: refs/tags/4.2.7
     endpoint: SFA
 
 trigger:
