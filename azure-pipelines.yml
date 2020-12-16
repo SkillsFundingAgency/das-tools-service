@@ -66,4 +66,26 @@ stages:
       SharedSQLServerUsername: $(SharedSQLServerUsername)
       SubscriptionId: $(SubscriptionId)
 
-##TO DO: add PROD stage
+- stage: DeployTo_PROD
+  displayName: DeployTo_PROD
+  variables:
+  - group: Release Management Resources
+  - group: Prod Management Resources
+  - group: PROD Shared Resources
+  - group: Tools - ENV - PROD
+  jobs:
+  - template: /pipeline-templates/job/deploy.yml
+    parameters:
+      AksResourceGroup: $(AKSResourceGroupName)
+      AppGatewayName: $(AKSSharedAppGatewayName)
+      AppGatewayResourceGroup: $(AKSSharedNodeResourceGroupName)
+      Environment: PROD
+      KeyVaultName: $(SharedKeyVaultName)
+      KubernetesCluster: $(AKSSharedClusterName)
+      KubectlVersion: $(KubectlVersion)
+      ResourceGroupLocation: $(ResourceGroupLocation)
+      ServiceConnection: SFA-DIG-Prod-ARM
+      SharedSQLServerFQDN: $(SharedSQLServerFQDN)
+      SharedSQLServerPassword: $(SharedSQLServerPassword)
+      SharedSQLServerUsername: $(SharedSQLServerUsername)
+      SubscriptionId: $(SubscriptionId)
