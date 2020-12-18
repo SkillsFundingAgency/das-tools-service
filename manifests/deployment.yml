@@ -6,7 +6,7 @@ metadata:
     app: das-tool-service-web
     service: das-tool-service
   name: das-tool-service-web
-  namespace: engineering
+  namespace: {{KubernetesNamespace}}
 spec:
   ports:
   - port: 80
@@ -25,7 +25,7 @@ metadata:
     version: {{buildNumber}}
     service: das-tool-service
   name: das-tool-service-web
-  namespace: engineering
+  namespace: {{KubernetesNamespace}}
 spec:
   replicas: 1
   selector:

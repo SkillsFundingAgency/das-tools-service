@@ -4,7 +4,7 @@ metadata:
   labels:
     service: das-tool-service
   name: das-tool-service-shared-config
-  namespace: engineering
+  namespace: {{KubernetesNamespace}}
 data:
   Logging__LogLevel__Default: Information
   Logging__LogLevel__System: Information
