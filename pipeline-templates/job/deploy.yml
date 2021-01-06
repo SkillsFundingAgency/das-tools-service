@@ -80,7 +80,7 @@ jobs:
         - template: azure-pipelines-templates/deploy/step/kubernetes-apply-manifest.yml@das-platform-building-blocks
           parameters:
             AksClusterName: ${{ parameters.KubernetesCluster }}
-            AksResourceGroupName: ${{ parameters.AksResourceGroupName }}
+            AksResourceGroupName: ${{ parameters.AksResourceGroup }}
             AzureServiceConnection: ${{ parameters.ServiceConnection }}
             KubectlVersion: ${{ parameters.KubectlVersion }}
             ManifestFile: $(Pipeline.Workspace)/das-tools-service/manifests/shared-config.yml
@@ -89,7 +89,7 @@ jobs:
         - template: azure-pipelines-templates/deploy/step/kubernetes-apply-manifest.yml@das-platform-building-blocks
           parameters:
             AksClusterName: ${{ parameters.KubernetesCluster }}
-            AksResourceGroupName: ${{ parameters.AksResourceGroupName }}
+            AksResourceGroupName: ${{ parameters.AksResourceGroup }}
             AzureServiceConnection: ${{ parameters.ServiceConnection }}
             KubectlVersion: ${{ parameters.KubectlVersion }}
             ManifestFile: $(Pipeline.Workspace)/das-tools-service/manifests/deployment.yml
