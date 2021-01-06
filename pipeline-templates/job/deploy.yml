@@ -81,7 +81,7 @@ jobs:
           parameters:
             AksClusterName: ${{ parameters.KubernetesCluster }}
             AksResourceGroupName: ${{ parameters.AksResourceGroupName }}
-            AzureServiceConnection: ${{ parameters.AzureServiceConnection }}
+            AzureServiceConnection: ${{ parameters.ServiceConnection }}
             KubectlVersion: ${{ parameters.KubectlVersion }}
             ManifestFile: $(Pipeline.Workspace)/das-tools-service/manifests/shared-config.yml
             Namespace: $(KubernetesNamespace)
@@ -90,7 +90,7 @@ jobs:
           parameters:
             AksClusterName: ${{ parameters.KubernetesCluster }}
             AksResourceGroupName: ${{ parameters.AksResourceGroupName }}
-            AzureServiceConnection: ${{ parameters.AzureServiceConnection }}
+            AzureServiceConnection: ${{ parameters.ServiceConnection }}
             KubectlVersion: ${{ parameters.KubectlVersion }}
             ManifestFile: $(Pipeline.Workspace)/das-tools-service/manifests/deployment.yml
             Namespace: $(KubernetesNamespace)
