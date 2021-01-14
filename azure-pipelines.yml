@@ -45,7 +45,7 @@ stages:
   - group: Release Management Resources
   - group: Dev Management Resources
   - group: TEST Shared Resources
-  - group: TEST Tools Service Shared
+  - group: DEV Tools Service Shared
   jobs:
   - template: /pipeline-templates/job/deploy.yml
     parameters:
