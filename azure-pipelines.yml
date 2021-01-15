@@ -28,8 +28,6 @@ trigger:
       - Dockerfile
 
 variables:
-- name: DatabaseConnectionString
-  value: Server=tcp:$(SharedSQLServerFQDN),1433;Database=das-$(ResourceEnvironmentName)-$(ServiceName)-db;User ID=$(SQLServerServiceAccountUsername);Password=$(SQLServerServiceAccountPassword);Trusted_Connection=False;Pooling=False;Connect Timeout=200;MultipleActiveResultSets=True
 - name: KubectlVersion
   value: 1.18.8
 - name: ServiceName
