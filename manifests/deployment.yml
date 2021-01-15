@@ -42,6 +42,8 @@ spec:
         app: das-tool-service-web
         service: das-tool-service
     spec:
+      nodeSelector:
+        agentpool: tools01
       containers:
       - env:
         - name: Authentication__Domain
