@@ -4,13 +4,15 @@ resources:
   - repository: das-platform-building-blocks
     type: github
     name: SkillsFundingAgency/das-platform-building-blocks
-    ref: refs/tags/0.3.0
+    ref: refs/tags/0.3.1
     endpoint: SFA
   - repository: das-platform-automation
     type: github
     name: SkillsFundingAgency/das-platform-automation
     ref: refs/tags/4.2.7
     endpoint: SFA
+
+pr: none
 
 trigger:
   batch: true
@@ -25,8 +27,6 @@ trigger:
       - azure-pipelines.yml
       - Dockerfile
 
-pr: none
-
 variables:
 - name: DatabaseConnectionString
   value: Server=tcp:$(SharedSQLServerFQDN),1433;Database=das-$(ResourceEnvironmentName)-$(ServiceName)-db;User ID=$(SQLServerServiceAccountUsername);Password=$(SQLServerServiceAccountPassword);Trusted_Connection=False;Pooling=False;Connect Timeout=200;MultipleActiveResultSets=True
@@ -34,7 +34,6 @@ variables:
   value: 1.18.8
 - name: ServiceName
   value: tools
-
 
 stages:
 - template: /pipeline-templates/stage/build.yml
