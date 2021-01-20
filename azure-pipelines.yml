@@ -61,7 +61,7 @@ stages:
       SubscriptionId: $(SubscriptionId)
 
 - stage: DeployTo_PROD
-  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   displayName: DeployTo_PROD
   variables:
   - group: Release Management Resources
