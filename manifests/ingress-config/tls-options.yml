@@ -1,8 +1,0 @@
----
-apiVersion: traefik.containo.us/v1alpha1
-kind: TLSOption
-metadata:
-  name: enforce-tls-12
-  namespace: {{Namespace}}
-spec:
-  minVersion: VersionTLS12

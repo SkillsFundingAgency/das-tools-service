@@ -1,0 +1,73 @@
+﻿stages:
+- stage: build
+  displayName: Build Image
+  jobs:
+  - job: build_image
+    displayName: Build Image
+    pool:
+      name: "DAS - Continuous Integration"
+      demands: Agent.OS -equals Linux
+    steps:
+      - task: gittools.gitversion.gitversion-task.GitVersion@5
+        displayName: GitVersion
+        inputs:
+          configFilePath: GitVersion.yml
+          updateAssemblyInfo: true
+
+      - task: Docker@2
+        displayName: Login to Docker Hub
+        inputs:
+          command: login
+          containerRegistry: "Apprenticeships DevOps Docker Hub"
+
+      - task: Docker@2
+        displayName: Build Image
+        inputs:
+          command: build
+          dockerfile: Dockerfile
+          repository: apprenticeshipsdevops/das-tools-service
+          tags: |
+            $(build.buildnumber)
+
+      - task: Docker@2
+        displayName: Push Image
+        inputs:
+          command: push
+          repository: apprenticeshipsdevops/das-tools-service
+          tags: $(build.buildnumber)
+
+      - task: CopyFiles@2
+        displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+        inputs:
+          contents: |
+            azure/**
+            manifests/**
+          targetFolder: '$(build.artifactstagingdirectory)/publish'
+         
+  - job: 'build_dacpac'
+    pool:
+      name: 'DAS - Continuous Integration'
+      demands: Agent.OS -equals Windows_NT
+    workspace:
+      clean: all
+    steps:
+    - task: VSBuild@1
+      displayName: 'Build DACPAC'
+      inputs:
+        solution: 'src/SFA.DAS.ToolService.Database/SFA.DAS.ToolService.Database.sqlproj'
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
+        msbuildArgs: '/p:PackageLocation="$(build.artifactstagingdirectory)/publish"'
+
+    - task: CopyFiles@2
+      displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+      inputs:
+        contents: |
+          src/**/*.dacpac
+        targetFolder: '$(build.artifactstagingdirectory)/publish'
+
+    - task: PublishPipelineArtifact@0
+      displayName: 'Publish Artifact: database'
+      inputs:
+        targetPath: '$(build.artifactstagingdirectory)/publish'
+        artifactName: database

@@ -6,7 +6,7 @@ metadata:
     app: das-tool-service-web
     service: das-tool-service
   name: das-tool-service-web
-  namespace: {{Namespace}}
+  namespace: {{KubernetesNamespace}}
 spec:
   ports:
   - port: 80
@@ -25,7 +25,7 @@ metadata:
     version: {{buildNumber}}
     service: das-tool-service
   name: das-tool-service-web
-  namespace: {{Namespace}}
+  namespace: {{KubernetesNamespace}}
 spec:
   replicas: 1
   selector:
@@ -42,6 +42,8 @@ spec:
         app: das-tool-service-web
         service: das-tool-service
     spec:
+      nodeSelector:
+        agentpool: tools01
       containers:
       - env:
         - name: Authentication__Domain

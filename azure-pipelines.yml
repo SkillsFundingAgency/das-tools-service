@@ -1,3 +1,19 @@
+resources:
+  repositories:
+  - repository: self
+  - repository: das-platform-building-blocks
+    type: github
+    name: SkillsFundingAgency/das-platform-building-blocks
+    ref: refs/tags/0.3.1
+    endpoint: SFA
+  - repository: das-platform-automation
+    type: github
+    name: SkillsFundingAgency/das-platform-automation
+    ref: refs/tags/4.2.7
+    endpoint: SFA
+
+pr: none
+
 trigger:
   batch: true
   branches:
@@ -6,87 +22,65 @@ trigger:
   paths:
     include:
       - manifests/*
+      - pipeline-templates/*
       - src/*
       - azure-pipelines.yml
       - Dockerfile
 
-pr: none
-
 variables:
-  - group: 'Dev Management Resources'
+- name: KubectlVersion
+  value: 1.18.8
+- name: ServiceName
+  value: tools
 
 stages:
-- stage: build
-  displayName: Build Image
+- template: /pipeline-templates/stage/build.yml
+
+- stage: DeployTo_DEV
+  displayName: DeployTo_DEV
+  variables:
+  - group: Release Management Resources
+  - group: Dev Management Resources
+  - group: TEST Shared Resources
+  - group: DEV Tools Service Shared
   jobs:
-  - job: build_image
-    displayName: Build Image
-    pool:
-      name: "DAS - Continuous Integration"
-    steps:
-      - task: gittools.gitversion.gitversion-task.GitVersion@5
-        displayName: GitVersion
-        inputs:
-          configFilePath: GitVersion.yml
-          updateAssemblyInfo: true
+  - template: /pipeline-templates/job/deploy.yml
+    parameters:
+      AksResourceGroup: $(AKSResourceGroupName)
+      AppGatewayName: $(AKSSharedAppGatewayName)
+      AppGatewayResourceGroup: $(AKSSharedNodeResourceGroupName)
+      Environment: DEV
+      KeyVaultName: $(SharedKeyVaultName)
+      KubernetesCluster: $(AKSSharedClusterName)
+      KubectlVersion: $(KubectlVersion)
+      ResourceGroupLocation: $(ResourceGroupLocation)
+      ServiceConnection: SFA-DAS-DevTest-ARM
+      SharedSQLServerFQDN: $(SharedSQLServerFQDN)
+      SharedSQLServerPassword: $(SharedSQLServerPassword)
+      SharedSQLServerUsername: $(SharedSQLServerUsername)
+      SubscriptionId: $(SubscriptionId)
 
-      - task: Docker@2
-        displayName: Login to Docker Hub
-        inputs:
-          command: login
-          containerRegistry: "Apprenticeships DevOps Docker Hub"
-
-      - task: Docker@2
-        displayName: Build Image
-        inputs:
-          command: build
-          dockerfile: Dockerfile
-          repository: apprenticeshipsdevops/das-tools-service
-          tags: |
-            $(build.buildnumber)
-
-      - task: Docker@2
-        displayName: Push Image
-        inputs:
-          command: push
-          repository: apprenticeshipsdevops/das-tools-service
-          tags: $(build.buildnumber)
-
-      - task: CopyFiles@2
-        displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
-        inputs:
-          contents: |
-            azure/**
-            manifests/**
-          targetFolder: '$(build.artifactstagingdirectory)/publish'
-
-      - task: PublishBuildArtifacts@1
-        displayName: 'Publish Artifact'
-        inputs:
-          pathtoPublish: '$(build.artifactstagingdirectory)/publish'
-
-  - job: 'build_dacpac'
-    pool:
-      vmImage: 'windows-2019'
-    workspace:
-      clean: all
-    steps:
-    - task: VSBuild@1
-      displayName: 'Build DACPAC'
-      inputs:
-        solution: 'src/SFA.DAS.ToolService.Database/SFA.DAS.ToolService.Database.sqlproj'
-        platform: '$(buildPlatform)'
-        configuration: '$(buildConfiguration)'
-        msbuildArgs: '/p:PackageLocation="$(build.artifactstagingdirectory)/publish"'
-
-    - task: CopyFiles@2
-      displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
-      inputs:
-        contents: |
-          src/**/*.dacpac
-        targetFolder: '$(build.artifactstagingdirectory)/publish'
-
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish Artifact'
-      inputs:
-        pathtoPublish: '$(build.artifactstagingdirectory)/publish'
+- stage: DeployTo_PROD
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+  displayName: DeployTo_PROD
+  variables:
+  - group: Release Management Resources
+  - group: Prod Management Resources
+  - group: PROD Shared Resources
+  - group: PROD Tools Service Shared
+  jobs:
+  - template: /pipeline-templates/job/deploy.yml
+    parameters:
+      AksResourceGroup: $(AKSResourceGroupName)
+      AppGatewayName: $(AKSSharedAppGatewayName)
+      AppGatewayResourceGroup: $(AKSSharedNodeResourceGroupName)
+      Environment: PROD
+      KeyVaultName: $(SharedKeyVaultName)
+      KubernetesCluster: $(AKSSharedClusterName)
+      KubectlVersion: $(KubectlVersion)
+      ResourceGroupLocation: $(ResourceGroupLocation)
+      ServiceConnection: SFA-DIG-Prod-ARM
+      SharedSQLServerFQDN: $(SharedSQLServerFQDN)
+      SharedSQLServerPassword: $(SharedSQLServerPassword)
+      SharedSQLServerUsername: $(SharedSQLServerUsername)
+      SubscriptionId: $(SubscriptionId)

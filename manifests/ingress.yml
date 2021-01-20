@@ -1,45 +1,19 @@
----
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
-metadata:
-  name: das-tool-service-web-https-redirect
-  namespace: {{Namespace}}
-spec:
-  entryPoints:
-    - web
-  routes:
-    - match: Host(`{{IngressHost}}`)
-      kind: Rule
-      middlewares:
-        - name: secured
-      services:
-        - name: das-tool-service-web
-          port: 80
-
----
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
+apiVersion: extensions/v1beta1
+kind: Ingress
 metadata:
   name: das-tool-service-web
-  namespace: {{Namespace}}
+  namespace: {{KubernetesNamespace}}
+  annotations:
+    kubernetes.io/ingress.class: azure/application-gateway
+    appgw.ingress.kubernetes.io/appgw-ssl-certificate: {{TlsSecretName}}
+    appgw.ingress.kubernetes.io/ssl-redirect: "true"
+    appgw.ingress.kubernetes.io/health-probe-path: "/health"
 spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`{{IngressHost}}`)
-      kind: Rule
-      middlewares:
-        - name: secured
-      services:
-        - name: das-tool-service-web
-          port: 80
-          healthCheck:
-            path: /health
-            host: {{IngressHost}}
-            intervalSeconds: 7
-            timeoutSeconds: 60
-  tls:
-    secretName: '{{TlsSecretName}}-correct-chain'
-    options:
-      name: enforce-tls-12
-      namespace: {{Namespace}}
+  rules:
+  - host: {{IngressHost}}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: das-tool-service-web
+          servicePort: 80
