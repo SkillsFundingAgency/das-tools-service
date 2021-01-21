@@ -60,6 +60,30 @@ stages:
       SharedSQLServerUsername: $(SharedSQLServerUsername)
       SubscriptionId: $(SubscriptionId)
 
+- stage: DeployTo_PREPROD
+  displayName: DeployTo_PREPROD
+  variables:
+  - group: Release Management Resources
+  - group: PreProd Management Resources
+  - group: PREPROD Shared Resources
+  - group: PREPROD Tools Service Shared
+  jobs:
+  - template: /pipeline-templates/job/deploy.yml
+    parameters:
+      AksResourceGroup: $(AKSResourceGroupName)
+      AppGatewayName: $(AKSSharedAppGatewayName)
+      AppGatewayResourceGroup: $(AKSSharedNodeResourceGroupName)
+      Environment: PREPROD
+      KeyVaultName: $(SharedKeyVaultName)
+      KubernetesCluster: $(AKSSharedClusterName)
+      KubectlVersion: $(KubectlVersion)
+      ResourceGroupLocation: $(ResourceGroupLocation)
+      ServiceConnection: SFA-DIG-PreProd-ARM
+      SharedSQLServerFQDN: $(SharedSQLServerFQDN)
+      SharedSQLServerPassword: $(SharedSQLServerPassword)
+      SharedSQLServerUsername: $(SharedSQLServerUsername)
+      SubscriptionId: $(SubscriptionId)
+
 - stage: DeployTo_PROD
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   displayName: DeployTo_PROD
