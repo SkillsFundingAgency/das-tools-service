@@ -47,6 +47,15 @@ jobs:
             tokenPrefix: '{{'
             tokenSuffix: '}}'
             verbosity: detailed
+        - task: SqlAzureDacpacDeployment@1
+          displayName: 'Deploy DACPAC'
+          inputs:
+            azureSubscription: ${{ parameters.ServiceConnection }}
+            ServerName: '${{ parameters.SharedSQLServerFQDN }}'
+            DatabaseName: '$(DatabaseName)'
+            SqlUsername: '${{ parameters.SharedSQLServerUsername }}'
+            SqlPassword: '${{ parameters.SharedSQLServerPassword }}'
+            DacpacFile: '$(Pipeline.Workspace)/database/src/SFA.DAS.ToolService.Database/bin/Output/SFA.DAS.ToolService.Database.dacpac'
         - task: KubectlInstaller@0
           displayName: 'Install Kubectl ${{ parameters.KubectlVersion }}'
           inputs:
@@ -85,22 +94,3 @@ jobs:
             KubectlVersion: ${{ parameters.KubectlVersion }}
             ManifestFile: $(Pipeline.Workspace)/das-tools-service/manifests/deployment.yml
             Namespace: $(KubernetesNamespace)
-
-- deployment: DeployDacPacTo_${{ parameters.Environment }}
-  dependsOn: DeployTo_${{ parameters.Environment }}
-  environment: ${{ parameters.Environment }}
-  pool:
-    name: 'DAS - Continuous Deployment'
-  strategy:
-    runOnce:
-      deploy:
-        steps:
-        - task: SqlAzureDacpacDeployment@1
-          displayName: 'Deploy DACPAC'
-          inputs:
-            azureSubscription: ${{ parameters.ServiceConnection }}
-            ServerName: '${{ parameters.SharedSQLServerFQDN }}'
-            DatabaseName: '$(DatabaseName)'
-            SqlUsername: '${{ parameters.SharedSQLServerUsername }}'
-            SqlPassword: '${{ parameters.SharedSQLServerPassword }}'
-            DacpacFile: '$(Pipeline.Workspace)/database/src/SFA.DAS.ToolService.Database/bin/Output/SFA.DAS.ToolService.Database.dacpac'
