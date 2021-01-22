@@ -35,8 +35,6 @@ jobs:
             SubscriptionId: ${{ parameters.SubscriptionId }}
             TemplatePath: $(Pipeline.Workspace)/das-tools-service/azure/template.json
             IsMultiRepoCheckout: true
-        ##TO DO: remove this
-        - pwsh: Get-ChildItem ENV:* | Sort-Object Name | Format-Table -AutoSize
         - task: replacetokens@3
           displayName: 'Tokenise manifests'
           inputs:
@@ -97,14 +95,12 @@ jobs:
     runOnce:
       deploy:
         steps:
-        ##TO DO: remove this
-        - pwsh: Get-ChildItem ENV:* | Sort-Object Name | Format-Table -AutoSize
-        # - task: SqlAzureDacpacDeployment@1
-        #   displayName: 'Deploy DACPAC'
-        #   inputs:
-        #     azureSubscription: ${{ parameters.ServiceConnection }}
-        #     ServerName: '${{ parameters.SharedSQLServerFQDN }}'
-        #     DatabaseName: '$(DatabaseName)'
-        #     SqlUsername: '${{ parameters.SharedSQLServerUsername }}'
-        #     SqlPassword: '${{ parameters.SharedSQLServerPassword }}'
-        #     DacpacFile: '$(Pipeline.Workspace)/database/src/SFA.DAS.ToolService.Database/bin/Output/SFA.DAS.ToolService.Database.dacpac'
+        - task: SqlAzureDacpacDeployment@1
+          displayName: 'Deploy DACPAC'
+          inputs:
+            azureSubscription: ${{ parameters.ServiceConnection }}
+            ServerName: '${{ parameters.SharedSQLServerFQDN }}'
+            DatabaseName: '$(DatabaseName)'
+            SqlUsername: '${{ parameters.SharedSQLServerUsername }}'
+            SqlPassword: '${{ parameters.SharedSQLServerPassword }}'
+            DacpacFile: '$(Pipeline.Workspace)/database/src/SFA.DAS.ToolService.Database/bin/Output/SFA.DAS.ToolService.Database.dacpac'
