@@ -5,8 +5,8 @@
   - job: build_image
     displayName: Build Image
     pool:
-      name: "DAS - Continuous Integration"
-      demands: 
+      name: "DAS - Continuous Integration Beta"
+      demands:
       - Agent.OS -equals Linux
       - docker
     steps:
@@ -45,7 +45,7 @@
             azure/**
             manifests/**
           targetFolder: '$(build.artifactstagingdirectory)/publish'
-         
+
   - job: 'build_dacpac'
     pool:
       name: 'DAS - Continuous Integration'
