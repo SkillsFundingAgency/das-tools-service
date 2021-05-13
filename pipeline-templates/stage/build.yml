@@ -25,7 +25,7 @@
       - task: Docker@2
         displayName: Build Image
         inputs:
-          command: build
+          command: buildx build
           dockerfile: Dockerfile
           repository: apprenticeshipsdevops/das-tools-service
           tags: |
