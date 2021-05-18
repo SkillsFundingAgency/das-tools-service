@@ -22,7 +22,7 @@
           command: login
           containerRegistry: "Apprenticeships DevOps Docker Hub"
 
-      - script: 'docker-buildx build -f $(Agent.BuildDirectory)/Dockerfile -t apprenticeshipsdevops/das-tools-service --label $(build.buildnumber)'
+      - script: 'docker-buildx build $(Agent.BuildDirectory) -f $(Agent.BuildDirectory)/Dockerfile -t apprenticeshipsdevops/das-tools-service --label $(build.buildnumber)'
         displayName: 'Dockerx Build'
 
       - task: Docker@2
