@@ -22,8 +22,13 @@
           command: login
           containerRegistry: "Apprenticeships DevOps Docker Hub"
 
-      - script: 'docker-buildx build $(Agent.BuildDirectory) -f $(Agent.BuildDirectory)/Dockerfile -t apprenticeshipsdevops/das-tools-service --label $(build.buildnumber)'
-        displayName: 'Dockerx Build'
+      - task: AzureCLI@2
+        displayName: 'Build Image'
+        inputs:
+          azureSubscription: 'SFA-DAS-DevTest-ARM'
+          scriptType: pscore
+          scriptLocation: inlineScript
+          inlineScript: 'az acr build --registry daspocsharedcr --image das-tools-service:$(build.buildnumber) $(Agent.BuildDirectory)'
 
       - task: Docker@2
         displayName: Build Image
