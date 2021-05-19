@@ -5,7 +5,7 @@
   - job: build_image
     displayName: Build Image
     pool:
-      name: "DAS - Continuous Integration Beta"
+      name: "DAS - Continuous Deployment Agents"
       demands:
       - Agent.OS -equals Linux
       - docker
