@@ -6,6 +6,7 @@
     displayName: Build Image
     pool:
       name: 'DAS - Continuous Integration'
+      demands: Agent.OS -equals Windows_NT
     steps:
       - task: gittools.gitversion.gitversion-task.GitVersion@5
         displayName: GitVersion
