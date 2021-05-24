@@ -5,7 +5,7 @@
   - job: build_image
     displayName: Build Image
     pool:
-      name: "Azure Pipelines"
+      name: 'DAS - Continuous Integration'
     steps:
       - task: gittools.gitversion.gitversion-task.GitVersion@5
         displayName: GitVersion
