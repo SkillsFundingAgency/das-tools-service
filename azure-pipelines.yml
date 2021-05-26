@@ -29,7 +29,7 @@ trigger:
 
 variables:
 - name: KubectlVersion
-  value: 1.18.8
+  value: 1.18.17
 - name: ServiceName
   value: tools
 
