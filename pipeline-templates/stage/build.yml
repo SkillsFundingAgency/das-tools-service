@@ -20,7 +20,7 @@
           azureSubscription: 'SFA-DAS-DevTest-ARM'
           scriptType: pscore
           scriptLocation: inlineScript
-          inlineScript: 'az acr build --registry daspocsharedcr --image das-tools-service:$(build.buildnumber) $(Build.SourcesDirectory)'
+          inlineScript: 'az acr build --registry dasdevsharedacr --image das-tools-service:$(build.buildnumber) $(Build.SourcesDirectory)'
 
       - task: CopyFiles@2
         displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
