@@ -60,7 +60,7 @@ spec:
           value: {{DatabaseConnectionString}}
         - name: DfESigninAddress
           value: {{DfeSignInAddress}}
-        image: daspocsharedcr.azurecr.io/das-tools-service:{{buildNumber}}
+        image: dasdevsharedacr.azurecr.io/das-tools-service:{{buildNumber}}
         imagePullPolicy: IfNotPresent
         name: das-tool-service
         envFrom:
