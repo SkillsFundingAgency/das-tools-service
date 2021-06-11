@@ -28,7 +28,7 @@ stages:
       - template: azure-pipelines-templates/build/step/dockerfile-build.yml@das-platform-building-blocks
         parameters:
           ContainerRegistryName: dasdevsharedacr
-          ServiceConnection: $(ServiceConnection)
+          ServiceConnection: ${{ parameters.ServiceConnection }}
           ImageName: das-tools-service
 
       - task: CopyFiles@2
