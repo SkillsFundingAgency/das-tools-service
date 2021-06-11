@@ -14,13 +14,19 @@
           configFilePath: GitVersion.yml
           updateAssemblyInfo: true
 
-      - task: AzureCLI@2
-        displayName: 'Build Image'
-        inputs:
-          azureSubscription: 'SFA-DAS-DevTest-ARM'
-          scriptType: pscore
-          scriptLocation: inlineScript
-          inlineScript: 'az acr build --registry dasdevsharedacr --image das-tools-service:$(build.buildnumber) $(Build.SourcesDirectory)'
+      # - task: AzureCLI@2
+      #   displayName: 'Build Image'
+      #   inputs:
+      #     azureSubscription: 'SFA-DAS-DevTest-ARM'
+      #     scriptType: pscore
+      #     scriptLocation: inlineScript
+      #     inlineScript: 'az acr build --registry dasdevsharedacr --image das-tools-service:$(build.buildnumber) $(Build.SourcesDirectory)'
+
+      - template: azure-pipelines-templates/build/step/dockerfile-build.yml@das-platform-building-blocks
+        parameters:
+          ContainerRegistryName: dasdevpublicacr
+          ServiceConnection: SFA-DAS-DevTest-ARM
+          ImageName: das-tools-service
 
       - task: CopyFiles@2
         displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
