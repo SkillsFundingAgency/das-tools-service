@@ -1,4 +1,7 @@
-﻿stages:
+﻿parameters:
+  ServiceConnection:
+
+stages:
 - stage: build
   displayName: Build Image
   jobs:
@@ -24,8 +27,8 @@
 
       - template: azure-pipelines-templates/build/step/dockerfile-build.yml@das-platform-building-blocks
         parameters:
-          ContainerRegistryName: dasdevpublicacr
-          ServiceConnection: SFA-DAS-DevTest-ARM
+          ContainerRegistryName: dasdevsharedacr
+          ServiceConnection: $(ServiceConnection)
           ImageName: das-tools-service
 
       - task: CopyFiles@2
