@@ -32,6 +32,7 @@ variables:
   value: 1.18.8
 - name: ServiceName
   value: tools
+- group : Release Management Resources
 
 stages:
 - template: /pipeline-templates/stage/build.yml
@@ -41,7 +42,6 @@ stages:
 - stage: DeployTo_DEV
   displayName: DeployTo_DEV
   variables:
-  - group: Release Management Resources
   - group: Dev Management Resources
   - group: TEST Shared Resources
   - group: DEV Tools Service Shared
@@ -65,7 +65,6 @@ stages:
 - stage: DeployTo_PREPROD
   displayName: DeployTo_PREPROD
   variables:
-  - group: Release Management Resources
   - group: PreProd Management Resources
   - group: PREPROD Shared Resources
   - group: PREPROD Tools Service Shared
@@ -90,7 +89,6 @@ stages:
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   displayName: DeployTo_PROD
   variables:
-  - group: Release Management Resources
   - group: Prod Management Resources
   - group: PROD Shared Resources
   - group: PROD Tools Service Shared
