@@ -9,6 +9,7 @@ data:
   Logging__LogLevel__Default: Information
   Logging__LogLevel__System: Information
   Logging__LogLevel__Microsoft: Information
+  Logging__ApplicationInsights__LogLevel__Default: Information
   Cdn__Url: {{CdnUrl}}
   BaseUrl: {{IngressHost}}
   ConfigurationStorageConnectionString: {{ConfigurationStorageConnectionString}}
