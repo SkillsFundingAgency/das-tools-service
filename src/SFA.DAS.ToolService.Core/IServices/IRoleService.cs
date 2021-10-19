@@ -9,9 +9,5 @@ namespace SFA.DAS.ToolService.Core.IServices
         Task<List<Role>> GetRoles();
 
         Task<Role> GetRole(int id);
-
-        Task<List<ExternalRole>> GetExternalRoles();
-
-        Task SyncIdentityProviderRoles();
     }
 }

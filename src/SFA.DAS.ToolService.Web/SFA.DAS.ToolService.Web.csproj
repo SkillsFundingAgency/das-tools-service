@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <ProjectGuid>8F5F5D09-6BE2-4573-8D90-E1D43CE657AB</ProjectGuid>
