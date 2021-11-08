@@ -61,7 +61,6 @@ namespace SFA.DAS.ToolService.Web
             var serviceProvider = services.BuildServiceProvider();
             services.AddAuthorizationService();
 
-            //services.AddAuth0Authentication(serviceProvider.GetService<IOptions<AuthenticationConfiguration>>());
             services.AddAuthentication(_configuration);
             services.AddNotificationClient(_configuration.Get<NotificationClientConfiguration>());
 
