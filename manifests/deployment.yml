@@ -46,16 +46,12 @@ spec:
         agentpool: tools01
       containers:
       - env:
-        - name: Authentication__Domain
-          value: {{Auth0Domain}}
-        - name: Authentication__ClientId
-          value: {{Auth0ClientId}}
-        - name: Authentication__ClientSecret
-          value: {{AUth0ClientSecret}}
-        - name: Authentication__ManagementApiClientId
-          value: {{ManagementApiClientId}}
-        - name: Authentication__ManagementApiClientSecret
-          value: {{ManagementApiClientSecret}}
+        - name: AzureAdConfiguration__Authority
+          value: https://login.microsoftonline.com/{{Tenant}}
+        - name: AzureAdConfiguration__ClientId
+          value: {{ToolsServiceAadOidcClientId}}
+        - name: AzureAdConfiguration__ClientSecret
+          value: {{ToolsServiceAadOidcClientSecret}}
         - name: DatabaseConnectionString
           value: {{DatabaseConnectionString}}
         - name: DfESigninAddress
