@@ -14,6 +14,9 @@ spec:
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: das-tool-service-web
-          servicePort: 80
+          service:
+            name: das-tool-service-web
+            port:
+              number: 80
