@@ -10,7 +10,7 @@ resources:
     type: github
     name: SkillsFundingAgency/das-platform-automation
     ##TO DO: revert to latest tag
-    ref: refs/heads/Add-AppGatewayKubernetesIngressCert
+    ref: refs/heads/AppGatewayKubernetesIngressUpdates
     endpoint: SFA
 
 pr: none
