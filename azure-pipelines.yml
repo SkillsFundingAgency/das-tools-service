@@ -9,8 +9,7 @@ resources:
   - repository: das-platform-automation
     type: github
     name: SkillsFundingAgency/das-platform-automation
-    ##TO DO: revert to latest tag
-    ref: refs/heads/AppGatewayKubernetesIngressUpdates
+    ref: refs/tags/4.5.12
     endpoint: SFA
 
 pr: none
