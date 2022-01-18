@@ -9,7 +9,7 @@ resources:
   - repository: das-platform-automation
     type: github
     name: SkillsFundingAgency/das-platform-automation
-    ref: refs/tags/4.5.12
+    ref: refs/tags/4.5.13
     endpoint: SFA
 
 pr: none
