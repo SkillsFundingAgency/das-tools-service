@@ -22,6 +22,7 @@ stages:
           ContainerRegistryName: $(PublicAcrName)
           ServiceConnection: ${{ parameters.ServiceConnection }}
           ImageName: das-tools-service
+          BranchToCreateLatestTag: master
 
       - task: CopyFiles@2
         displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
