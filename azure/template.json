@@ -37,6 +37,10 @@
     },
     "tags": {
       "type": "object"
+    },
+    "utcValue": {
+      "type": "string",
+      "defaultValue": "[utcNow()]"
     }
   },
   "variables": {
@@ -58,7 +62,7 @@
     },
     {
       "apiVersion": "2020-06-01",
-      "name": "application-insights",
+      "name": "[concat('application-insights-', parameters('utcValue'))]",
       "resourceGroup": "[variables('resourceGroupName')]",
       "type": "Microsoft.Resources/deployments",
       "properties": {
@@ -79,7 +83,7 @@
     },
     {
       "apiVersion": "2020-06-01",
-      "name": "sql-database",
+      "name": "[concat('sql-database-', parameters('utcValue'))]",
       "resourceGroup": "[parameters('sharedResourceGroupName')]",
       "type": "Microsoft.Resources/deployments",
       "properties": {
@@ -121,7 +125,7 @@
     },
     "appInsightsInstrumentationkey": {
       "type": "string",
-      "value": "[reference('application-insights').outputs.Instrumentationkey.Value]"
+      "value": "[reference(concat('application-insights-', parameters('utcValue'))).outputs.Instrumentationkey.Value]"
     }
   }
 }
