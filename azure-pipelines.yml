@@ -27,7 +27,7 @@ trigger:
 
 variables:
 - name: KubectlVersion
-  value: 1.18.8
+  value: 1.23.8
 - name: ServiceName
   value: tools
 - group : Release Management Resources
@@ -36,29 +36,6 @@ stages:
 - template: /pipeline-templates/stage/build.yml
   parameters:
     ServiceConnection: SFA-DIG-Prod-ARM
-
-- stage: DeployTo_DEV
-  displayName: DeployTo_DEV
-  variables:
-  - group: Dev Management Resources
-  - group: TEST Shared Resources
-  - group: DEV Tools Service Shared
-  jobs:
-  - template: /pipeline-templates/job/deploy.yml
-    parameters:
-      AksResourceGroup: $(AKSResourceGroupName)
-      AppGatewayName: $(AKSSharedAppGatewayName)
-      AppGatewayResourceGroup: $(AKSSharedNodeResourceGroupName)
-      Environment: DEV
-      KeyVaultName: $(SharedKeyVaultName)
-      KubernetesCluster: $(AKSSharedClusterName)
-      KubectlVersion: $(KubectlVersion)
-      ResourceGroupLocation: $(ResourceGroupLocation)
-      ServiceConnection: SFA-DAS-DevTest-ARM
-      SharedSQLServerFQDN: $(SharedSQLServerFQDN)
-      SharedSQLServerPassword: $(SharedSQLServerPassword)
-      SharedSQLServerUsername: $(SharedSQLServerUsername)
-      SubscriptionId: $(SubscriptionId)
 
 - stage: DeployTo_PREPROD
   displayName: DeployTo_PREPROD
