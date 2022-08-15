@@ -7,7 +7,7 @@ using SFA.DAS.ToolService.Web.Models;
 namespace SFA.DAS.ToolService.Web.Controllers
 {
     [AllowAnonymous]
-    public class HomeController : BaseController<HomeController>
+    public class HomeController : Controller
     {
         private readonly IOptions<HomePageLinksConfiguration> links;
 

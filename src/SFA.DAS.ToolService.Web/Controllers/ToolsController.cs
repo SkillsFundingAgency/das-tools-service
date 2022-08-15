@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace SFA.DAS.ToolService.Web.Controllers
 {
     [Route("home")]
-    public class ToolsController : BaseController<ToolsController>
+    public class ToolsController : Controller
     {
         private readonly IHttpContextAccessor contextAccessor;
         private readonly IApplicationService applicationService;

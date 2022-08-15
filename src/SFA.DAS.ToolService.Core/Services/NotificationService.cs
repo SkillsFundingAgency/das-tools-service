@@ -9,12 +9,10 @@ namespace SFA.DAS.ToolService.Core.Services
 {
     public class NotificationService : INotificationService
     {
-        private readonly ILogger<RoleService> _logger;
         private readonly INotificationRepository _notificationRepository;
 
-        public NotificationService(ILogger<RoleService> logger, INotificationRepository notificationRepository)
+        public NotificationService(INotificationRepository notificationRepository)
         {
-            _logger = logger;
             _notificationRepository = notificationRepository;
         }
 

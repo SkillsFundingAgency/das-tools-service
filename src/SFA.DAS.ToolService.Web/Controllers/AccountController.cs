@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.ToolService.Web.Controllers
 {
-    public class AccountController : BaseController<AccountController>
+    public class AccountController : Controller
     {
         public AccountController()
         {

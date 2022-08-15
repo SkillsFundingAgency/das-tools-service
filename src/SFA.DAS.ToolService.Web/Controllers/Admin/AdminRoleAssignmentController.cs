@@ -10,7 +10,7 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
 {
     [Authorize(Policy = "admin")]
     [Route("admin/manage-roles/assignments")]
-    public class AdminRoleAssignmentController : BaseController<AdminRoleAssignmentController>
+    public class AdminRoleAssignmentController : Controller
     {
         private readonly IApplicationService applicationService;
         private readonly IRoleService roleService;

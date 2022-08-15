@@ -20,11 +20,8 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
 });
 
 builder.Services.AddServices(configuration);
-builder.Services.AddDbContext<ToolServiceDbContext>(options =>
+builder.Services.AddDbContext<IToolServiceDbContext, ToolServiceDbContext>(options =>
         options.UseSqlServer(configuration["DatabaseConnectionString"]));
-
-builder.Services.AddScoped<IToolServiceDbContext, ToolServiceDbContext>(provider => provider.GetService<ToolServiceDbContext>());
-builder.Services.AddTransient(provider => new Lazy<ToolServiceDbContext>(provider.GetService<ToolServiceDbContext>()));
 
 builder.Services.AddOptions();
 

@@ -11,7 +11,7 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
 {
     [Authorize(Policy = "admin")]
     [Route("admin/manage-notifications")]
-    public class AdminNotificationController : BaseController<AdminNotificationController>
+    public class AdminNotificationController : Controller
     {
         private readonly INotificationService _notificationService;
 

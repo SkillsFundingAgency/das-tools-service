@@ -10,18 +10,15 @@ namespace SFA.DAS.ToolService.Infrastructure.Repositories
     public class RoleRepository : IRoleRepository
     {
         private readonly IToolServiceDbContext _toolServiceDbContext;
-        private readonly ILogger<RoleRepository> _logger;
 
-        public RoleRepository(IToolServiceDbContext toolServiceDbContext, ILogger<RoleRepository> logger)
+        public RoleRepository(IToolServiceDbContext toolServiceDbContext)
         {
             _toolServiceDbContext = toolServiceDbContext;
-            _logger = logger;
         }
 
         public async Task<List<Role>> GetRoles()
         {
-            var result = await _toolServiceDbContext.Role
-                .ToListAsync();
+            var result = await _toolServiceDbContext.Role.ToListAsync();
 
             return result;
         }

@@ -10,12 +10,10 @@ namespace SFA.DAS.ToolService.Core.Services
 {
     public class RoleService : IRoleService
     {
-        private readonly ILogger<RoleService> _logger;
         private readonly IRoleRepository _localRoleRepository;
 
-        public RoleService(ILogger<RoleService> logger, IRoleRepository localRoleRepository)
+        public RoleService(IRoleRepository localRoleRepository)
         {
-            _logger = logger;
             _localRoleRepository = localRoleRepository;
         }
 
