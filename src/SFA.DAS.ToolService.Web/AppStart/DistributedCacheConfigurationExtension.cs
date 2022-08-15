@@ -1,7 +1,4 @@
 using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.ToolService.Core.Configuration;
 using StackExchange.Redis;
 
@@ -9,7 +6,7 @@ namespace SFA.DAS.ToolService.Web.AppStart
 {
     public static class DistributedCacheConfigurationExtension
     {
-        public static void AddDistributedCache(this IServiceCollection services, IConfiguration configuration, IHostingEnvironment env)
+        public static void AddDistributedCache(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {

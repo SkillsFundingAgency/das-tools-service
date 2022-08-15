@@ -2,12 +2,14 @@
 
   <PropertyGroup>
     <ProjectGuid>8F20F8C8-B733-484F-8211-06A0B7E7697E</ProjectGuid>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SFA.DAS.ToolService.Core\SFA.DAS.ToolService.Core.csproj" />
-    <PackageReference Include="SFA.DAS.ToolsNotifications.Client" Version="0.2.0" />
-    <PackageReference Include="SFA.DAS.ToolsNotifications.Types" Version="0.2.0" />
+    <PackageReference Include="SFA.DAS.ToolsNotifications.Client" Version="0.2.12-prerelease-8" />
+    <PackageReference Include="SFA.DAS.ToolsNotifications.Types" Version="0.2.12-prerelease-8" />
   </ItemGroup>
 </Project>
