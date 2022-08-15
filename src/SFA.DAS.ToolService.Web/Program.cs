@@ -56,7 +56,6 @@ builder.Services.AddMvc(options =>
         .RequireAuthenticatedUser()
         .Build();
     options.Filters.Add(new AuthorizeFilter(policy));
-    options.EnableEndpointRouting = false;
 })
 .AddControllersAsServices();
 
@@ -121,15 +120,16 @@ app.Use(async (context, next) =>
         await next();
     }
 });
+app.UseRouting();
 
 app.UseAuthentication();
 app.UseHealthChecks("/health");
 app.UseAuthorization();
-app.UseMvc(routes =>
+app.UseEndpoints(endpoints =>
 {
-    routes.MapRoute(
+    endpoints.MapControllerRoute(
         name: "default",
-        template: "{controller=Home}/{action=Index}/{id?}");
+        pattern: "{controller=SignIn}/{action=Index}/{id?}");
 });
 
 app.Run();

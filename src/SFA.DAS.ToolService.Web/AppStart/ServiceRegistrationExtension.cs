@@ -19,9 +19,6 @@ namespace SFA.DAS.ToolService.Web.AppStart
             services.Configure<AuthenticationConfiguration>(configuration.GetSection("Authentication"));
             services.AddSingleton(config => config.GetService<IOptions<AuthenticationConfiguration>>().Value);
 
-            services.Configure<HomePageLinksConfiguration>(configuration);
-            services.AddSingleton(config => config.GetService<IOptions<HomePageLinksConfiguration>>().Value);
-
             services.AddScoped<IApplicationService, ApplicationService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IApplicationRepository, ApplicationRepository>();
