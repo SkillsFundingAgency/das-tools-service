@@ -34,25 +34,15 @@ stages:
 
   - job: 'build_dacpac'
     pool:
-      name: 'DAS - Continuous Integration'
-      demands: Agent.OS -equals Windows_NT
+      name: 'DAS - Continuous Integration Agents'
     workspace:
       clean: all
     steps:
-    - task: VSBuild@1
-      displayName: 'Build DACPAC'
+    - task: DotNetCoreCLI@2
+      displayName: Build DACPAC
       inputs:
-        solution: 'src/SFA.DAS.ToolService.Database/SFA.DAS.ToolService.Database.sqlproj'
-        platform: '$(buildPlatform)'
-        configuration: '$(buildConfiguration)'
-        msbuildArgs: '/p:PackageLocation="$(build.artifactstagingdirectory)/publish"'
-
-    - task: CopyFiles@2
-      displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
-      inputs:
-        contents: |
-          src/**/*.dacpac
-        targetFolder: '$(build.artifactstagingdirectory)/publish'
+        projects: 'src/SFA.DAS.ToolService.Database/SFA.DAS.ToolService.Database.sqlproj'
+        arguments: '/p:NetCoreBuild=true --configuration $(buildConfiguration) -o $(build.artifactstagingdirectory)/publish'
 
     - task: PublishPipelineArtifact@0
       displayName: 'Publish Artifact: database'
