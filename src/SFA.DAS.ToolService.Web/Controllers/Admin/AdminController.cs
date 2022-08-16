@@ -7,7 +7,7 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
 {
     [Authorize(Policy = "admin")]
     [Route("admin")]
-    public class AdminController : Controller
+    public class AdminController : BaseController<AdminController>
     {
         public AdminController()
         {

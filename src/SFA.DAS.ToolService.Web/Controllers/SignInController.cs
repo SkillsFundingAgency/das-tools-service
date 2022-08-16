@@ -7,7 +7,7 @@ using SFA.DAS.ToolService.Web.Models;
 namespace SFA.DAS.ToolService.Web.Controllers
 {
     [AllowAnonymous]
-    public class SignInController : Controller
+    public class SignInController : BaseController<SignInController>
     {
 
         public SignInController()

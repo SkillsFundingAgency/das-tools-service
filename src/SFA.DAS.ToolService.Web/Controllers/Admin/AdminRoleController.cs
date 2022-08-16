@@ -9,7 +9,7 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
 {
     [Authorize(Policy = "admin")]
     [Route("admin/manage-roles")]
-    public class AdminRoleController : Controller
+    public class AdminRoleController : BaseController<AdminRoleController>
     {
         private readonly IRoleService roleService;
 

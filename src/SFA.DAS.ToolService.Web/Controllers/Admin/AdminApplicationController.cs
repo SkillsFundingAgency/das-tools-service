@@ -11,7 +11,7 @@ namespace SFA.DAS.ToolService.Web.Controllers.Admin
 {
     [Authorize(Policy = "admin")]
     [Route("admin/manage-applications")]
-    public class AdminApplicationController : Controller
+    public class AdminApplicationController : BaseController<AdminApplicationController>
     {
         private readonly IApplicationService _applicationService;
 
