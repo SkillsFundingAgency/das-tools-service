@@ -14,7 +14,13 @@
     <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.22.0" />
     <PackageReference Include="SFA.DAS.ToolsNotifications.Types" Version="0.2.12-prerelease-10" />
     <PackageReference Include="SFA.DAS.ToolsNotifications.Client" Version="0.2.12-prerelease-10" />
-    <PackageReference Include="WebEssentials.AspNetCore.CdnTagHelpers" Version="1.0.16" />
+    <PackageReference Include="WebEssentials.AspNetCore.CdnTagHelpers" Version="1.0.21" />
+
+    <!-- Transitive Updates -->
+    <!-- WebEssentials.AspNetCore.CdnTagHelpers -->
+    <PackageReference Include="Microsoft.AspNetCore.Html.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Runtime" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
