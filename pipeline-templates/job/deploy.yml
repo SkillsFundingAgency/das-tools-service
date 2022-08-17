@@ -55,7 +55,7 @@ jobs:
             DatabaseName: '$(DatabaseName)'
             SqlUsername: '${{ parameters.SharedSQLServerUsername }}'
             SqlPassword: '${{ parameters.SharedSQLServerPassword }}'
-            DacpacFile: '$(Pipeline.Workspace)/database/src/SFA.DAS.ToolService.Database/bin/Output/SFA.DAS.ToolService.Database.dacpac'
+            DacpacFile: '$(Pipeline.Workspace)/database/SFA.DAS.ToolService.Database.dacpac'
         - task: KubectlInstaller@0
           displayName: 'Install Kubectl ${{ parameters.KubectlVersion }}'
           inputs:

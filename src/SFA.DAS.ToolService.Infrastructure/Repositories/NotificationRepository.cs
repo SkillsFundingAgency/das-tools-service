@@ -9,12 +9,10 @@ namespace SFA.DAS.ToolService.Infrastructure.Repositories
     public class NotificationRepository : INotificationRepository
     {
         private readonly INotificationClient _notificationClient;
-        private readonly ILogger<RoleRepository> _logger;
 
-        public NotificationRepository(INotificationClient notificationClient, ILogger<RoleRepository> logger)
+        public NotificationRepository(INotificationClient notificationClient)
         {
             _notificationClient = notificationClient;
-            _logger = logger;
         }
 
         public async Task<Notification> GetNotification()

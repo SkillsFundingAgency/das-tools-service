@@ -10,12 +10,10 @@ namespace SFA.DAS.ToolService.Core.Services
 {
     public class ApplicationService : IApplicationService
     {
-        private readonly ILogger<ApplicationService> _logger;
         private readonly IApplicationRepository _applicationRepository;
 
-        public ApplicationService(ILogger<ApplicationService> logger, IApplicationRepository applicationRepository)
+        public ApplicationService(IApplicationRepository applicationRepository)
         {
-            _logger = logger;
             _applicationRepository = applicationRepository;
         }
 

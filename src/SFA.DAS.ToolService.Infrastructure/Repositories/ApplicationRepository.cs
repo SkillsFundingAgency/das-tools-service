@@ -12,12 +12,10 @@ namespace SFA.DAS.ToolService.Infrastructure.Repositories
     public class ApplicationRepository : IApplicationRepository
     {
         private readonly IToolServiceDbContext _toolServiceDbContext;
-        private readonly ILogger<ToolServiceDbContext> _logger;
 
-        public ApplicationRepository(IToolServiceDbContext toolServiceDbContext, ILogger<ToolServiceDbContext> logger)
+        public ApplicationRepository(IToolServiceDbContext toolServiceDbContext)
         {
             _toolServiceDbContext = toolServiceDbContext;
-            _logger = logger;
         }
 
         public async Task<List<Application>> GetApplicationsByRoleName(string name)
@@ -89,7 +87,7 @@ namespace SFA.DAS.ToolService.Infrastructure.Repositories
                 .Select(c => c.Id)
                 .FirstOrDefaultAsync();
 
-            _logger.LogInformation($"Got id {result} for role {name}");
+            // _logger.LogInformation($"Got id {result} for role {name}"); //TODO: App insights
 
             return result;
         }

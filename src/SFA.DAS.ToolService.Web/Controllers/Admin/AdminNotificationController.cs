@@ -5,7 +5,6 @@ using SFA.DAS.ToolService.Web.Configuration;
 using SFA.DAS.ToolService.Web.Extensions;
 using SFA.DAS.ToolService.Web.Models.Admin;
 using SFA.DAS.ToolsNotifications.Types.Entities;
-using System.Threading.Tasks;
 
 namespace SFA.DAS.ToolService.Web.Controllers.Admin
 {
