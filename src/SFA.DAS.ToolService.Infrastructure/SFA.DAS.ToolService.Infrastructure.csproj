@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SFA.DAS.ToolService.Core\SFA.DAS.ToolService.Core.csproj" />
-    <PackageReference Include="SFA.DAS.ToolsNotifications.Client" Version="0.2.12" />
-    <PackageReference Include="SFA.DAS.ToolsNotifications.Types" Version="0.2.12" />
+    <PackageReference Include="SFA.DAS.ToolsNotifications.Client" Version="0.2.15" />
+    <PackageReference Include="SFA.DAS.ToolsNotifications.Types" Version="0.2.15" />
   </ItemGroup>
 </Project>
