@@ -1,3 +1,5 @@
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 @using SFA.DAS.ToolService.Web.Controllers;
 @using SFA.DAS.ToolService.Web.Extensions;
 
@@ -14,7 +16,7 @@
 
 <body class="govuk-template__body {{ bodyClass }}">
     <script>
-        document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');
+        document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
     </script>
 
     <a href="#main-content" class="govuk-skip-link">Skip to main content</a>
@@ -22,7 +24,8 @@
     <header class="govuk-header das-header " role="banner" data-module="header">
         <div class="govuk-header__container govuk-width-container">
             <div class="govuk-header__content">
-                <a asp-controller="@typeof(ToolsController).GetControllerName()" asp-action="@nameof(ToolsController.Index)" class="govuk-header__link govuk-header__link--service-name">
+                <a asp-controller="@typeof(ToolsController).GetControllerName()"
+                    asp-action="@nameof(ToolsController.Index)" class="govuk-header__link govuk-header__service-name">
                     Tool Service
                 </a>
             </div>
@@ -30,7 +33,8 @@
 
                 @if (User.Identity.IsAuthenticated & (Context.Request.Path != "/"))
                 {
-                    <a class="govuk-header__link" asp-controller="@typeof(AccountController).GetControllerName()" asp-action="@nameof(AccountController.Logout)">
+                    <a class="govuk-header__link" asp-controller="@typeof(AccountController).GetControllerName()"
+                        asp-action="@nameof(AccountController.Logout)">
                         Logout
                     </a>
                 }
@@ -55,13 +59,18 @@
             @RenderBody()
         </main>
     </div>
-
+    <script type="module" src="/libs/govuk-frontend/govuk-frontend.min.js"></script>
+    <script type="module">
+        import {
+            initAll
+        } from '@Configuration["cdn:url"]/libs/govuk-frontend/govuk-frontend.min.js'
+        initAll()
+    </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="/libs/govuk-frontend/all.js"></script>
     <script src="/js/das-all.js"></script>
     <script>
-        window.GOVUKFrontend.initAll();
         window.DASFrontend.initAll();
     </script>
 </body>
+
 </html>
