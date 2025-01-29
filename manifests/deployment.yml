@@ -9,9 +9,9 @@ metadata:
   namespace: {{KubernetesNamespace}}
 spec:
   ports:
-  - port: 80
-    protocol: TCP
-    targetPort: 80
+    - port: 80
+      protocol: TCP
+      targetPort: 80
   selector:
     app: das-tool-service-web
   type: ClusterIP
@@ -42,30 +42,45 @@ spec:
         app: das-tool-service-web
         service: das-tool-service
     spec:
+      terminationGracePeriodSeconds: 30
       nodeSelector:
         agentpool: {{toolsAgentName}}
       containers:
-      - env:
-        - name: AzureAdConfiguration__Authority
-          value: https://login.microsoftonline.com/{{Tenant}}
-        - name: AzureAdConfiguration__ClientId
-          value: {{ToolsServiceAadOidcClientId}}
-        - name: AzureAdConfiguration__ClientSecret
-          value: {{ToolsServiceAadOidcClientSecret}}
-        - name: DatabaseConnectionString
-          value: {{DatabaseConnectionString}}
-        - name: DfESigninAddress
-          value: {{DfeSignInAddress}}
-        image: {{PublicAcrName}}.azurecr.io/das-tools-service:{{buildNumber}}
-        imagePullPolicy: IfNotPresent
-        name: das-tool-service
-        envFrom:
-          - configMapRef:
-              name: das-tool-service-shared-config
-        ports:
-        - containerPort: 80
-          protocol: TCP
-        resources:
+        - name: das-tool-service
+          image: {{PublicAcrName}}.azurecr.io/das-tools-service:{{buildNumber}}
+          imagePullPolicy: Always
+          env:
+            - name: AzureAdConfiguration__Authority
+              value: https://login.microsoftonline.com/{{Tenant}}
+            - name: AzureAdConfiguration__ClientId
+              value: {{ToolsServiceAadOidcClientId}}
+            - name: AzureAdConfiguration__ClientSecret
+              value: {{ToolsServiceAadOidcClientSecret}}
+            - name: DatabaseConnectionString
+              value: {{DatabaseConnectionString}}
+            - name: DfESigninAddress
+              value: {{DfeSignInAddress}}
+            - name: ASPNETCORE_URLS
+              value: "http://+:80;https://+:443"
+          envFrom:
+            - configMapRef:
+                name: das-tool-service-shared-config
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 20
+          resources:
             requests:
               cpu: 25m
               memory: 512Mi
