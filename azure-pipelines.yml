@@ -56,7 +56,6 @@ stages:
       ResourceGroupLocation: $(ResourceGroupLocation)
       ServiceConnection: SFA-DIG-PreProd-ARM
       SharedSQLServerFQDN: $(SharedSQLServerFQDN)
-      SharedSQLServerPassword: $(SharedSQLServerPassword)
       SharedSQLServerUsername: $(SharedSQLServerUsername)
       SubscriptionId: $(SubscriptionId)
 
@@ -80,6 +79,5 @@ stages:
       ResourceGroupLocation: $(ResourceGroupLocation)
       ServiceConnection: SFA-DIG-Prod-ARM
       SharedSQLServerFQDN: $(SharedSQLServerFQDN)
-      SharedSQLServerPassword: $(SharedSQLServerPassword)
       SharedSQLServerUsername: $(SharedSQLServerUsername)
       SubscriptionId: $(SubscriptionId)

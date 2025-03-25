@@ -1,4 +1,4 @@
-parameters:
+﻿parameters:
   AksResourceGroup:
   AppGatewayName:
   AppGatewayResourceGroup:
@@ -9,7 +9,6 @@ parameters:
   ResourceGroupLocation:
   ServiceConnection:
   SharedSQLServerFQDN:
-  SharedSQLServerPassword:
   SharedSQLServerUsername:
   SubscriptionId:
 
@@ -17,7 +16,7 @@ jobs:
 - deployment: DeployTo_${{ parameters.Environment }}
   environment: ${{ parameters.Environment }}
   pool:
-    name: 'DAS - Continuous Integration'
+    name: 'DAS - Continuous Deployment Agents'
   variables:
   - name: KubernetesNamespace
     value: tools
@@ -47,15 +46,26 @@ jobs:
             tokenPrefix: '{{'
             tokenSuffix: '}}'
             verbosity: detailed
+        - task: AzurePowerShell@5
+          displayName: 'Fetch SQL Server Admin password from key vault'
+          inputs:
+            azureSubscription: ${{ parameters.ServiceConnection }}
+            scriptType: inlineScript
+            inline: |
+              $SharedSqlServerAdminPassword = Get-AzKeyVaultSecret -VaultName $(SharedKeyVaultName) -Name $(SharedSQLServerAdminKeyVaultSecretName) -AsPlainText
+              Write-Output "Setting variable SharedSqlServerAdminPassword"
+              Write-Output $SharedSqlServerAdminPassword
+              Write-Output "##vso[task.setvariable variable=SharedSqlServerAdminPassword;isreadonly=true;issecret=true]$SharedSqlServerAdminPassword"
+            azurePowerShellVersion: LatestVersion
         - task: SqlAzureDacpacDeployment@1
           displayName: 'Deploy DACPAC'
           inputs:
             azureSubscription: ${{ parameters.ServiceConnection }}
-            ServerName: '${{ parameters.SharedSQLServerFQDN }}'
-            DatabaseName: '$(DatabaseName)'
-            SqlUsername: '${{ parameters.SharedSQLServerUsername }}'
-            SqlPassword: '${{ parameters.SharedSQLServerPassword }}'
-            DacpacFile: '$(Pipeline.Workspace)/database/src/SFA.DAS.ToolService.Database/bin/Output/SFA.DAS.ToolService.Database.dacpac'
+            ServerName: ${{ parameters.SharedSQLServerFQDN }}
+            DatabaseName: $(DatabaseName)
+            SqlUsername: ${{ parameters.SharedSQLServerUsername }}
+            SqlPassword: $(SharedSqlServerAdminPassword)
+            DacpacFile: $(Pipeline.Workspace)/database/src/SFA.DAS.ToolService.Database/bin/Output/SFA.DAS.ToolService.Database.dacpac
         - task: KubectlInstaller@0
           displayName: 'Install Kubectl ${{ parameters.KubectlVersion }}'
           inputs:
