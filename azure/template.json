@@ -1,131 +1,159 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "resourceEnvironmentName": {
-      "type": "string"
-    },
-    "serviceName": {
-      "type": "string"
-    },
-    "sharedSqlServerName": {
-      "type": "string"
-    },
-    "sharedResourceGroupName": {
-      "type": "string"
-    },
-    "databaseSkuName": {
-      "type": "string",
-      "defaultValue": "S0"
-    },
-    "databaseTier": {
-      "type": "string",
-      "defaultValue": "Standard"
-    },
-    "logAnalyticsSubscriptionId": {
-      "type": "string",
-      "defaultValue": "[subscription().subscriptionId]"
-    },
-    "managementResourceGroupName": {
-      "type": "string"
-    },
-    "logAnalyticsWorkspaceName": {
-      "type": "string"
-    },
-    "resourceGroupLocation": {
-      "type": "string"
-    },
-    "tags": {
-      "type": "object"
-    },
-    "utcValue": {
-      "type": "string",
-      "defaultValue": "[utcNow()]"
-    }
-  },
-  "variables": {
-    "deploymentUrlBase": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/",
-    "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
-    "appInsightsName": "[concat(variables('resourceNamePrefix'), '-shared-ai')]",
-    "databaseName": "[concat(variables('resourceNamePrefix'), '-db')]",
-    "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]"
-  },
-  "resources": [
-    {
-      "apiVersion": "2020-06-01",
-      "name": "[variables('resourceGroupName')]",
-      "type": "Microsoft.Resources/resourceGroups",
-      "location": "[parameters('resourceGroupLocation')]",
-      "tags": "[parameters('tags')]",
-      "properties": {
-      }
-    },
-    {
-      "apiVersion": "2020-06-01",
-      "name": "[concat('application-insights-', parameters('utcValue'))]",
-      "resourceGroup": "[variables('resourceGroupName')]",
-      "type": "Microsoft.Resources/deployments",
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[concat(variables('deploymentUrlBase'),'application-insights.json')]",
-          "contentVersion": "1.0.0.0"
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourceEnvironmentName": {
+            "type": "string"
         },
-        "parameters": {
-          "appInsightsName": {
-            "value": "[variables('appInsightsName')]"
-          },
-          "attachedService": {
-            "value": "[variables('appInsightsName')]"
-          }
+        "serviceName": {
+            "type": "string"
+        },
+        "sharedSqlServerName": {
+            "type": "string"
+        },
+        "sharedResourceGroupName": {
+            "type": "string"
+        },
+        "databaseSkuName": {
+            "type": "string",
+            "defaultValue": "S0"
+        },
+        "databaseTier": {
+            "type": "string",
+            "defaultValue": "Standard"
+        },
+        "logAnalyticsSubscriptionId": {
+            "type": "string",
+            "defaultValue": "[subscription().subscriptionId]"
+        },
+        "managementResourceGroupName": {
+            "type": "string"
+        },
+        "logAnalyticsWorkspaceName": {
+            "type": "string"
+        },
+        "resourceGroupLocation": {
+            "type": "string"
+        },
+        "tags": {
+            "type": "object"
+        },
+        "utcValue": {
+            "type": "string",
+            "defaultValue": "[utcNow()]"
+        },
+        "deployPrivateLinkedScopedResource": {
+            "type": "bool"
         }
-      }
     },
-    {
-      "apiVersion": "2020-06-01",
-      "name": "[concat('sql-database-', parameters('utcValue'))]",
-      "resourceGroup": "[parameters('sharedResourceGroupName')]",
-      "type": "Microsoft.Resources/deployments",
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[concat(variables('deploymentUrlBase'),'sql-database.json')]",
-          "contentVersion": "1.0.0.0"
+    "variables": {
+        "deploymentUrlBase": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/",
+        "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
+        "appInsightsName": "[concat(variables('resourceNamePrefix'), '-shared-ai')]",
+        "databaseName": "[concat(variables('resourceNamePrefix'), '-db')]",
+        "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]",
+        "privateLinkScopeName": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-shared-ampls'))]"
+    },
+    "resources": [
+        {
+            "apiVersion": "2020-06-01",
+            "name": "[variables('resourceGroupName')]",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "[parameters('resourceGroupLocation')]",
+            "tags": "[parameters('tags')]",
+            "properties": {}
         },
-        "parameters": {
-          "databaseName": {
+        {
+            "apiVersion": "2020-06-01",
+            "name": "[concat('application-insights-', parameters('utcValue'))]",
+            "resourceGroup": "[variables('resourceGroupName')]",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'application-insights.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "appInsightsName": {
+                        "value": "[variables('appInsightsName')]"
+                    },
+                    "attachedService": {
+                        "value": "[variables('appInsightsName')]"
+                    }
+                }
+            }
+        },
+        {
+            "apiVersion": "2020-06-01",
+            "name": "[concat('sql-database-', parameters('utcValue'))]",
+            "resourceGroup": "[parameters('sharedResourceGroupName')]",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'sql-database.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "databaseName": {
+                        "value": "[variables('databaseName')]"
+                    },
+                    "sqlServerName": {
+                        "value": "[parameters('sharedSqlServerName')]"
+                    },
+                    "databaseSkuName": {
+                        "value": "[parameters('databaseSkuName')]"
+                    },
+                    "databaseTier": {
+                        "value": "[parameters('databaseTier')]"
+                    },
+                    "logAnalyticsSubscriptionId": {
+                        "value": "[parameters('logAnalyticsSubscriptionId')]"
+                    },
+                    "logAnalyticsResourceGroup": {
+                        "value": "[parameters('managementResourceGroupName')]"
+                    },
+                    "logAnalyticsWorkspaceName": {
+                        "value": "[parameters('logAnalyticsWorkspaceName')]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[parameters('deployPrivateLinkedScopedResource')]",
+            "apiVersion": "2021-04-01",
+            "name": "[concat(variables('appInsightsName'), '-private-link-scoped-', parameters('utcValue'))]",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'private-linked-scoped-resource.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "privateLinkScopeName": {
+                        "value": "[variables('privateLinkScopeName')]"
+                    },
+                    "scopedResourceName": {
+                        "value": "[variables('appInsightsName')]"
+                    },
+                    "scopedResourceId": {
+                        "value": "[reference(concat('application-insights-', parameters('utcValue'))).outputs.AppInsightsResourceId.value]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "databaseName": {
+            "type": "string",
             "value": "[variables('databaseName')]"
-          },
-          "sqlServerName": {
-            "value": "[parameters('sharedSqlServerName')]"
-          },
-          "databaseSkuName": {
-            "value": "[parameters('databaseSkuName')]"
-          },
-          "databaseTier": {
-            "value": "[parameters('databaseTier')]"
-          },
-          "logAnalyticsSubscriptionId": {
-            "value": "[parameters('logAnalyticsSubscriptionId')]"
-          },
-          "logAnalyticsResourceGroup": {
-            "value": "[parameters('managementResourceGroupName')]"
-          },
-          "logAnalyticsWorkspaceName": {
-            "value": "[parameters('logAnalyticsWorkspaceName')]"
-          }
+        },
+        "appInsightsInstrumentationkey": {
+            "type": "string",
+            "value": "[reference(concat('application-insights-', parameters('utcValue'))).outputs.Instrumentationkey.Value]"
         }
-      }
     }
-  ],
-  "outputs": {
-    "databaseName": {
-      "type": "string",
-      "value": "[variables('databaseName')]"
-    },
-    "appInsightsInstrumentationkey": {
-      "type": "string",
-      "value": "[reference(concat('application-insights-', parameters('utcValue'))).outputs.Instrumentationkey.Value]"
-    }
-  }
 }
