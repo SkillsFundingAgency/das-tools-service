@@ -38,6 +38,9 @@
     "tags": {
       "type": "object"
     },
+    "deployPrivateLinkedScopedResource": {
+      "type": "bool"
+    },
     "utcValue": {
       "type": "string",
       "defaultValue": "[utcNow()]"
@@ -48,7 +51,8 @@
     "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
     "appInsightsName": "[concat(variables('resourceNamePrefix'), '-shared-ai')]",
     "databaseName": "[concat(variables('resourceNamePrefix'), '-db')]",
-    "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]"
+    "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]",
+    "privateLinkScopeName": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-shared-ampls'))]"
   },
   "resources": [
     {
@@ -77,6 +81,31 @@
           },
           "attachedService": {
             "value": "[variables('appInsightsName')]"
+          }
+        }
+      }
+    },
+    {
+      "condition": "[parameters('deployPrivateLinkedScopedResource')]",
+      "apiVersion": "2020-06-01",
+      "name": "[concat(variables('appInsightsName'), '-private-link-scoped-', parameters('utcValue'))]",
+      "resourceGroup": "[parameters('sharedResourceGroupName')]",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('deploymentUrlBase'),'private-linked-scoped-resource.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "privateLinkScopeName": {
+            "value": "[variables('privateLinkScopeName')]"
+          },
+          "scopedResourceName": {
+            "value": "[variables('appInsightsName')]"
+          },
+          "scopedResourceId": {
+            "value": "[reference(concat('application-insights-', parameters('utcValue'))).outputs.AppInsightsResourceId.value]"
           }
         }
       }
