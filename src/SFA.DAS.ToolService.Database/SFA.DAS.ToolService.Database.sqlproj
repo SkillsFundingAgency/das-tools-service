@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build">
+<Project DefaultTargets="Build" ToolsVersion="4.0">
     <Sdk Name="Microsoft.Build.Sql" Version="1.0.0-rc1" />
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -16,6 +16,7 @@
         <ModelCollation>1033, CI</ModelCollation>
         <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
         <DeployToDatabase>True</DeployToDatabase>
+        <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
         <TargetLanguage>CS</TargetLanguage>
         <AppDesignerFolder>Properties</AppDesignerFolder>
         <SqlServerVerification>False</SqlServerVerification>
@@ -23,6 +24,7 @@
         <TargetDatabaseSet>True</TargetDatabaseSet>
         <Recovery>SIMPLE</Recovery>
         <IsEncryptionOn>True</IsEncryptionOn>
+        <TargetFrameworkProfile />
         <RuntimeIdentifiers>win;win-x64;linux-x64</RuntimeIdentifiers>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">

@@ -40,18 +40,21 @@ stages:
     workspace:
       clean: all
     steps:
-      - task: UseDotNet@2
-        displayName: 'Use .NET 10 SDK'
-        inputs:
-          packageType: sdk
-          version: 10.x
-
-      - task: DotNetCoreCLI@2
+      - task: VSBuild@1
         displayName: 'Build DACPAC'
         inputs:
-          command: build
-          projects: 'src/SFA.DAS.ToolService.Database/SFA.DAS.ToolService.Database.sqlproj'
-          arguments: '--configuration Release -o $(build.artifactstagingdirectory)/publish'
+          solution: 'src\**\*.sqlproj'
+          platform: '$(buildPlatform)'
+          configuration: '$(buildConfiguration)'
+          msbuildArgs: '/p:PackageLocation="$(build.artifactstagingdirectory)/publish"'
+
+      - task: CopyFiles@2
+        displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+        inputs:
+          Contents: |
+            src\**\*.dacpac
+          TargetFolder: '$(build.artifactstagingdirectory)/publish'
+          OverWrite: true
 
       - task: PublishBuildArtifacts@1
         displayName: 'Publish Artifact'
