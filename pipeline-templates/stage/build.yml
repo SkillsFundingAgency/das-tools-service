@@ -40,12 +40,6 @@ stages:
     workspace:
       clean: all
     steps:
-      - task: UseDotNet@2
-        displayName: 'Use .NET 8 SDK'
-        inputs:
-          packageType: sdk
-          version: 8.x
-
       - task: DotNetCoreCLI@2
         displayName: 'Build DACPAC'
         inputs:
